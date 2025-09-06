@@ -1,0 +1,15 @@
+:root {
+    /* 
+    Breakpoints requeridos
+    */
+    --bp-mobile: 480px;
+    --bp-tablet: 768px;
+    --bp-desktop: 769px;
+    
+    /* 
+    Media queries prácticas 
+    */
+    --mobile: (max-width: 480px);
+    --tablet: (min-width: 481px) and (max-width: 768px);
+    --desktop: (min-width: 769px);
+}
