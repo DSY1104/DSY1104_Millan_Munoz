@@ -1,9 +1,20 @@
 @import url('variables/_typography.css');
+@import url('variables/_colors.css');
 @import url('typography.css');
+@import url('variables/_breakpoints.css'); 
+@import url('components/_accessibility.css'); 
 
-/* 
-Estilos globales adicionales 
+
+/*
+Estilos de prueba
 */
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+
 * {
     margin: 0;
     padding: 0;
@@ -11,8 +22,6 @@ Estilos globales adicionales
 }
 
 body {
-    background-color: #000000;
-    color: #ffffff;
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
