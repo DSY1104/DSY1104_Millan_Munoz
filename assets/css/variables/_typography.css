@@ -1,0 +1,44 @@
+/* Definición de fuentes locales - Variables */
+@font-face {
+  font-family: "Orbitron";
+  src: url("../assets/fonts/Orbitron.woff2") format("woff2-variations");
+  src: url("../assets/fonts/Orbitron.woff2") format("woff2") tech("variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("../assets/fonts/Roboto.woff2") format("woff2-variations");
+  src: url("../assets/fonts/Roboto.woff2") format("woff2") tech("variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Familias tipográficas con fallback sans-serif */
+  --font-heading: "Orbitron", sans-serif;
+  --font-body: "Roboto", sans-serif;
+
+  /* Escala tipográfica */
+  --size-h1: 3rem;
+  --size-h2: 2.25rem;
+  --size-h3: 1.875rem;
+  --size-h4: 1.5rem;
+  --size-h5: 1.25rem;
+  --size-h6: 1.125rem;
+  --size-body: 1rem;
+  --size-small: 0.875rem;
+
+  /* Pesos de fuente (400/500/700) */
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-bold: 700;
+
+  /* Alturas de línea */
+  --leading-tight: 1.2;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+}
