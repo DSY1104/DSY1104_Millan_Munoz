@@ -3,39 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyecto con Tipografía Definida</title>
+    <title>Tienda de Tecnología</title>
     
+    <!-- Fuentes Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     
+    <!-- CSS -->
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
-    <header>
-        <h1>Encabezado Principal h1</h1>
-        <h2>Subtítulo h2</h2>
-        <h3>Encabezado h3</h3>
-    </header>
-    
-    <main>
-        <article>
-            <h4>Encabezado h4</h4>
-            <p>Este es un párrafo de texto normal con Roboto. Todos los párrafos tienen el mismo tamaño de 16px.</p>
-            
-            <h5>Encabezado h5</h5>
-            <p>Otro párrafo de ejemplo. La tipografía es consistente en todo el cuerpo del documento.</p>
-            
-            <h6>Encabezado h6</h6>
-            <p>Último párrafo demostrativo. <small>Este texto pequeño tiene 14px.</small></p>
-            
-            <p class="text-lead">Este es un texto lead opcional (18px).</p>
-        </article>
-    </main>
-    
-    <footer>
-        <small>Texto de pie de página con tamaño small</small>
-    </footer>
+    <!-- Navbar -->
+    <nav class="navbar" role="navigation" aria-label="Navegación principal">
+        <div class="navbar-container">
+            <a href="#home" class="navbar-brand">LevelUp</a>
+
+            <button class="navbar-toggle" aria-label="Abrir menú" aria-expanded="false">
+                <span>☰</span>
+            </button>
+
+            <ul class="navbar-menu" id="navbar-menu">
+                <li><a href="#home" class="navbar-link">HOME</a></li>
+                <li><a href="#productos" class="navbar-link">Productos</a></li>
+                <li><a href="#blog" class="navbar-link">Blogs/Noticias</a></li>
+                <li><a href="https://wa.me/+56944682126" class="navbar-link navbar-whatsapp" target="_blank">Soporte WhatsApp</a></li>
+                <li>
+                    <button class="navbar-cart" aria-label="Carrito de compras">
+                        🛒
+                        <span class="cart-badge" id="cart-count">0</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="content-wrapper">
+        <header id="home">
+            <h1>¡¡¡UYUUUUUIIIIII!!! El 18 se vive en LevelUp</h1>
+            <p>AFÍRMESE COMPADRE... En LevelUp el 18 se vive al máximo.</p>
+        </header>
+
+        <main>
+            <section id="productos" class="section">
+                <h2>Aprovecha las ofertas que tenemos para estas Fiestas Patrias</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <h3>Laptop Gamer</h3>
+                        <p>Potente laptop para gaming</p>
+                        <button class="add-to-cart">Agregar al carrito</button>
+                    </div>
+                    <div class="product-card">
+                        <h3>Smartphone Flagship</h3>
+                        <p>Último modelo con todas las features</p>
+                        <button class="add-to-cart">Agregar al carrito</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="blog" class="section">
+                <h2>Últimas Noticias</h2>
+                
+                <article>
+                    <h3>El 18 se pasa bailando con esta seleccion de parlantes al mejor precio.</h3>
+                    <p>Descubre nuestra selección de parlantes y vive la música al máximo.</p>
+                </article>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Tienda de Tecnología. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script/navbar.js"></script>
 </body>
 </html>
