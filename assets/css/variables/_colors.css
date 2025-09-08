@@ -1,0 +1,12 @@
+/*
+Definiendo variables de colores para el tema de la pagina web.
+Modularizado para facilitar cambios futuros.
+*/
+
+:root {
+  --bg: #000000;
+  --text: #ffffff;
+  --text-2: #d3d3d3;
+  --accent-blue: #1e90ff;
+  --accent-green: #39ff14;
+}
