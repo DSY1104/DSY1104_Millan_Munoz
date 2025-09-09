@@ -7,60 +7,16 @@
 
     <!-- Fuentes y variables locales -->
     <link rel="stylesheet" href="assets/css/fonts.css" />
-    <link rel="stylesheet" href="assets/css/variables/_colors.css" />
-    <link rel="stylesheet" href="assets/css/variables/_typography.css" />
-    <link rel="stylesheet" href="assets/css/variables/_breakpoints.css" />
     <link rel="stylesheet" href="assets/css/main.css" />
-    <link rel="stylesheet" href="assets/css/typography.css" />
-    <link rel="stylesheet" href="assets/css/components/_navbar.css" />
   </head>
   <body>
-    <!-- Navbar -->
-    <nav class="navbar" role="navigation" aria-label="Navegación principal">
-      <div class="navbar-container">
-        <a href="index.html" class="navbar-brand">LevelUp</a>
-        <button
-          class="navbar-toggle"
-          aria-label="Abrir menú"
-          aria-expanded="false"
-        >
-          <span></span><span></span><span></span>
-        </button>
-        <ul class="navbar-menu" id="navbar-menu">
-          <li>
-            <a href="index.html" class="navbar-link" aria-current="page"
-              >HOME</a
-            >
-          </li>
-          <li>
-            <a href="pages/products/catalog.html" class="navbar-link"
-              >Productos</a
-            >
-          </li>
-          <li>
-            <a href="pages/blog/index.html" class="navbar-link"
-              >Blogs/Noticias</a
-            >
-          </li>
-          <li>
-            <a
-              href="https://wa.me/56944682126"
-              class="navbar-link navbar-whatsapp"
-              target="_blank"
-              rel="noopener"
-              >Soporte</a
-            >
-          </li>
-          <li>
-            <button class="navbar-cart" aria-label="Ver carrito">
-              🛒<span class="cart-badge" id="cart-count">0</span>
-            </button>
-          </li>
-        </ul>
-      </div>
-    </nav>
+    <!-- Navbar modular -->
+    <div id="navbar-placeholder"></div>
 
-    <!-- Contenido principal -->
+    <!-- Hero modular -->
+    <div id="hero-placeholder"></div>
+
+    <!-- Contenido principal ¡¡¡Solo de prueba!!!-->
     <div class="content-wrapper">
       <header id="home">
         <h1>¡¡¡UYUUUUUIIIIII!!! El 18 se vive en LevelUp</h1>
@@ -106,6 +62,7 @@
     </div>
 
     <!-- JavaScript -->
-    <script src="assets/js/components/navbar.js"></script>
+    <script src="assets/js/components/navbar-include.js"></script>
+    <script src="assets/js/components/hero-include.js"></script>
   </body>
 </html>

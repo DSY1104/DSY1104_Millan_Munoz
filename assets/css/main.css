@@ -1,11 +1,11 @@
+@import url("components/_hero.css");
 @import url("./fonts.css");
-/* Import variables primero */
 @import url("variables/_colors.css");
 @import url("variables/_typography.css");
 @import url("variables/_breakpoints.css");
-
-/* Import componentes después */
 @import url("components/_navbar.css");
+
+/* */
 
 /* Estilos globales */
 * {
@@ -82,4 +82,8 @@ h2 {
 }
 h3 {
   font-size: 1.5rem;
+}
+
+footer {
+  text-align: center;
 }
