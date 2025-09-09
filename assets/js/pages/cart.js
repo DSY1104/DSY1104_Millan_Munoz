@@ -101,8 +101,3 @@ export const cart = {
   clear: clearCart,
   totals: getTotals,
 };
-
-// Expose for debugging
-if (typeof window !== "undefined") {
-  window.cartAPI = cart;
-}

@@ -191,8 +191,3 @@ export function namespaced(namespace, type = "local") {
     has: (key) => storage[type].has(namespace + ":" + key),
   };
 }
-
-// Small debug helper (can be removed in production)
-if (typeof window !== "undefined") {
-  window.__storageUtil = storage;
-}
