@@ -28,6 +28,37 @@
           🛒<span class="cart-badge" id="cart-count">0</span>
         </button>
       </li>
+      <li class="navbar-user">
+        <!-- Login button (shown when logged out) -->
+        <button
+          class="navbar-login-btn"
+          id="login-btn"
+          aria-label="Iniciar sesión"
+          style="display: none;"
+        >
+          <img src="assets/image/icon/login.svg" alt="Login" />
+        </button>
+        
+        <!-- User menu button (shown when logged in) -->
+        <button
+          class="navbar-user-btn"
+          id="user-menu-btn"
+          aria-label="Menú de usuario"
+          style="display: none;"
+        >
+          👤
+        </button>
+        
+        <div class="navbar-user-menu" id="user-menu">
+          <a href="pages/user/profile.html" class="user-menu-link">Mi Perfil</a>
+          <a href="pages/cart/shopping-cart.html" class="user-menu-link"
+            >Mi Carrito</a
+          >
+          <button class="user-menu-link user-logout" id="logout-btn">
+            Cerrar Sesión
+          </button>
+        </div>
+      </li>
     </ul>
   </div>
 </nav>

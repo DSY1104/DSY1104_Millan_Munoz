@@ -5,6 +5,9 @@
 @import url("variables/_typography.css");
 @import url("variables/_breakpoints.css");
 @import url("components/_navbar.css");
+@import url("components/_modal.css");
+@import url("components/_accessibility.css");
+@import url("pages/profile.css");
 
 @import url("components/_product-card.css");
 
