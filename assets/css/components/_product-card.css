@@ -1,0 +1,88 @@
+/* Tarjeta de producto modular */
+.product-card {
+  background: var(--bg-lighter, #23272f);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.8rem;
+  height: 100%;
+  transition: box-shadow 0.2s;
+  position: relative;
+}
+.product-card:focus {
+  outline: 2px solid var(--accent-blue, #1e90ff);
+}
+.product-image-wrapper {
+  width: 100%;
+  aspect-ratio: 1.2/1;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #181a1f;
+  margin-bottom: 0.5rem;
+}
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.product-category.badge {
+  position: absolute;
+  top: 0.7rem;
+  left: 0.7rem;
+  background: var(--accent-blue, #1e90ff);
+  color: #fff;
+  font-size: 0.8rem;
+  padding: 0.2em 0.7em;
+  border-radius: 6px;
+  font-weight: 600;
+  z-index: 2;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+.product-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1 1 auto;
+}
+.product-name {
+  font-size: 1.1rem;
+  font-family: var(--font-heading, "Orbitron", sans-serif);
+  color: var(--text, #fff);
+  margin: 0;
+}
+.product-rating {
+  color: #ffd700;
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+.product-price {
+  font-size: 1.1rem;
+  color: var(--accent-blue, #1e90ff);
+  font-weight: 700;
+}
+.add-to-cart {
+  background: var(--accent-blue, #1e90ff);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5em 1.2em;
+  font-size: 1rem;
+  font-family: inherit;
+  cursor: pointer;
+  margin-top: auto;
+  transition: background 0.2s;
+}
+.add-to-cart:hover:not(:disabled),
+.add-to-cart:focus:not(:disabled) {
+  background: var(--accent-blue-dark, #0066cc);
+}
+.add-to-cart:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}

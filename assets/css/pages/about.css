@@ -1,0 +1,104 @@
+/* Fade para el texto de la derecha */
+.about-fade {
+  transition: opacity 0.3s;
+}
+
+/* Estado activo en los títulos de la izquierda */
+.about-title.active {
+  color: var(--accent-blue, #1e90ff);
+  text-shadow: 0 2px 8px rgba(30, 144, 255, 0.15);
+}
+.about-title {
+  cursor: pointer;
+  outline: none;
+  transition: color 0.2s;
+}
+/* Estilos para la página Sobre Nosotros */
+.about-container {
+  display: flex;
+  min-height: 100vh;
+  background: transparent;
+}
+.about-left,
+.about-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem 2rem;
+}
+.about-left {
+  align-items: flex-end;
+  text-align: right;
+  gap: 2.5rem;
+}
+.about-left h1,
+.about-left h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--primary-color, #fff);
+}
+.about-right {
+  align-items: flex-start;
+  text-align: left;
+  gap: 2.5rem;
+  background: var(--bg, #000);
+  position: relative;
+}
+
+/* Barra divisora solo a la altura del contenido */
+.about-right::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  /* Centrar verticalmente y reducir a la mitad de la altura */
+  top: 25%;
+  height: 50%;
+  width: 2px;
+  background: var(--text-2, #333);
+  border-radius: 2px;
+}
+.about-right p {
+  font-size: 1.2rem;
+  color: #eee;
+  margin: 0;
+  max-width: 90%;
+}
+@media (max-width: 900px) {
+  .about-container {
+    flex-direction: column;
+    min-height: unset;
+    margin-top: 80px; /* Deja espacio para el navbar fijo */
+  }
+  .about-left,
+  .about-right {
+    align-items: center;
+    text-align: center;
+    padding: 2rem 1rem;
+    border: none;
+  }
+  .about-left {
+    gap: 1.2rem;
+  }
+  .about-title,
+  .about-left h1,
+  .about-left h2 {
+    font-size: 2rem;
+    width: 100%;
+    text-align: center;
+    padding: 0.5rem 0;
+  }
+  .about-right {
+    background: var(--bg, #000);
+    min-height: 120px;
+  }
+  .about-right::before {
+    display: none;
+  }
+  .about-right p {
+    font-size: 1.1rem;
+    color: #eee;
+    padding: 0.5rem 0;
+  }
+}

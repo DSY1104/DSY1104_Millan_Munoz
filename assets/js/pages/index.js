@@ -1,6 +1,6 @@
 import { renderProductCard } from "../components/product-card.js";
 
-fetch("../../data/products.json")
+fetch("assets/data/products.json")
   .then((res) => res.json())
   .then((products) => {
     const container = document.getElementById("product-list");

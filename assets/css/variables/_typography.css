@@ -1,21 +1,4 @@
 /* Definición de fuentes locales - Variables */
-@font-face {
-  font-family: "Orbitron";
-  src: url("../assets/fonts/Orbitron.woff2") format("woff2-variations");
-  src: url("../assets/fonts/Orbitron.woff2") format("woff2") tech("variations");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Roboto";
-  src: url("../assets/fonts/Roboto.woff2") format("woff2-variations");
-  src: url("../assets/fonts/Roboto.woff2") format("woff2") tech("variations");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
 
 :root {
   /* Familias tipográficas con fallback sans-serif */

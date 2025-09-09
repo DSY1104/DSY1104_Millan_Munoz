@@ -1,0 +1,51 @@
+/* Footer modular y acorde a la estética de la página */
+.footer {
+  background: var(--bg-light, #1a1a1a);
+  color: var(--text, #fff);
+  padding: 2rem 0 1rem 0;
+  text-align: center;
+  border-top: 1px solid var(--text-2, #333);
+  margin-top: 40px;
+}
+.footer-nav {
+  margin-bottom: 1rem;
+}
+.footer-menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.footer-link {
+  color: var(--text, #fff);
+  text-decoration: none;
+  font-family: var(--font-heading, "Orbitron", sans-serif);
+  font-weight: 500;
+  font-size: 1.1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background 0.2s, color 0.2s;
+}
+.footer-link:hover,
+.footer-link:focus {
+  background: var(--accent-blue, #1e90ff);
+  color: #fff;
+}
+.footer-copy {
+  font-size: 0.95rem;
+  color: var(--text-2, #aaa);
+  margin-top: 0.5rem;
+}
+@media (max-width: 600px) {
+  .footer-menu {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .footer-link {
+    font-size: 1rem;
+    padding: 0.5rem 0.5rem;
+  }
+}

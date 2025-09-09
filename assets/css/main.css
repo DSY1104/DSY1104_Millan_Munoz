@@ -1,3 +1,4 @@
+@import url("components/_footer.css");
 @import url("components/_hero.css");
 @import url("./fonts.css");
 @import url("variables/_colors.css");
@@ -5,7 +6,7 @@
 @import url("variables/_breakpoints.css");
 @import url("components/_navbar.css");
 
-/* */
+@import url("components/_product-card.css");
 
 /* Estilos globales */
 * {
@@ -16,7 +17,7 @@
 
 body {
   font-family: var(--font-body, "Roboto", sans-serif);
-  background-color: var(--bg, #000000);
+  background: var(--bg, #000000);
   color: var(--text, #ffffff);
   line-height: 1.6;
 }
@@ -57,7 +58,7 @@ body {
   padding: 10px 15px;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 10px;
+  /* margin-top eliminado para evitar conflicto con _product-card.css */
 }
 
 .add-to-cart:hover {
