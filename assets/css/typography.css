@@ -1,82 +1,100 @@
-/* 
-ESTILOS BASE - ROBOTO 
-*/
+@import "assets/css/variables/_typography.css";
+
+/* Aplicación de la jerarquía tipográfica */
+
+/* Encabezados - Orbitron */
+h1,
+.h1 {
+  font-family: var(--font-heading);
+  font-size: var(--size-h1);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+}
+
+h2,
+.h2 {
+  font-family: var(--font-heading);
+  font-size: var(--size-h2);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+}
+
+h3,
+.h3 {
+  font-family: var(--font-heading);
+  font-size: var(--size-h3);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+}
+
+h4,
+.h4 {
+  font-family: var(--font-heading);
+  font-size: var(--size-h4);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-normal);
+}
+
+h5,
+.h5 {
+  font-family: var(--font-heading);
+  font-size: var(--size-h5);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-normal);
+}
+
+h6,
+.h6 {
+  font-family: var(--font-heading);
+  font-size: var(--size-h6);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-normal);
+}
+
+/* Cuerpo de texto - Roboto */
 body {
-  font-family: var(--font-body), sans-serif;
+  font-family: var(--font-body);
   font-size: var(--size-body);
   font-weight: var(--weight-normal);
   line-height: var(--leading-normal);
 }
 
-/* 
-PÁRRAFOS - Mismo tamaño que body 
-*/
-p {
-  margin-bottom: 1em;
+p,
+.body {
+  font-family: var(--font-body);
+  font-size: var(--size-body);
+  font-weight: var(--weight-normal);
   line-height: var(--leading-normal);
 }
 
-/* 
-ENCABEZADOS - ORBITRON CON JERARQUÍA 
-*/
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-heading), sans-serif;
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-tight);
-  margin-bottom: 0.5em;
-}
-
-h1 {
-  font-size: var(--size-h1);
-}
-
-h2 {
-  font-size: var(--size-h2);
-}
-
-h3 {
-  font-size: var(--size-h3);
-  font-weight: var(--weight-medium);
-}
-
-h4 {
-  font-size: var(--size-h4);
-  font-weight: var(--weight-medium);
-}
-
-h5 {
-  font-size: var(--size-h5);
-  font-weight: var(--weight-medium);
-}
-
-h6 {
-  font-size: var(--size-h6);
-  font-weight: var(--weight-medium);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* 
-TEXTO PEQUEÑO 
-*/
-small {
+/* Texto pequeño - Roboto */
+small,
+.small {
+  font-family: var(--font-body);
   font-size: var(--size-small);
   font-weight: var(--weight-normal);
+  line-height: var(--leading-normal);
 }
 
-/* 
-CLASES UTILITARIAS OPCIONALES 
-*/
-.text-lead {
-  font-size: 1.125rem;
+/* Elementos adicionales */
+strong,
+b,
+.bold {
+  font-weight: var(--weight-bold);
+}
+
+em,
+i {
+  font-style: italic;
+}
+
+/* Clases utilitarias para pesos */
+.weight-normal {
+  font-weight: var(--weight-normal);
+}
+.weight-medium {
   font-weight: var(--weight-medium);
 }
-
-.text-small {
-  font-size: var(--size-small);
+.weight-bold {
+  font-weight: var(--weight-bold);
 }
