@@ -1,0 +1,201 @@
+/* Generic modal component + specific login modal refinements */
+
+.lu-modal[hidden] {
+  display: none;
+}
+
+.lu-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  font-family: var(--font-body, "Roboto", sans-serif);
+}
+
+.lu-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.lu-modal__dialog {
+  position: relative;
+  max-width: 420px;
+  margin: 80px auto;
+  background: var(--bg-lighter, #1c1c1c);
+  border: 1px solid var(--text-2, #333);
+  border-radius: 16px;
+  padding: 28px 32px 36px;
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  color: var(--text, #fff);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transform: translateY(30px) scale(0.96);
+  opacity: 0;
+  animation: luModalIn 0.55s cubic-bezier(0.16, 0.8, 0.26, 1) forwards;
+}
+
+@keyframes luModalIn {
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.lu-modal.active .lu-modal__backdrop {
+  opacity: 1;
+}
+
+.lu-modal__close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: var(--text, #fff);
+  font-size: 1.75rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.25s;
+}
+.lu-modal__close:hover {
+  color: var(--accent-blue, #1e90ff);
+}
+
+.lu-modal__header h2 {
+  font-family: var(--font-heading, "Orbitron", sans-serif);
+  font-size: 1.8rem;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+.lu-modal__body {
+  font-size: var(--size-body, 1rem);
+}
+
+form#login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-control {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.form-control label {
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-weight: var(--weight-medium, 500);
+  color: var(--text-2, #d3d3d3);
+}
+.form-control input {
+  background: #111;
+  border: 1px solid #2d2d2d;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 1rem;
+  color: var(--text, #fff);
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.25s, background 0.25s;
+}
+.form-control input:focus {
+  border-color: var(--accent-blue, #1e90ff);
+  background: #151515;
+}
+.form-control input:invalid[aria-invalid="true"] {
+  border-color: #ff3b30;
+}
+
+.form-hint {
+  font-size: 0.7rem;
+  color: #ff6b60;
+  margin-top: -4px;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.form-remember {
+  font-size: 0.85rem;
+}
+
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+.checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent-blue, #1e90ff);
+  cursor: pointer;
+}
+
+.alt-link {
+  font-size: 0.75rem;
+  text-decoration: none;
+  color: var(--accent-blue, #1e90ff);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-weight: var(--weight-medium, 500);
+}
+.alt-link:hover {
+  text-decoration: underline;
+}
+
+.form-actions {
+  margin-top: 4px;
+}
+
+.btn-primary {
+  all: unset;
+  background: linear-gradient(
+    135deg,
+    var(--accent-blue, #1e90ff),
+    var(--accent-green, #39ff14)
+  );
+  padding: 12px 20px;
+  width: 100%;
+  text-align: center;
+  border-radius: 12px;
+  font-weight: var(--weight-bold, 700);
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  font-family: var(--font-heading, "Orbitron", sans-serif);
+  color: #000;
+  font-size: 1rem;
+  box-shadow: 0 6px 18px -6px rgba(0, 0, 0, 0.6);
+  transition: filter 0.25s, transform 0.25s;
+  box-sizing: border-box;
+  display: block;
+}
+.btn-primary:hover {
+  filter: brightness(1.1);
+}
+.btn-primary:active {
+  transform: translateY(2px);
+}
+
+@media (max-width: 600px) {
+  .lu-modal__dialog {
+    margin: 40px 16px;
+    padding: 24px 24px 32px;
+  }
+  .lu-modal__header h2 {
+    font-size: 1.5rem;
+  }
+}
