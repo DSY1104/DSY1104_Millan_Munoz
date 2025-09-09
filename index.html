@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="assets/css/main.css" />
     <link rel="stylesheet" href="assets/css/typography.css" />
     <link rel="stylesheet" href="assets/css/components/_navbar.css" />
+    <link rel="stylesheet" href="assets/css/components/_modal.css" />
   </head>
   <body>
     <!-- Navbar -->
@@ -54,6 +55,11 @@
           <li>
             <button class="navbar-cart" aria-label="Ver carrito">
               🛒<span class="cart-badge" id="cart-count">0</span>
+            </button>
+          </li>
+          <li>
+            <button class="navbar-link" id="login-trigger" type="button">
+              Ingresar
             </button>
           </li>
         </ul>
@@ -107,5 +113,12 @@
 
     <!-- JavaScript -->
     <script src="assets/js/components/navbar.js"></script>
+    <script src="assets/js/components/login.js"></script>
+    <script>
+      // Simple trigger wiring
+      document.getElementById("login-trigger").addEventListener("click", () => {
+        window.LevelUpLogin && window.LevelUpLogin.open();
+      });
+    </script>
   </body>
 </html>
