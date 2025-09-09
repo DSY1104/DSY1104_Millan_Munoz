@@ -35,15 +35,39 @@
               <p class="profile-status" id="profile-status">
                 Miembro desde 2024
               </p>
-              <p class="profile-level">
-                Nivel: <span id="user-level">Novato</span>
-              </p>
+              <div class="profile-level-section">
+                <p class="profile-level">
+                  <span id="user-level-icon">🥉</span>
+                  <span id="user-level-name">Bronze</span>
+                  <span class="points-display"
+                    >(<span id="user-points">0</span> puntos)</span
+                  >
+                </p>
+                <div class="level-progress">
+                  <div class="progress-bar-container">
+                    <div class="progress-bar" id="level-progress-bar">
+                      <div class="progress-fill" id="level-progress-fill"></div>
+                    </div>
+                    <div class="progress-text">
+                      <span id="progress-points">0</span> /
+                      <span id="next-level-points">1000</span>
+                      <span class="next-level-name"
+                        >hacia <span id="next-level-name">Silver</span></span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="profile-stats">
             <div class="stat-item">
               <span class="stat-value" id="total-purchases">0</span>
               <span class="stat-label">Compras</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value" id="user-points-stat">0</span>
+              <span class="stat-label">Puntos</span>
             </div>
             <div class="stat-item">
               <span class="stat-value" id="wishlist-items">0</span>
@@ -85,8 +109,13 @@
                 <label for="email">Correo Electrónico</label>
                 <input type="email" id="email" name="email" required readonly />
                 <small class="form-help">El correo no se puede modificar</small>
-                <div id="duoc-discount-badge" class="discount-badge" style="display: none;">
-                  🎓 <strong>Descuento DUOC Activo:</strong> 20% de descuento de por vida
+                <div
+                  id="duoc-discount-badge"
+                  class="discount-badge"
+                  style="display: none"
+                >
+                  🎓 <strong>Descuento DUOC Activo:</strong> 20% de descuento de
+                  por vida
                 </div>
               </div>
               <div class="form-group">
@@ -486,6 +515,6 @@
     <script src="../../assets/js/components/navbar-include.js"></script>
     <script type="module" src="../../assets/js/components/login.js"></script>
     <script type="module" src="../../assets/js/components/register.js"></script>
-    <script src="../../assets/js/pages/profile.js"></script>
+    <script type="module" src="../../assets/js/pages/profile.js"></script>
   </body>
 </html>

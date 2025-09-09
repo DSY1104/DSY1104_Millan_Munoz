@@ -3,8 +3,8 @@
  * Handles user profile management including personal info, preferences, address, gaming profile, and security
  */
 
-// Remove import statement for now to avoid module issues
-// import { storage } from "../utils/storage.js";
+// Import points system
+import { pointsSystem } from "../utils/points-system.js";
 
 // Simple storage utility for profile page
 const profileStorage = {
@@ -23,7 +23,7 @@ const profileStorage = {
       localStorage.setItem(key, value);
     }
   },
-  remove: (key) => localStorage.removeItem(key)
+  remove: (key) => localStorage.removeItem(key),
 };
 
 class ProfileManager {
@@ -31,17 +31,21 @@ class ProfileManager {
     this.currentTab = "personal";
     this.categories = [];
     this.userProfile = this.loadUserProfile();
+    this.pointsSystem = pointsSystem;
 
     this.init();
   }
 
   async init() {
     await this.loadCategories();
+    await this.pointsSystem.init(); // Initialize points system
     this.setupEventListeners();
     this.setupTabs();
     this.populateFavoriteCategories();
     this.loadProfileData();
     this.updateProfileHeader();
+    this.updatePointsDisplay(); // Update points display
+    this.setupPointsEventListeners(); // Setup points-related event listeners
   }
 
   setupEventListeners() {
@@ -123,7 +127,7 @@ class ProfileManager {
     document.querySelectorAll(".tab-btn").forEach((btn) => {
       btn.classList.remove("active");
     });
-    
+
     const activeBtn = document.querySelector(`[data-tab="${tabName}"]`);
     if (activeBtn) {
       activeBtn.classList.add("active");
@@ -136,7 +140,7 @@ class ProfileManager {
     document.querySelectorAll(".tab-content").forEach((tab) => {
       tab.classList.remove("active");
     });
-    
+
     const activeTab = document.getElementById(`${tabName}-tab`);
     if (activeTab) {
       activeTab.classList.add("active");
@@ -184,10 +188,10 @@ class ProfileManager {
   loadUserProfile() {
     // Check for registration data first
     const registrationData = profileStorage.get("userRegistration");
-    
+
     const defaultProfile = {
       firstName: "Alex",
-      lastName: "Rodriguez", 
+      lastName: "Rodriguez",
       email: "alex.rodriguez@levelup.cl",
       phone: "+56 9 1234 5678",
       birthdate: "1995-03-15",
@@ -211,7 +215,8 @@ class ProfileManager {
       favoriteGenre: "rpg",
       skillLevel: "advanced",
       streamingPlatforms: ["twitch", "youtube"],
-      favoriteGames: "The Witcher 3, Civilization VI, Stardew Valley, League of Legends, Minecraft",
+      favoriteGames:
+        "The Witcher 3, Civilization VI, Stardew Valley, League of Legends, Minecraft",
       profilePublic: true,
       showActivity: true,
       allowFriendRequests: true,
@@ -222,7 +227,7 @@ class ProfileManager {
       level: "Pro Gamer",
       avatarFilter: "hue-rotate(120deg)",
       hasLifetimeDiscount: false,
-      isDuocStudent: false
+      isDuocStudent: false,
     };
 
     // If we have registration data, merge it with the default profile
@@ -236,7 +241,7 @@ class ProfileManager {
         hasLifetimeDiscount: registrationData.hasLifetimeDiscount || false,
         isDuocStudent: registrationData.isDuocStudent || false,
         registrationDate: registrationData.registrationDate,
-        ...profileStorage.get("userProfile") // Any additional profile data
+        ...profileStorage.get("userProfile"), // Any additional profile data
       };
     }
 
@@ -548,6 +553,111 @@ class ProfileManager {
       ".success-message, .error-message"
     );
     existingMessages.forEach((msg) => msg.remove());
+  }
+
+  // Points System Methods
+  setupPointsEventListeners() {
+    // Listen for points updates
+    document.addEventListener("pointsUpdated", (event) => {
+      this.updatePointsDisplay();
+      this.showLevelUpNotification(event.detail);
+    });
+
+    // Add test button for points (development only)
+    if (
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1"
+    ) {
+      this.addTestPointsButton();
+    }
+  }
+
+  updatePointsDisplay() {
+    const userStatus = this.pointsSystem.getUserStatus();
+    const { points, currentLevel, nextLevel, progress } = userStatus;
+
+    // Update level icon and name
+    const levelIcon = document.getElementById("user-level-icon");
+    const levelName = document.getElementById("user-level-name");
+    const userPoints = document.getElementById("user-points");
+    const userPointsStat = document.getElementById("user-points-stat");
+
+    if (levelIcon) levelIcon.textContent = currentLevel.icon;
+    if (levelName) {
+      levelName.textContent = currentLevel.name;
+      levelName.className = `level-${currentLevel.name.toLowerCase()}`;
+    }
+    if (userPoints) userPoints.textContent = points.toLocaleString();
+    if (userPointsStat) userPointsStat.textContent = points.toLocaleString();
+
+    // Update progress bar
+    const progressFill = document.getElementById("level-progress-fill");
+    const progressPoints = document.getElementById("progress-points");
+    const nextLevelPoints = document.getElementById("next-level-points");
+    const nextLevelName = document.getElementById("next-level-name");
+
+    if (progressFill) {
+      progressFill.style.width = `${progress.percentage}%`;
+      progressFill.className = `progress-fill ${currentLevel.name.toLowerCase()}`;
+    }
+
+    if (progress.isMaxLevel) {
+      if (progressPoints) progressPoints.textContent = "MAX";
+      if (nextLevelPoints) nextLevelPoints.textContent = "LEVEL";
+      if (nextLevelName) nextLevelName.textContent = "Máximo nivel alcanzado";
+    } else {
+      if (progressPoints)
+        progressPoints.textContent =
+          progress.currentLevelPoints.toLocaleString();
+      if (nextLevelPoints)
+        nextLevelPoints.textContent =
+          progress.totalPointsNeeded.toLocaleString();
+      if (nextLevelName) nextLevelName.textContent = nextLevel.name;
+    }
+  }
+
+  showLevelUpNotification(userStatus) {
+    // Check if level changed (this would be called from a purchase event)
+    // For now, we'll skip the notification logic
+    // In a real implementation, you'd track previous level and show notification on level up
+  }
+
+  addTestPointsButton() {
+    // Create test button for development
+    const testSection = document.createElement("div");
+    testSection.className = "test-points-section";
+    testSection.style.cssText = `
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(0,0,0,0.8);
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #333;
+      z-index: 1000;
+    `;
+
+    testSection.innerHTML = `
+      <div style="color: white; font-size: 12px; margin-bottom: 5px;">Test Points System</div>
+      <button id="add-test-points" style="margin: 2px; padding: 5px 8px; font-size: 11px;">+500 puntos</button>
+      <button id="reset-points" style="margin: 2px; padding: 5px 8px; font-size: 11px;">Reset</button>
+      <button id="set-1200-points" style="margin: 2px; padding: 5px 8px; font-size: 11px;">Set 1200</button>
+    `;
+
+    document.body.appendChild(testSection);
+
+    // Add event listeners for test buttons
+    document.getElementById("add-test-points").addEventListener("click", () => {
+      this.pointsSystem.addPoints(500);
+    });
+
+    document.getElementById("reset-points").addEventListener("click", () => {
+      this.pointsSystem.resetPoints();
+    });
+
+    document.getElementById("set-1200-points").addEventListener("click", () => {
+      this.pointsSystem.setPointsForTesting(1200);
+    });
   }
 }
 

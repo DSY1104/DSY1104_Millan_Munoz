@@ -1,5 +1,6 @@
 // Cart CRUD module using storage utility
 import { namespaced } from "../../js/utils/storage.js";
+import { pointsSystem } from "../utils/points-system.js";
 
 // Namespaced local storage for cart
 const cartStore = namespaced("cart", "local");
@@ -80,6 +81,63 @@ function getTotals() {
   return { subtotal, count };
 }
 
+// Process checkout and award points
+async function processCheckout(paymentMethod = "default") {
+  const cart = getCart();
+  const { subtotal, count } = getTotals();
+
+  if (cart.items.length === 0) {
+    throw new Error("Cart is empty");
+  }
+
+  try {
+    // Wait for points system to be initialized
+    await pointsSystem.init();
+
+    // Process purchase and award points
+    const purchaseResult = pointsSystem.processPurchase(subtotal, cart.items);
+
+    // Create purchase record
+    const purchase = {
+      id: Date.now().toString(),
+      timestamp: new Date().toISOString(),
+      items: [...cart.items],
+      subtotal,
+      count,
+      paymentMethod,
+      pointsEarned: purchaseResult.pointsEarned,
+      status: "completed",
+    };
+
+    // Save purchase history
+    const purchases = JSON.parse(
+      localStorage.getItem("purchaseHistory") || "[]"
+    );
+    purchases.unshift(purchase);
+    localStorage.setItem("purchaseHistory", JSON.stringify(purchases));
+
+    // Update total purchases count
+    const totalPurchases =
+      parseInt(localStorage.getItem("totalPurchases") || "0") + 1;
+    localStorage.setItem("totalPurchases", totalPurchases.toString());
+
+    // Clear cart after successful purchase
+    clearCart();
+
+    return {
+      success: true,
+      purchase,
+      pointsResult: purchaseResult,
+    };
+  } catch (error) {
+    console.error("Checkout error:", error);
+    return {
+      success: false,
+      error: error.message,
+    };
+  }
+}
+
 // Sync across tabs (optional)
 window.addEventListener("storage", (e) => {
   if (e.key === "cart:data") {
@@ -100,4 +158,5 @@ export const cart = {
   remove: removeItem,
   clear: clearCart,
   totals: getTotals,
+  checkout: processCheckout,
 };

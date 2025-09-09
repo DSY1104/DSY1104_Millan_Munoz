@@ -93,6 +93,137 @@
   color: var(--accent-green);
 }
 
+/* Level Progress System */
+.profile-level-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.profile-level {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 2px 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: var(--size-small);
+}
+
+#user-level-icon {
+  font-size: 1.2em;
+}
+
+#user-level-name {
+  font-weight: var(--weight-bold);
+  color: var(--accent-green);
+}
+
+.points-display {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9em;
+}
+
+.level-progress {
+  width: 100%;
+  max-width: 300px;
+}
+
+.progress-bar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+  border-radius: 4px;
+  transition: width 0.6s ease-in-out;
+  width: 0%;
+  position: relative;
+}
+
+.progress-fill::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.progress-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8em;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.progress-text .next-level-name {
+  color: var(--accent-green);
+  font-weight: var(--weight-medium);
+}
+
+/* Level colors for different tiers */
+.level-bronze {
+  color: #cd7f32 !important;
+}
+
+.level-silver {
+  color: #c0c0c0 !important;
+}
+
+.level-gold {
+  color: #ffd700 !important;
+}
+
+.level-platinum {
+  color: #e5e4e2 !important;
+}
+
+/* Progress bar colors by level */
+.progress-fill.bronze {
+  background: linear-gradient(90deg, #cd7f32, #e6a85c);
+}
+
+.progress-fill.silver {
+  background: linear-gradient(90deg, #c0c0c0, #e0e0e0);
+}
+
+.progress-fill.gold {
+  background: linear-gradient(90deg, #ffd700, #fff176);
+}
+
+.progress-fill.platinum {
+  background: linear-gradient(90deg, #e5e4e2, #f5f5f5);
+}
+
 .profile-stats {
   display: flex;
   gap: 30px;
