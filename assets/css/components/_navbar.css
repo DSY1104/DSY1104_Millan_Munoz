@@ -250,3 +250,144 @@ Carrito
     align-items: center;
   }
 }
+
+/* User Menu Styles */
+.navbar-user {
+  position: relative;
+}
+
+.navbar-user-btn {
+  background: none;
+  border: none;
+  color: var(--text, #ffffff);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.navbar-user-btn:hover {
+  background-color: var(--accent-blue, #1e90ff);
+  transform: scale(1.1);
+}
+
+/* Login button styles */
+.navbar-login-btn {
+  background: none;
+  border: none;
+  color: var(--text, #ffffff);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.navbar-login-btn:hover {
+  background-color: var(--accent-blue, #1e90ff);
+  transform: scale(1.1);
+}
+
+.navbar-login-btn img {
+  width: 20px;
+  height: 20px;
+  /* SVG is already white, no filter needed */
+  transition: all 0.3s ease;
+}
+
+.navbar-login-btn:hover img {
+  /* Keep white on hover, maybe add slight brightness */
+  filter: brightness(1.2);
+}
+
+.navbar-user-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: var(--bg, #000000);
+  border: 1px solid var(--text-2, #333);
+  border-radius: 8px;
+  padding: 0.5rem 0;
+  min-width: 180px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1002;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-user-menu.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.user-menu-link {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: var(--text, #ffffff);
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-body, "Roboto", sans-serif);
+  font-size: var(--size-body, 1rem);
+}
+
+.user-menu-link:hover {
+  background-color: var(--accent-blue, #1e90ff);
+  color: white;
+}
+
+.user-logout {
+  border-top: 1px solid var(--text-2, #333);
+  margin-top: 0.5rem;
+  padding-top: 0.75rem;
+}
+
+/* Mobile adjustments for user menu */
+@media (max-width: 768px) {
+  .navbar-user-menu {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    border: none;
+    border-top: 1px solid var(--text-2, #333);
+    border-radius: 0;
+    background: transparent;
+    min-width: auto;
+    padding: 0;
+    margin-top: 0.5rem;
+  }
+
+  .user-menu-link {
+    padding: 1rem;
+    border-bottom: 1px solid var(--text-2, #333);
+    text-align: center;
+  }
+
+  .user-menu-link:last-child {
+    border-bottom: none;
+  }
+
+  .user-logout {
+    border-top: 1px solid var(--text-2, #333);
+    margin-top: 0;
+  }
+}

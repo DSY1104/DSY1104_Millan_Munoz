@@ -40,6 +40,7 @@ import { storage } from "../utils/storage.js";
   function activateModal() {
     modalRoot.hidden = false;
     modalRoot.classList.add("active");
+    document.body.classList.add("modal-open");
     const firstInput = modalRoot.querySelector("input[type=email]");
     firstInput && firstInput.focus();
     document.addEventListener("keydown", escListener);
@@ -49,6 +50,7 @@ import { storage } from "../utils/storage.js";
     if (!modalRoot) return;
     modalRoot.classList.remove("active");
     modalRoot.hidden = true; // simple hide (could animate out later)
+    document.body.classList.remove("modal-open");
     document.removeEventListener("keydown", escListener);
   }
 
@@ -70,10 +72,25 @@ import { storage } from "../utils/storage.js";
 
   // Logout function
   function logout() {
-    storage.cookies.remove("userSession");
-    storage.cookies.remove("rememberLogin");
-    console.log("[login-modal] user logged out");
-    // TODO: redirect or update UI state
+    try {
+      // Clear authentication cookies
+      storage.cookies.remove("userSession");
+      storage.cookies.remove("rememberLogin");
+      
+      // Clear any localStorage data related to user session
+      localStorage.removeItem("userSession");
+      localStorage.removeItem("rememberLogin");
+      
+      console.log("[login-modal] user logged out successfully");
+      
+      // Trigger any UI updates that might be listening
+      window.dispatchEvent(new CustomEvent('userLoggedOut'));
+      
+      return true;
+    } catch (error) {
+      console.error("[login-modal] error during logout:", error);
+      return false;
+    }
   }
 
   function wireUp() {

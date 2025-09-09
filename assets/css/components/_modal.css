@@ -1,5 +1,12 @@
 /* Generic modal component + specific login modal refinements */
 
+/* Prevent body scroll when modal is open */
+body.modal-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
 .lu-modal[hidden] {
   display: none;
 }
@@ -9,10 +16,12 @@
   inset: 0;
   z-index: 1000;
   font-family: var(--font-body, "Roboto", sans-serif);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .lu-modal__backdrop {
-  position: absolute;
+  position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(6px);
@@ -25,6 +34,14 @@
   position: relative;
   max-width: 480px;
   margin: 80px auto;
+  min-height: calc(100vh - 160px);
+  display: flex;
+  align-items: flex-start;
+  padding: 40px 0;
+}
+
+.lu-modal__content {
+  width: 100%;
   background: var(--bg-lighter, #1c1c1c);
   border: 1px solid var(--text-2, #333);
   border-radius: 16px;
@@ -32,6 +49,7 @@
   box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.7),
     0 0 0 1px rgba(255, 255, 255, 0.04) inset;
   color: var(--text, #fff);
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -63,6 +81,7 @@
   cursor: pointer;
   padding: 4px;
   transition: color 0.25s;
+  z-index: 1;
 }
 .lu-modal__close:hover {
   color: var(--accent-blue, #1e90ff);
@@ -193,7 +212,12 @@ form#login-form {
 
 @media (max-width: 600px) {
   .lu-modal__dialog {
-    margin: 40px 16px;
+    margin: 20px auto;
+    min-height: calc(100vh - 40px);
+    padding: 20px 0;
+  }
+  .lu-modal__content {
+    margin: 0 16px;
     padding: 24px 24px 32px;
   }
   .lu-modal__header h2 {

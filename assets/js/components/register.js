@@ -44,6 +44,7 @@ import { storage } from "../utils/storage.js";
   function activateModal() {
     modalRoot.hidden = false;
     modalRoot.classList.add("active");
+    document.body.classList.add("modal-open");
     const firstInput = modalRoot.querySelector("input[name=nombre]");
     firstInput && firstInput.focus();
     document.addEventListener("keydown", escListener);
@@ -53,6 +54,7 @@ import { storage } from "../utils/storage.js";
     if (!modalRoot) return;
     modalRoot.classList.remove("active");
     modalRoot.hidden = true;
+    document.body.classList.remove("modal-open");
     document.removeEventListener("keydown", escListener);
   }
 
@@ -104,11 +106,23 @@ import { storage } from "../utils/storage.js";
     return age >= 18;
   }
 
+  // Email format validation with regex
+  function validateEmailFormat(email) {
+    if (!email) return false;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
   // Email domain validation
   function validateEmailDomain(email) {
     if (!email) return false;
     const domain = email.split("@")[1]?.toLowerCase();
     return ALLOWED_DOMAINS.includes(domain);
+  }
+
+  // Complete email validation (format + domain)
+  function validateEmail(email) {
+    return validateEmailFormat(email) && validateEmailDomain(email);
   }
 
   // Check if email qualifies for DUOC discount
@@ -183,7 +197,7 @@ import { storage } from "../utils/storage.js";
       if (
         !formData.email ||
         formData.email.length > 100 ||
-        !validateEmailDomain(formData.email)
+        !validateEmail(formData.email)
       ) {
         errors.email = true;
         valid = false;
@@ -233,6 +247,11 @@ import { storage } from "../utils/storage.js";
 
       // Store in localStorage
       storage.local.set("userRegistration", userData);
+
+      // Also store in users array for future reference
+      const existingUsers = storage.local.get("users") || [];
+      existingUsers.push(userData);
+      storage.local.set("users", existingUsers);
 
       // Also create a basic session
       const sessionData = {
