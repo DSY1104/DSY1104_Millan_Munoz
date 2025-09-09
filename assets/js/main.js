@@ -16,6 +16,4 @@ if (typeof window !== "undefined") {
       { days: 1, sameSite: "Lax" }
     );
   }
-  // Expose for quick manual testing in console
-  window.appStore = appStore;
 }
