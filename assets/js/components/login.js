@@ -2,7 +2,7 @@
 // Fetches '/components/login.html' and injects into DOM on first load.
 // Uses storage.js for cookie-based login persistence.
 
-import { storage } from '../utils/storage.js';
+import { storage } from "../utils/storage.js";
 
 (function () {
   const COMPONENT_URL = "/components/login.html";
@@ -58,11 +58,11 @@ import { storage } from '../utils/storage.js';
 
   // Check if user is already logged in
   function checkExistingLogin() {
-    const session = storage.cookies.get('userSession');
-    const remember = storage.cookies.get('rememberLogin');
-    
+    const session = storage.cookies.get("userSession");
+    const remember = storage.cookies.get("rememberLogin");
+
     if (session && session.isAuthenticated) {
-      console.log('[login-modal] existing session found', session);
+      console.log("[login-modal] existing session found", session);
       return session;
     }
     return null;
@@ -70,9 +70,9 @@ import { storage } from '../utils/storage.js';
 
   // Logout function
   function logout() {
-    storage.cookies.remove('userSession');
-    storage.cookies.remove('rememberLogin');
-    console.log('[login-modal] user logged out');
+    storage.cookies.remove("userSession");
+    storage.cookies.remove("rememberLogin");
+    console.log("[login-modal] user logged out");
     // TODO: redirect or update UI state
   }
 
@@ -80,6 +80,16 @@ import { storage } from '../utils/storage.js';
     // backdrop & close buttons
     modalRoot.querySelectorAll("[data-login-dismiss]").forEach((el) => {
       el.addEventListener("click", closeModal);
+    });
+
+    // Switch to register modal
+    const switchToRegister = modalRoot.querySelector(
+      "[data-switch-to-register]"
+    );
+    switchToRegister?.addEventListener("click", (e) => {
+      e.preventDefault();
+      closeModal();
+      window.LevelUpRegister?.open();
     });
 
     const form = modalRoot.querySelector("#login-form");
@@ -119,45 +129,45 @@ import { storage } from '../utils/storage.js';
       // Use cookies for persistence based on "remember me" choice
       if (remember) {
         // Remember for 30 days
-        storage.cookies.set('userSession', userData, { 
-          days: 30, 
-          secure: location.protocol === 'https:', 
-          sameSite: 'Lax' 
+        storage.cookies.set("userSession", userData, {
+          days: 30,
+          secure: location.protocol === "https:",
+          sameSite: "Lax",
         });
-        storage.cookies.set('rememberLogin', true, { 
-          days: 30, 
-          secure: location.protocol === 'https:', 
-          sameSite: 'Lax' 
+        storage.cookies.set("rememberLogin", true, {
+          days: 30,
+          secure: location.protocol === "https:",
+          sameSite: "Lax",
         });
       } else {
         // Session-only (expires when browser closes)
-        storage.cookies.set('userSession', userData, { 
-          secure: location.protocol === 'https:', 
-          sameSite: 'Lax' 
+        storage.cookies.set("userSession", userData, {
+          secure: location.protocol === "https:",
+          sameSite: "Lax",
         });
       }
 
       console.log("[login-modal] login successful", {
         email,
         remember,
-        stored: storage.cookies.get('userSession')
+        stored: storage.cookies.get("userSession"),
       });
 
       // TODO: call actual auth API endpoint here
-      
+
       closeModal();
     });
   }
 
   // Public trigger: create a global dispatcher for now
-  window.LevelUpLogin = { 
+  window.LevelUpLogin = {
     open: openModal,
     logout: logout,
-    getSession: () => storage.cookies.get('userSession'),
+    getSession: () => storage.cookies.get("userSession"),
     isLoggedIn: () => {
-      const session = storage.cookies.get('userSession');
+      const session = storage.cookies.get("userSession");
       return session && session.isAuthenticated;
-    }
+    },
   };
 
   // Auto-load component on first interaction (e.g., user presses a login button if added later)
@@ -167,7 +177,7 @@ import { storage } from '../utils/storage.js';
     // Check for existing login on page load
     const existingSession = checkExistingLogin();
     if (existingSession) {
-      console.log('[login-modal] restored session for:', existingSession.email);
+      console.log("[login-modal] restored session for:", existingSession.email);
     }
   });
 })();

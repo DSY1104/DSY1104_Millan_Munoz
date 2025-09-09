@@ -23,7 +23,7 @@
 
 .lu-modal__dialog {
   position: relative;
-  max-width: 420px;
+  max-width: 480px;
   margin: 80px auto;
   background: var(--bg-lighter, #1c1c1c);
   border: 1px solid var(--text-2, #333);
@@ -82,13 +82,14 @@
 form#login-form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 24px;
 }
 
 .form-control {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  margin-bottom: 4px;
 }
 .form-control label {
   font-size: 0.9rem;
@@ -197,5 +198,54 @@ form#login-form {
   }
   .lu-modal__header h2 {
     font-size: 1.5rem;
+  }
+}
+
+/* Register modal specific styles */
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+.form-control.half {
+  flex: 1;
+  min-width: 0;
+}
+
+#register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.discount-notice {
+  background: linear-gradient(
+    135deg,
+    var(--accent-green, #39ff14),
+    var(--accent-blue, #1e90ff)
+  );
+  color: #000;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: var(--weight-medium, 500);
+  margin-top: 6px;
+  text-align: center;
+}
+
+.alt-text {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-2, #d3d3d3);
+  margin-top: 12px;
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .form-control.half {
+    flex: none;
+    width: 100%;
   }
 }
