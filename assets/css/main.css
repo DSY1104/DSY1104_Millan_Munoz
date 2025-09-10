@@ -47,13 +47,6 @@ body {
   margin-top: 20px;
 }
 
-.product-card {
-  padding: 20px;
-  background: var(--bg-lighter, #2a2a2a);
-  border-radius: 8px;
-  border: 1px solid var(--text-2, #333);
-}
-
 .add-to-cart {
   background: var(--accent-blue, #1e90ff);
   color: white;
