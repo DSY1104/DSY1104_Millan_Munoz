@@ -1,0 +1,185 @@
+/* Botón de WhatsApp en soporte */
+.whatsapp-btn {
+  display: inline-flex;
+  align-items: center;
+  background: #25d366;
+  color: #fff !important;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6em 1.2em;
+  font-size: 1.1rem;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.12);
+  transition: background 0.2s, box-shadow 0.2s;
+  margin-top: 1.2em;
+}
+.whatsapp-btn:hover,
+.whatsapp-btn:focus {
+  background: #1ebe5d;
+  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.18);
+  text-decoration: none;
+}
+/* Estilos para la interacción de soporte (similares a about) */
+.support-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  align-items: flex-end;
+  text-align: right;
+  padding: 1.5rem 1.2rem;
+}
+.support-left h2,
+.support-left h3 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--primary-color, #fff);
+  font-family: var(--font-heading, "Orbitron", sans-serif);
+  cursor: pointer;
+  outline: none;
+  transition: color 0.2s;
+}
+.support-title-item.active,
+.support-title-item:focus {
+  color: var(--accent-blue, #1e90ff);
+  font-weight: bold;
+  text-shadow: 0 2px 8px rgba(30, 144, 255, 0.15);
+}
+.support-right {
+  min-height: 80px;
+  display: flex;
+  align-items: flex-start;
+  padding: 1.2rem 0 1.2rem 0.5rem;
+}
+.support-fade {
+  transition: opacity 0.3s;
+  font-size: 1.1rem;
+  color: var(--text-2, #d3d3d3);
+  margin: 0;
+}
+@media (max-width: 700px) {
+  .support-container {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .support-left,
+  .support-right {
+    padding: 0.5rem 0;
+  }
+}
+@media (max-width: 900px) {
+  .support-container {
+    flex-direction: column;
+    min-height: unset;
+    margin-top: 80px; /* Deja espacio para el navbar fijo */
+    gap: 0.5rem;
+  }
+  .support-left,
+  .support-right {
+    align-items: center;
+    text-align: center;
+    padding: 2rem 1rem;
+    border: none;
+  }
+  .support-left {
+    gap: 1.2rem;
+  }
+  .support-title,
+  .support-left h2,
+  .support-left h3 {
+    font-size: 2rem;
+    width: 100%;
+    text-align: center;
+    padding: 0.5rem 0;
+  }
+  .support-right {
+    background: var(--bg, #000);
+    min-height: 120px;
+  }
+  .support-right::before {
+    display: none;
+  }
+  .support-fade {
+    font-size: 1.1rem;
+    color: #eee;
+    padding: 0.5rem 0;
+  }
+}
+/* Intro centrado y con estilo del sitio */
+.support-intro {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 2.2rem auto;
+  color: var(--text-2, #d3d3d3);
+  font-size: 1.25rem;
+  font-family: var(--font-body, "Roboto", sans-serif);
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  background: transparent;
+}
+@media (max-width: 600px) {
+  .support-intro {
+    font-size: 1.05rem;
+    margin-bottom: 1.2rem;
+    padding: 0 0.5rem;
+  }
+}
+/* Estructura y estilos base para la página de soporte */
+.support-title {
+  text-align: center;
+  font-size: 3rem;
+  font-family: var(--font-heading, "Orbitron", sans-serif);
+  color: var(--accent-blue, #1e90ff);
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+  letter-spacing: 0.04em;
+  font-weight: 900;
+  text-shadow: 0 2px 12px rgba(30, 144, 255, 0.12);
+}
+@media (max-width: 600px) {
+  .support-title {
+    font-size: 2.1rem;
+    margin-top: 1.2rem;
+    margin-bottom: 1.2rem;
+  }
+}
+.support-container {
+  display: flex;
+  min-height: 60vh;
+  max-width: 900px;
+  margin: 0 auto 2rem auto;
+  background: transparent;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(30, 144, 255, 0.07);
+}
+.support-left,
+.support-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.5rem 1.2rem;
+}
+.support-left {
+  align-items: flex-end;
+  text-align: right;
+  gap: 1.2rem;
+}
+.support-right {
+  align-items: flex-start;
+  text-align: left;
+  gap: 1.2rem;
+  background: var(--bg, #000);
+  position: relative;
+}
+.support-right::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 25%;
+  height: 50%;
+  width: 2px;
+  background: var(--text-2, #333);
+  border-radius: 2px;
+}
