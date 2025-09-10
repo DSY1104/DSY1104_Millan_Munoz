@@ -24,7 +24,7 @@ function updateLoginState() {
   }
 
   const isLoggedIn = window.LevelUpLogin.isLoggedIn();
-  
+
   if (loginBtn && userMenuBtn) {
     if (isLoggedIn) {
       loginBtn.style.display = "none";
@@ -109,7 +109,7 @@ function closeMenu() {
 function logout() {
   try {
     let logoutSuccess = false;
-    
+
     // Use the proper logout method from the login system
     if (window.LevelUpLogin && window.LevelUpLogin.logout) {
       logoutSuccess = window.LevelUpLogin.logout();
@@ -119,38 +119,45 @@ function logout() {
       localStorage.removeItem("userProfile");
       localStorage.removeItem("userSession");
       // Clear cookies manually
-      document.cookie = "userSession=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      document.cookie = "rememberLogin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      document.cookie =
+        "userSession=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      document.cookie =
+        "rememberLogin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       logoutSuccess = true;
     }
 
     // Clear any profile-related data
     localStorage.removeItem("userProfile");
-    
+
     // Close user menu
     if (userMenu) {
       userMenu.classList.remove("active");
     }
-    
+
     // Update UI immediately
     updateLoginState();
-    
+
     if (logoutSuccess) {
       // Show success message
       alert("Sesión cerrada correctamente");
 
       // Redirect to home page with proper path resolution
       const currentPath = window.location.pathname;
-      const pathSegments = currentPath.split('/').filter(segment => segment !== '');
-      
+      const pathSegments = currentPath
+        .split("/")
+        .filter((segment) => segment !== "");
+
       // Remove filename if present
-      if (pathSegments.length > 0 && pathSegments[pathSegments.length - 1].includes('.html')) {
+      if (
+        pathSegments.length > 0 &&
+        pathSegments[pathSegments.length - 1].includes(".html")
+      ) {
         pathSegments.pop();
       }
-      
+
       const depth = pathSegments.length;
       let homePath;
-      
+
       if (depth === 0) {
         homePath = "index.html";
       } else if (depth === 1) {
@@ -158,7 +165,7 @@ function logout() {
       } else {
         homePath = "../../index.html";
       }
-      
+
       // Small delay to allow UI updates to process
       setTimeout(() => {
         window.location.href = homePath;
@@ -173,18 +180,26 @@ function logout() {
 }
 
 // Agregar producto al carrito
-function addToCart() {
-  let count = parseInt(localStorage.getItem("cartCount")) || 0;
-  count++;
-  localStorage.setItem("cartCount", count);
-  cartCount.textContent = count;
 
-  // Efecto visual
-  cartCount.style.transform = "scale(1.3)";
-  setTimeout(() => {
-    cartCount.style.transform = "scale(1)";
-  }, 300);
-}
+// Nueva función global para agregar productos al carrito real
+import { cart } from "../pages/cart.js";
+window.addToCart = function (product) {
+  try {
+    cart.add(product);
+    // Disparar evento para actualizar UI
+    document.dispatchEvent(new CustomEvent("cart:changed"));
+    // Efecto visual
+    if (cartCount) {
+      cartCount.style.transform = "scale(1.3)";
+      setTimeout(() => {
+        cartCount.style.transform = "scale(1)";
+      }, 300);
+    }
+  } catch (e) {
+    alert("No se pudo agregar el producto al carrito");
+    console.error(e);
+  }
+};
 
 // Cerrar menú al redimensionar a desktop
 function handleResize() {
@@ -204,8 +219,6 @@ if (logoutBtn) logoutBtn.addEventListener("click", logout);
 navbarLinks.forEach((link) => {
   link.addEventListener("click", closeMenu);
 });
-
-
 
 // Cerrar menús al hacer clic fuera
 document.addEventListener("click", closeMenusOnClickOutside);

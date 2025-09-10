@@ -14,10 +14,15 @@
     <main class="cart-main">
       <div class="cart-container">
         <!-- Cart Header -->
+
         <section class="cart-header">
           <h1>Carrito de Compras</h1>
-          <p class="cart-subtitle">Revisa tus productos antes de finalizar la compra</p>
+          <p class="cart-subtitle">
+            Revisa tus productos antes de finalizar la compra
+          </p>
         </section>
+
+
 
         <!-- Cart Content -->
         <div class="cart-content">
@@ -31,50 +36,76 @@
           <!-- Cart Summary -->
           <aside class="cart-summary">
             <div class="summary-card">
+
               <h3>Resumen del Pedido</h3>
-              
+              <div id="shipping-simple-text" style="margin: 0 0 0.5em 0; font-size:1.08em; font-weight:500; color:var(--color-on-surface); text-align:left;"></div>
+              <div id="shipping-delivery-text" style="margin-bottom:1.2em; font-size:0.98em; color:var(--color-on-surface); opacity:0.8; text-align:left;"></div>
+
               <!-- Order Totals -->
               <div class="summary-line">
-                <span>Subtotal (<span id="cart-count">0</span> productos)</span>
+                <span>Subtotal</span>
                 <span id="cart-subtotal">$0</span>
               </div>
-              
+
               <!-- Coupon Section -->
               <div class="coupon-section">
                 <div class="coupon-header">
                   <h4>Cupones</h4>
-                  <button class="btn btn-link" id="select-coupon-btn">Seleccionar Cupón</button>
+                  <button class="btn btn-link" id="select-coupon-btn">
+                    Seleccionar Cupón
+                  </button>
                 </div>
-                
-                <div class="applied-coupon" id="applied-coupon" style="display: none;">
+
+                <div
+                  class="applied-coupon"
+                  id="applied-coupon"
+                  style="display: none"
+                >
                   <div class="coupon-info">
                     <span class="coupon-icon" id="applied-coupon-icon">🎫</span>
                     <div class="coupon-details">
-                      <span class="coupon-name" id="applied-coupon-name">Cupón</span>
-                      <span class="coupon-discount" id="applied-coupon-discount">-$0</span>
+                      <span class="coupon-name" id="applied-coupon-name"
+                        >Cupón</span
+                      >
+                      <span class="coupon-discount" id="applied-coupon-discount"
+                        >-$0</span
+                      >
                     </div>
-                    <button class="btn btn-link remove-coupon" id="remove-coupon-btn">×</button>
+                    <button
+                      class="btn btn-link remove-coupon"
+                      id="remove-coupon-btn"
+                    >
+                      ×
+                    </button>
                   </div>
                 </div>
               </div>
-              
+
               <!-- Discount Line -->
-              <div class="summary-line discount-line" id="discount-line" style="display: none;">
+              <div
+                class="summary-line discount-line"
+                id="discount-line"
+                style="display: none"
+              >
                 <span>Descuento</span>
                 <span class="discount-amount" id="discount-amount">-$0</span>
               </div>
-              
+
               <!-- Total Line -->
               <div class="summary-line total-line">
                 <span>Total</span>
                 <span class="total-amount" id="cart-total">$0</span>
               </div>
-              
+
               <!-- Points Information -->
               <div class="points-info">
-                <p>🌟 Ganarás <strong><span id="points-to-earn">0</span> puntos</strong> con esta compra</p>
+                <p>
+                  🌟 Ganarás
+                  <strong><span id="points-to-earn">0</span> puntos</strong> con
+                  esta compra
+                </p>
               </div>
-              
+
               <!-- Checkout Button -->
               <button class="btn btn-primary checkout-btn" id="checkout-btn">
                 Proceder al Pago
@@ -98,15 +129,60 @@
           </div>
         </div>
         <div class="modal-actions">
-          <button class="btn btn-secondary" id="cancel-coupon-selection">Cancelar</button>
+          <button class="btn btn-secondary" id="cancel-coupon-selection">
+            Cancelar
+          </button>
         </div>
       </div>
     </div>
 
     <!-- Scripts -->
+
     <script src="../../assets/js/components/navbar-include.js"></script>
     <script type="module" src="../../assets/js/components/login.js"></script>
     <script type="module" src="../../assets/js/components/register.js"></script>
     <script type="module" src="../../assets/js/pages/cart-ui.js"></script>
+
+    <script>
+      // Mostrar texto simple de envío con datos del usuario conectado
+      document.addEventListener("DOMContentLoaded", function () {
+        let profile = null;
+        try {
+          profile = JSON.parse(localStorage.getItem("userProfile"));
+        } catch {}
+        const region = profile?.region || "-";
+        const city = profile?.city || "-";
+        let address = profile?.addressLine1 || "-";
+        if (profile?.addressLine2) address += ", " + profile.addressLine2;
+        const text = `Enviar a: ${address}, ${city}, ${region}`;
+        var shippingDiv = document.getElementById("shipping-simple-text");
+        if (shippingDiv) shippingDiv.textContent = text;
+
+        // Calcular fecha de entrega estimada (hoy + 7 días)
+        const meses = [
+          "enero", "febrero", "marzo", "abril", "mayo", "junio",
+          "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+        ];
+        const hoy = new Date();
+        const entrega = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate() + 7);
+        const fechaEntrega = `${entrega.getDate()} de ${meses[entrega.getMonth()]}`;
+        var deliveryDiv = document.getElementById("shipping-delivery-text");
+        if (deliveryDiv) deliveryDiv.textContent = `Si compras hoy, recibes antes del ${fechaEntrega}`;
+      });
+    </script>
+</main>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+    <script>
+      // Incluir footer.html dinámicamente
+      document.addEventListener("DOMContentLoaded", function() {
+        fetch("../../components/footer.html")
+          .then(res => res.text())
+          .then(html => {
+            document.getElementById("footer-placeholder").innerHTML = html;
+          });
+      });
+    </script>
   </body>
 </html>

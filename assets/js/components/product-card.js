@@ -48,7 +48,19 @@ export function renderProductCard(product, container) {
         btn.classList.add("disabled");
       } else {
         btn.addEventListener("click", () => {
-          if (typeof window.addToCart === "function") window.addToCart(product);
+          if (typeof window.addToCart === "function") {
+            window.addToCart({
+              id: product.code,
+              name: product.nombre,
+              price: product.precioCLP,
+              image: product.imagen,
+              qty: 1,
+              metadata: {
+                marca: product.marca,
+                categoriaId: product.categoriaId,
+              },
+            });
+          }
         });
       }
 

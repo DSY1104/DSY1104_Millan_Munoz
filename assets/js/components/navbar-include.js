@@ -43,6 +43,7 @@ fetch("/components/navbar.html")
 
     // Load navbar JavaScript with correct path
     const script = document.createElement("script");
+    script.type = "module";
     script.src = "/assets/js/components/navbar.js";
     document.body.appendChild(script);
   })

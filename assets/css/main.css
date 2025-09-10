@@ -11,6 +11,31 @@
 
 @import url("components/_product-card.css");
 
+
+/* --- Forzar estilo index-header al final para máxima prioridad --- */
+.index-header {
+  padding: 30px;
+  background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-green) 100%);
+  text-align: center;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px 0 rgba(30,144,255,0.08);
+  width: 92%;
+  max-width: 1100px;
+  margin: 0 auto 2.5rem auto;
+}
+.index-header h1 {
+  color: #fff;
+  margin-bottom: 10px;
+  font-size: 2rem;
+  font-weight: var(--weight-bold);
+}
+.index-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  font-size: var(--size-small);
+}
+
+
 /* Estilos globales */
 * {
   margin: 0;
