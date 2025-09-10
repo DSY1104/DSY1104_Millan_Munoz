@@ -7,6 +7,67 @@ import { cart } from "./cart.js";
 import { pointsSystem } from "../utils/points-system.js";
 
 class CartUI {
+  setupEmptyCartButton() {
+    const btn = document.getElementById("empty-cart-btn");
+    if (!btn) return;
+    btn.addEventListener("click", () => {
+      this.showEmptyCartModal();
+    });
+  }
+
+  showEmptyCartModal() {
+    // Crear modal accesible si no existe
+    let modal = document.getElementById("empty-cart-modal");
+    if (!modal) {
+      modal = document.createElement("div");
+      modal.id = "empty-cart-modal";
+      modal.className = "modal";
+      modal.setAttribute("role", "dialog");
+      modal.setAttribute("aria-modal", "true");
+      modal.innerHTML = `
+        <div class="modal-content" tabindex="-1">
+          <div class="modal-header">
+            <h3 id="empty-cart-modal-title">¿Vaciar carrito?</h3>
+          </div>
+          <div class="modal-body">
+            <p>¿Estás seguro de que deseas vaciar tu carrito? Esta acción no se puede deshacer.</p>
+          </div>
+          <div class="modal-actions">
+            <button class="btn btn-danger" id="confirm-empty-cart">Vaciar</button>
+            <button class="btn btn-secondary" id="cancel-empty-cart">Cancelar</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+    modal.style.display = "flex";
+    modal.querySelector(".modal-content").focus();
+
+    // Cerrar con ESC
+    const escListener = (e) => {
+      if (e.key === "Escape") this.hideEmptyCartModal();
+    };
+    document.addEventListener("keydown", escListener);
+
+    // Botones
+    modal.querySelector("#cancel-empty-cart").onclick = () => {
+      this.hideEmptyCartModal();
+      document.removeEventListener("keydown", escListener);
+    };
+    modal.querySelector("#confirm-empty-cart").onclick = () => {
+      this.cart.clear();
+      this.renderCart();
+      this.updateSummary();
+      this.hideEmptyCartModal();
+      this.showMessage("Carrito vaciado", "info");
+      document.removeEventListener("keydown", escListener);
+    };
+  }
+
+  hideEmptyCartModal() {
+    const modal = document.getElementById("empty-cart-modal");
+    if (modal) modal.style.display = "none";
+  }
   constructor() {
     this.cart = cart;
     this.pointsSystem = pointsSystem;
@@ -20,6 +81,7 @@ class CartUI {
     this.setupEventListeners();
     this.renderCart();
     this.updateSummary();
+  this.setupEmptyCartButton();
   }
 
   setupEventListeners() {
@@ -90,6 +152,7 @@ class CartUI {
   renderCart() {
     const cartData = this.cart.get();
     const cartItems = document.getElementById("cart-items");
+    const emptyBtn = document.getElementById("empty-cart-btn");
 
     if (cartData.items.length === 0) {
       cartItems.innerHTML = `
@@ -99,12 +162,15 @@ class CartUI {
           <a href="../products/catalog.html" class="btn btn-primary">Ver Productos</a>
         </div>
       `;
+        if (emptyBtn) emptyBtn.style.display = "none";
       return;
     }
 
     cartItems.innerHTML = cartData.items
       .map((item) => this.createCartItemHTML(item))
       .join("");
+
+      if (emptyBtn) emptyBtn.style.display = "block";
 
     // Add event listeners to quantity controls
     this.setupQuantityControls();
@@ -142,18 +208,37 @@ class CartUI {
         const item = this.cart.get().items.find((i) => i.id === id);
         if (item && item.qty > 1) {
           this.cart.updateQty(id, item.qty - 1);
+          this.renderCart();
+          this.updateSummary();
         }
       });
     });
 
     // Increase quantity
     document.querySelectorAll(".increase-qty").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
+      btn.addEventListener("click", async (e) => {
         const id = parseInt(e.target.dataset.id);
         const item = this.cart.get().items.find((i) => i.id === id);
-        if (item) {
-          this.cart.updateQty(id, item.qty + 1);
+        if (!item) return;
+
+        // Obtener stock actual del producto desde el catálogo
+        let stock = null;
+        try {
+          const res = await fetch("../../assets/data/products.json");
+          const products = await res.json();
+          const prod = products.find((p) => p.code == item.id || p.code == item.code);
+          stock = prod ? prod.stock : null;
+        } catch (err) {
+          stock = null;
         }
+
+        if (stock !== null && item.qty + 1 > stock) {
+          this.showMessage(`No puedes añadir más de ${stock} unidades.`, "error");
+          return;
+        }
+        this.cart.updateQty(id, item.qty + 1);
+        this.renderCart();
+        this.updateSummary();
       });
     });
 
@@ -243,44 +328,83 @@ class CartUI {
     modal.classList.add("active");
   }
 
-  hideCouponModal() {
-    document.getElementById("coupon-modal").classList.remove("active");
-  }
-
-  createCouponOptionHTML(coupon) {
-    const totals = this.cart.totals();
-    const canUse = totals.subtotal >= coupon.value; // Coupon can't be worth more than subtotal
-    const daysUntilExpiry = Math.ceil(
-      (new Date(coupon.expiryDate) - new Date()) / (1000 * 60 * 60 * 24)
-    );
-
-    return `
-      <div class="coupon-option ${
-        !canUse ? "unavailable" : ""
-      }" data-coupon-id="${coupon.id}">
-        <div class="coupon-option-header">
-          <div class="coupon-tier">
-            <span class="tier-icon">${coupon.icon}</span>
-            <span class="tier-name">${coupon.tier}</span>
+  showEmptyCartModal() {
+    // Crear modal accesible si no existe
+    let modal = document.getElementById("empty-cart-modal");
+    if (!modal) {
+      modal = document.createElement("div");
+      modal.id = "empty-cart-modal";
+      modal.className = "modal";
+      modal.setAttribute("role", "dialog");
+      modal.setAttribute("aria-modal", "true");
+      modal.setAttribute("aria-labelledby", "empty-cart-modal-title");
+      modal.setAttribute("aria-describedby", "empty-cart-modal-desc");
+      modal.innerHTML = `
+        <div class="modal-content" tabindex="-1">
+          <div class="modal-header">
+            <h3 id="empty-cart-modal-title">¿Vaciar carrito?</h3>
           </div>
-          <div class="coupon-value">$${coupon.value.toLocaleString()}</div>
+          <div class="modal-body">
+            <p id="empty-cart-modal-desc">¿Estás seguro de que deseas vaciar tu carrito? Esta acción no se puede deshacer.</p>
+          </div>
+          <div class="modal-actions">
+            <button class="btn btn-danger" id="confirm-empty-cart">Vaciar</button>
+            <button class="btn btn-secondary" id="cancel-empty-cart">Cancelar</button>
+          </div>
         </div>
-        <div class="coupon-expiry">
-          ${
-            daysUntilExpiry > 7
-              ? `Expira el ${new Date(coupon.expiryDate).toLocaleDateString()}`
-              : `⚠️ Expira en ${daysUntilExpiry} día${
-                  daysUntilExpiry !== 1 ? "s" : ""
-                }`
-          }
-        </div>
-        ${
-          !canUse
-            ? '<div style="color: #dc3545; font-size: 0.8rem; margin-top: 5px;">Monto mínimo no alcanzado</div>'
-            : ""
+      `;
+      document.body.appendChild(modal);
+    }
+    modal.style.display = "flex";
+
+    // Foco inicial en el botón "Vaciar"
+    setTimeout(() => {
+      const vaciarBtn = modal.querySelector("#confirm-empty-cart");
+      if (vaciarBtn) vaciarBtn.focus();
+    }, 10);
+
+    // Foco atrapado dentro del modal
+    const focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    const focusableEls = modal.querySelectorAll(focusableSelectors);
+    const firstFocusable = focusableEls[0];
+    const lastFocusable = focusableEls[focusableEls.length - 1];
+    const trapFocus = (e) => {
+      if (e.key !== "Tab") return;
+      if (e.shiftKey) {
+        if (document.activeElement === firstFocusable) {
+          e.preventDefault();
+          lastFocusable.focus();
         }
-      </div>
-    `;
+      } else {
+        if (document.activeElement === lastFocusable) {
+          e.preventDefault();
+          firstFocusable.focus();
+        }
+      }
+    };
+    modal.addEventListener("keydown", trapFocus);
+
+    // Cerrar con ESC
+    const escListener = (e) => {
+      if (e.key === "Escape") this.hideEmptyCartModal();
+    };
+    document.addEventListener("keydown", escListener);
+
+    // Botones
+    modal.querySelector("#cancel-empty-cart").onclick = () => {
+      this.hideEmptyCartModal();
+      document.removeEventListener("keydown", escListener);
+      modal.removeEventListener("keydown", trapFocus);
+    };
+    modal.querySelector("#confirm-empty-cart").onclick = () => {
+      this.cart.clear();
+      this.renderCart();
+      this.updateSummary();
+      this.hideEmptyCartModal();
+      this.showMessage("Carrito vaciado", "info");
+      document.removeEventListener("keydown", escListener);
+      modal.removeEventListener("keydown", trapFocus);
+    };
   }
 
   setupCouponSelection() {
@@ -398,7 +522,13 @@ class CartUI {
 
 // Initialize when DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(() => {
-    new CartUI();
-  }, 500);
+  // Esperar hasta que #cart-items exista en el DOM antes de instanciar CartUI
+  function initWhenReady() {
+    if (document.getElementById("cart-items")) {
+      new CartUI();
+    } else {
+      setTimeout(initWhenReady, 50);
+    }
+  }
+  initWhenReady();
 });

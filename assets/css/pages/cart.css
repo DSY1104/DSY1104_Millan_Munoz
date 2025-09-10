@@ -1,3 +1,12 @@
+/* Botón Vaciar carrito deshabilitado */
+#empty-cart-btn.disabled,
+#empty-cart-btn:disabled {
+  background: #bbb !important;
+  color: #fff !important;
+  border: none !important;
+  cursor: not-allowed !important;
+  opacity: 0.7;
+}
 .summary-line span, .summary-line #cart-count, .summary-line #cart-subtotal {
   color: #fff !important;
   font-weight: 600 !important;
