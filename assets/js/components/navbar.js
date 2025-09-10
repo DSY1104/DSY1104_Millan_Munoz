@@ -53,13 +53,22 @@ function openLoginModal() {
   }
 }
 
-// Cargar contador del carrito
+// Cargar contador del carrito (suma real de cantidades)
 function loadCartCount() {
-  const count = localStorage.getItem("cartCount") || 0;
+  let count = 0;
+  try {
+    const cartData = JSON.parse(localStorage.getItem("cart:data"));
+    if (cartData && Array.isArray(cartData.items)) {
+      count = cartData.items.reduce((sum, item) => sum + (item.qty || 1), 0);
+    }
+  } catch {}
   if (cartCount) {
     cartCount.textContent = count;
   }
 }
+
+// Escuchar cambios en el carrito para actualizar el contador
+document.addEventListener("cart:changed", loadCartCount);
 
 // Alternar menú móvil
 function toggleMenu() {
@@ -196,9 +205,7 @@ navbarLinks.forEach((link) => {
   link.addEventListener("click", closeMenu);
 });
 
-addToCartButtons.forEach((button) => {
-  button.addEventListener("click", addToCart);
-});
+
 
 // Cerrar menús al hacer clic fuera
 document.addEventListener("click", closeMenusOnClickOutside);
