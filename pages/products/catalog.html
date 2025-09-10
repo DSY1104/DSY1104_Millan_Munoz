@@ -10,7 +10,26 @@
   <body>
     <div id="navbar-placeholder"></div>
     <div class="content-wrapper">
-      <main>
+      <main class="catalog-main-layout">
+        <!-- Sidebar de filtros eliminado para rehacer desde cero -->
+        <aside id="catalog-sidebar">
+          <h2
+            class="filters-header"
+            style="
+              margin-bottom: 1.2em;
+              color: var(--accent-blue);
+              font-size: 1.3em;
+              font-family: var(--font-body, Roboto, sans-serif);
+              font-weight: 700;
+              letter-spacing: 0.02em;
+            "
+          >
+            Filtros
+          </h2>
+          <div id="category-filter-placeholder"></div>
+          <div id="brand-filter-placeholder"></div>
+          <div id="rating-filter-placeholder"></div>
+        </aside>
         <section id="productos" class="section">
           <h2>Catálogo de Productos</h2>
           <p>Explora nuestra selección de productos.</p>
