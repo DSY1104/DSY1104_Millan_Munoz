@@ -1,6 +1,7 @@
 // Renderiza una tarjeta de producto a partir de un objeto producto y un contenedor destino
 export function renderProductCard(product, container) {
   // Clona el template HTML
+  // Ruta dinámica del template según ubicación del HTML
   fetch("/components/product-card.html")
     .then((res) => res.text())
     .then((template) => {

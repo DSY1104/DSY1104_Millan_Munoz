@@ -1,0 +1,95 @@
+/* Controles de búsqueda y ordenamiento con diseño consistente */
+#catalog-controls {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	margin-bottom: 1.5rem;
+	justify-content: center;
+	background: var(--bg-light, #1a1a1a);
+	border-radius: 10px;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+	padding: 1.2rem 1.5rem;
+	border: 1.5px solid var(--accent-blue);
+}
+#search-input,
+#sort-price,
+#sort-rating {
+	flex: 1 1 220px;
+	min-width: 0;
+	padding: 0.7em 1em;
+	border-radius: 8px;
+	border: 1.5px solid var(--accent-blue);
+	background: var(--bg, #23272f);
+	color: var(--text);
+	font-size: 1rem;
+	font-family: var(--font-body, "Roboto", sans-serif);
+	outline: none;
+	transition: border 0.2s, box-shadow 0.2s;
+	box-shadow: 0 1px 4px rgba(30,144,255,0.08);
+	margin-bottom: 0;
+}
+#search-input:focus,
+#sort-price:focus,
+#sort-rating:focus {
+	border-color: var(--accent-green);
+	box-shadow: 0 0 0 2px var(--accent-green, #39ff14);
+}
+#sort-price,
+#sort-rating {
+	flex: 0 0 180px;
+	cursor: pointer;
+}
+#sort-price option,
+#sort-rating option {
+	background: var(--bg, #23272f);
+	color: var(--text);
+}
+@media (max-width: 600px) {
+	#catalog-controls {
+		flex-direction: column;
+		gap: 0.7rem;
+		align-items: stretch;
+		padding: 1rem 0.5rem;
+	}
+	#search-input, #sort-price, #sort-rating {
+		width: 100%;
+		flex: 1 1 100%;
+	}
+}
+/* Hamburguesa y menú lateral para filtros */
+.catalog-controls-wrapper {
+	position: relative;
+	width: 100%;
+	display: flex !important;
+	justify-content: center;
+	align-items: flex-start;
+}
+.catalog-hamburger {
+	display: none;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	/* Se eliminan estilos de hamburguesa y menú móvil. Los controles siempre visibles. */
+/* Controles de búsqueda y ordenamiento visibles en todas las vistas */
+@media (max-width: 600px) {
+	#catalog-controls {
+		flex-direction: column;
+		gap: 0.7rem;
+		align-items: stretch;
+	}
+	#search-input, #sort-price, #sort-rating {
+		width: 100%;
+		flex: 1 1 100%;
+	}
+}
+@media (max-width: 600px) {
+	#catalog-controls {
+		flex-direction: column;
+		gap: 0.7rem;
+		align-items: stretch;
+	}
+	#search-input, #sort-select {
+		width: 100%;
+		flex: 1 1 100%;
+	}
+}
