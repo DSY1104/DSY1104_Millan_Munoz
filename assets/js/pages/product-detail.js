@@ -25,24 +25,83 @@ function renderProductDetail(product) {
         <h2>${product.nombre}</h2>
         <div class="product-detail-brand">${product.marca || ""}</div>
         <div class="product-detail-meta">
-          <span class="product-detail-price">$${product.precioCLP.toLocaleString("es-CL")}</span>
-          <span class="product-detail-rating">${renderStars(product.rating)}</span>
+          <span class="product-detail-price">$${product.precioCLP.toLocaleString(
+            "es-CL"
+          )}</span>
+          <span class="product-detail-rating">${renderStars(
+            product.rating
+          )}</span>
         </div>
         <p class="product-detail-description">${product.descripcion}</p>
         <ul class="product-detail-specs">
           ${product.specs.map((spec) => `<li>${spec}</li>`).join("")}
         </ul>
         <div class="quantity-selector" style="margin: 1em 0; display: flex; align-items: center; gap: 0.5em;">
-          <button type="button" class="qty-btn" id="qty-minus" aria-label="Disminuir cantidad" ${agotado ? "disabled" : ""}>-</button>
-          <input type="number" id="qty-input" min="1" max="${product.stock}" value="1" style="width: 3em; text-align: center;" ${agotado ? "disabled" : ""} />
-          <button type="button" class="qty-btn" id="qty-plus" aria-label="Aumentar cantidad" ${agotado ? "disabled" : ""}>+</button>
-          <span style="font-size:0.9em; color:#888;">(Stock: ${product.stock})</span>
+          <button type="button" class="qty-btn" id="qty-minus" aria-label="Disminuir cantidad" ${
+            agotado ? "disabled" : ""
+          }>-</button>
+          <input type="number" id="qty-input" min="1" max="${
+            product.stock
+          }" value="1" style="width: 3em; text-align: center;" ${
+    agotado ? "disabled" : ""
+  } />
+          <button type="button" class="qty-btn" id="qty-plus" aria-label="Aumentar cantidad" ${
+            agotado ? "disabled" : ""
+          }>+</button>
+          <span style="font-size:0.9em; color:#888;">(Stock: ${
+            product.stock
+          })</span>
         </div>
         <div id="qty-error" style="color: #b22222; font-size: 0.95em; min-height: 1.2em;"></div>
-        <button class="add-to-cart${agotado ? " disabled" : ""}" aria-label="Agregar ${product.nombre} al carrito" ${agotado ? "disabled" : ""}>${agotado ? "Sin stock" : "Añadir al carrito"}</button>
+        <button class="add-to-cart${
+          agotado ? " disabled" : ""
+        }" aria-label="Agregar ${product.nombre} al carrito" ${
+    agotado ? "disabled" : ""
+  }>${agotado ? "Sin stock" : "Añadir al carrito"}</button>
+        <div class="share-buttons" style="margin-top:1.5em;">
+          <span style="font-weight:500;">Cuéntale a tus amigos :)</span>
+          <button type="button" class="web-share-btn" aria-label="Compartir producto" style="margin-left:0.5em; font-size:1.5em; background:none; border:none; cursor:pointer; vertical-align:middle;">🔗</button>
+          <a href="#" class="share-fb" aria-label="Compartir en Facebook" target="_blank" rel="noopener">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/facebook.svg" alt="Facebook" style="width:1.5em;vertical-align:middle;" />
+          </a>
+          <a href="#" class="share-x" aria-label="Compartir en X (Twitter)" target="_blank" rel="noopener">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/x.svg" alt="X" style="width:1.5em;vertical-align:middle;" />
+          </a>
+          <a href="#" class="share-wa" aria-label="Compartir en WhatsApp" target="_blank" rel="noopener">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/whatsapp.svg" alt="WhatsApp" style="width:1.5em;vertical-align:middle;" />
+          </a>
+        </div>
       </div>
     </div>
   `;
+
+  // Compartir producto (Web Share API o fallback)
+  setTimeout(() => {
+    const shareBtn = document.querySelector(".web-share-btn");
+    const fbBtn = document.querySelector(".share-fb");
+    const xBtn = document.querySelector(".share-x");
+    const waBtn = document.querySelector(".share-wa");
+    const url = window.location.href;
+    const title = product?.nombre || document.title;
+    const text = `Mira este producto: ${title}`;
+    // Web Share API
+    if (navigator.share) {
+      shareBtn.style.display = "inline-block";
+      shareBtn.addEventListener("click", () => {
+        navigator.share({ title, text, url });
+      });
+    } else {
+      shareBtn.style.display = "none";
+    }
+    // Fallback links
+    fbBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+      url
+    )}`;
+    xBtn.href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+      url
+    )}&text=${encodeURIComponent(text)}`;
+    waBtn.href = `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`;
+  }, 0);
 
   if (!agotado) {
     const qtyInput = document.getElementById("qty-input");
@@ -78,7 +137,10 @@ function renderProductDetail(product) {
       validateQty();
     });
     plusBtn.addEventListener("click", () => {
-      qtyInput.value = Math.min(product.stock, parseInt(qtyInput.value, 10) + 1);
+      qtyInput.value = Math.min(
+        product.stock,
+        parseInt(qtyInput.value, 10) + 1
+      );
       validateQty();
     });
     qtyInput.addEventListener("input", validateQty);
@@ -98,7 +160,9 @@ function renderProductDetail(product) {
         },
       });
       // Notificar a la UI del carrito para actualizar el contador
-      document.dispatchEvent(new CustomEvent("cart:changed", { detail: cart.get() }));
+      document.dispatchEvent(
+        new CustomEvent("cart:changed", { detail: cart.get() })
+      );
       addToCartBtn.textContent = "¡Añadido!";
       addToCartBtn.disabled = true;
       setTimeout(() => {
