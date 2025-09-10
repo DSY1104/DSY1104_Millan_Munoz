@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Artículo - LevelUp Blog</title>
+  
+  <!-- Fuentes y variables locales -->
+  <link rel="stylesheet" href="../../../assets/css/fonts.css" />
+  <link rel="stylesheet" href="../../../assets/css/main.css" />
+  <link rel="stylesheet" href="../../../assets/css/pages/blog.css" />
+  
+  <style>
+    /* Estilos específicos para la página de detalle */
+    .article-detail {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+    
+    .article-hero {
+      margin-bottom: 2rem;
+    }
+    
+    .article-hero img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 15px;
+      margin-bottom: 1rem;
+    }
+    
+    .article-meta-detail {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .article-content-detail {
+      line-height: 1.8;
+      font-size: 1.1rem;
+      color: var(--text-2);
+    }
+    
+    .article-content-detail h2 {
+      color: var(--text);
+      margin: 2rem 0 1rem 0;
+      font-size: 1.5rem;
+    }
+    
+    .article-content-detail p {
+      margin-bottom: 1.5rem;
+    }
+    
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent-blue);
+      color: var(--bg);
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      margin-bottom: 2rem;
+    }
+    
+    .back-button:hover {
+      background: var(--accent-green);
+      transform: translateX(-3px);
+    }
+    
+    .related-articles {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    @media (max-width: 768px) {
+      .article-detail {
+        padding: 1rem;
+      }
+      
+      .article-hero img {
+        height: 200px;
+      }
+      
+      .article-meta-detail {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar modular -->
+  <div id="navbar-placeholder"></div>
+
+  <!-- Contenido principal del artículo -->
+  <div class="content-wrapper">
+    <main class="article-detail">
+      <a href="../index.html" class="back-button">
+        ← Volver al blog
+      </a>
+      
+      <article id="article-content">
+        <!-- El contenido se cargará dinámicamente -->
+        <div class="loading-indicator active">
+          <p>Cargando artículo...</p>
+        </div>
+      </article>
+      
+      <section class="related-articles">
+        <h3>Artículos relacionados</h3>
+        <div class="articles-container" id="related-articles-container">
+          <!-- Los artículos relacionados se cargarán aquí -->
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Footer modular -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Scripts -->
+  <script src="../../../assets/js/components/navbar-include.js"></script>
+  <script src="../../../assets/js/components/footer-include.js"></script>
+  <script src="../../../assets/js/components/navbar.js"></script>
+  <script src="../../../assets/js/pages/article-detail.js"></script>
+</body>
+
+</html>
