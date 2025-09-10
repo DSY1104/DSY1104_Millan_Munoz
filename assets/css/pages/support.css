@@ -1,3 +1,30 @@
+/* Header estilo igual a cart-header */
+.support-header {
+  padding: 30px;
+  background: linear-gradient(
+    135deg,
+    var(--accent-blue) 0%,
+    var(--accent-green) 100%
+  );
+  text-align: center;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px 0 rgba(30, 144, 255, 0.08);
+  width: 50%;
+  margin: 40px auto 0 auto;
+}
+
+.support-header h1 {
+  color: #fff;
+  margin-bottom: 10px;
+  font-size: 2rem;
+  font-weight: var(--weight-bold);
+}
+
+.support-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  font-size: var(--size-small);
+}
 /* Botón de WhatsApp en soporte */
 .whatsapp-btn {
   display: inline-flex;

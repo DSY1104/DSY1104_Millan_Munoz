@@ -14,7 +14,12 @@ function initCart() {
 }
 
 function getCart() {
-  return cartStore.get("data") || initCart();
+  let cart = cartStore.get("data");
+  if (!cart || typeof cart !== "object" || !Array.isArray(cart.items)) {
+    cart = { items: [] };
+    cartStore.set("data", cart);
+  }
+  return cart;
 }
 
 function saveCart(cart) {
@@ -63,7 +68,11 @@ function removeItem(id) {
   const cart = getCart();
   const before = cart.items.length;
   cart.items = cart.items.filter((i) => i.id !== id);
-  if (cart.items.length !== before) saveCart(cart);
+  if (cart.items.length !== before) {
+    saveCart(cart);
+    // Disparar evento para actualizar la UI
+    document.dispatchEvent(new CustomEvent("cart:changed", { detail: cart }));
+  }
   return cart;
 }
 
@@ -74,69 +83,72 @@ function clearCart() {
 function getTotals() {
   const cart = getCart();
   const count = cart.items.reduce((sum, item) => sum + item.qty, 0);
-  const subtotal = cart.items.reduce((sum, item) => sum + item.price * item.qty, 0);
-  
+  const subtotal = cart.items.reduce(
+    (sum, item) => sum + item.price * item.qty,
+    0
+  );
+
   // Get applied coupon if any
   const appliedCoupon = cart.appliedCoupon || null;
   let discount = 0;
-  
+
   if (appliedCoupon) {
     discount = appliedCoupon.value;
   }
-  
+
   const total = Math.max(0, subtotal - discount);
-  
-  return { 
-    count, 
-    subtotal, 
+
+  return {
+    count,
+    subtotal,
     discount,
     total,
-    appliedCoupon
+    appliedCoupon,
   };
 }
 
 function applyCoupon(couponId) {
   const result = pointsSystem.useCoupon(couponId);
-  
+
   if (!result.success) {
     return {
       success: false,
-      error: result.error
+      error: result.error,
     };
   }
-  
+
   const cart = getCart();
   cart.appliedCoupon = result.coupon;
   saveCart(cart);
-  
+
   return {
     success: true,
     coupon: result.coupon,
-    discountAmount: result.discountAmount
+    discountAmount: result.discountAmount,
   };
 }
 
 function removeCoupon() {
   const cart = getCart();
   const removedCoupon = cart.appliedCoupon;
-  
+
   if (removedCoupon) {
     // Restore the coupon as unused (since we're removing it before checkout)
     const coupons = pointsSystem.getUserCoupons();
-    const couponIndex = coupons.findIndex(c => c.id === removedCoupon.id);
+    const couponIndex = coupons.findIndex((c) => c.id === removedCoupon.id);
     if (couponIndex !== -1) {
       coupons[couponIndex].isUsed = false;
       coupons[couponIndex].usedDate = null;
       localStorage.setItem("userCoupons", JSON.stringify(coupons));
     }
   }
-  
+
   delete cart.appliedCoupon;
   saveCart(cart);
-  
+
   return {
     success: true,
-    removedCoupon
+    removedCoupon,
   };
 }
 

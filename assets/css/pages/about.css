@@ -1,3 +1,31 @@
+@import url("../variables/_colors.css");
+/* Header estilo igual a cart-header */
+.about-header {
+  padding: 30px;
+  background: linear-gradient(
+    135deg,
+    var(--accent-blue) 0%,
+    var(--accent-green) 100%
+  ) !important;
+  text-align: center;
+  width: 65%;
+  margin: 40px auto 0 auto;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px 0 rgba(30, 144, 255, 0.08);
+}
+
+.about-header h1 {
+  color: #fff;
+  margin-bottom: 10px;
+  font-size: 2rem;
+  font-weight: var(--weight-bold);
+}
+
+.about-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  font-size: var(--size-small);
+}
 /* Título grande y centrado para LevelUp */
 .about-title {
   text-align: center;
