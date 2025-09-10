@@ -46,6 +46,7 @@ class ProfileManager {
     this.updateProfileHeader();
     this.updatePointsDisplay(); // Update points display
     this.setupPointsEventListeners(); // Setup points-related event listeners
+    this.updateCouponsDisplay(); // Update coupons display
   }
 
   setupEventListeners() {
@@ -107,6 +108,50 @@ class ProfileManager {
       .addEventListener("click", () => {
         this.changeAvatar();
       });
+
+    // Points redemption
+    document
+      .getElementById("redeem-points-btn")
+      .addEventListener("click", () => {
+        this.showRedeemPointsModal();
+      });
+
+    // Redeem modal event listeners
+    document
+      .getElementById("close-redeem-modal")
+      .addEventListener("click", () => {
+        this.hideRedeemPointsModal();
+      });
+
+    document.getElementById("cancel-redeem").addEventListener("click", () => {
+      this.hideRedeemPointsModal();
+    });
+
+    // Confirm redeem modal event listeners
+    document
+      .getElementById("close-confirm-modal")
+      .addEventListener("click", () => {
+        this.hideConfirmRedeemModal();
+      });
+
+    document
+      .getElementById("cancel-confirm-redeem")
+      .addEventListener("click", () => {
+        this.hideConfirmRedeemModal();
+      });
+
+    document
+      .getElementById("confirm-redeem-btn")
+      .addEventListener("click", () => {
+        this.confirmPointsRedemption();
+      });
+
+    // Coupon filter tabs
+    document.querySelectorAll(".filter-tab").forEach((tab) => {
+      tab.addEventListener("click", (e) => {
+        this.switchCouponFilter(e.target.dataset.filter);
+      });
+    });
   }
 
   setupTabs() {
@@ -560,6 +605,7 @@ class ProfileManager {
     // Listen for points updates
     document.addEventListener("pointsUpdated", (event) => {
       this.updatePointsDisplay();
+      this.updateCouponsDisplay(); // Also update coupons when points change
       this.showLevelUpNotification(event.detail);
     });
 
@@ -622,6 +668,250 @@ class ProfileManager {
     // In a real implementation, you'd track previous level and show notification on level up
   }
 
+  // Coupon-related methods
+  updateCouponsDisplay() {
+    const stats = this.pointsSystem.getCouponStats();
+    
+    // Update statistics
+    document.getElementById("available-coupons-count").textContent = stats.available;
+    document.getElementById("total-coupon-value").textContent = `$${stats.totalValue.toLocaleString()}`;
+    document.getElementById("used-coupons-count").textContent = stats.used;
+    document.getElementById("total-saved-amount").textContent = `$${stats.totalUsedValue.toLocaleString()}`;
+
+    // Update filter tab counts
+    document.getElementById("available-count").textContent = stats.available;
+    document.getElementById("used-count").textContent = stats.used;
+    document.getElementById("expired-count").textContent = stats.expired;
+
+    // Update coupon grids
+    this.updateCouponGrid("available", stats.availableCoupons);
+    this.updateCouponGrid("used", stats.usedCoupons);
+    this.updateCouponGrid("expired", stats.expiredCoupons);
+  }
+
+  updateCouponGrid(type, coupons) {
+    const grid = document.getElementById(`${type}-coupons-grid`);
+    
+    if (coupons.length === 0) {
+      grid.innerHTML = `
+        <div class="no-coupons-message">
+          <p>${this.getEmptyMessage(type)}</p>
+        </div>
+      `;
+      return;
+    }
+
+    grid.innerHTML = coupons.map(coupon => this.createCouponCard(coupon, type)).join("");
+  }
+
+  getEmptyMessage(type) {
+    switch (type) {
+      case "available":
+        return "No tienes cupones disponibles.<br>¡Canjea tus puntos por cupones para empezar a ahorrar!";
+      case "used":
+        return "No has usado cupones aún.";
+      case "expired":
+        return "No tienes cupones expirados.";
+      default:
+        return "No hay cupones.";
+    }
+  }
+
+  createCouponCard(coupon, type) {
+    const isExpired = new Date(coupon.expiryDate) < new Date();
+    const daysUntilExpiry = Math.ceil((new Date(coupon.expiryDate) - new Date()) / (1000 * 60 * 60 * 24));
+    
+    let statusClass = type;
+    let statusText = type === "available" ? "Disponible" : type === "used" ? "Usado" : "Expirado";
+    
+    let expiryClass = "";
+    let expiryText = "";
+    
+    if (type === "available") {
+      if (daysUntilExpiry <= 7) {
+        expiryClass = "warning";
+        expiryText = `Expira en ${daysUntilExpiry} día${daysUntilExpiry !== 1 ? "s" : ""}`;
+      } else {
+        expiryText = `Expira el ${new Date(coupon.expiryDate).toLocaleDateString()}`;
+      }
+    } else if (type === "used") {
+      expiryText = `Usado el ${new Date(coupon.usedDate).toLocaleDateString()}`;
+    } else {
+      expiryClass = "expired";
+      expiryText = `Expiró el ${new Date(coupon.expiryDate).toLocaleDateString()}`;
+    }
+
+    return `
+      <div class="coupon-card ${type}">
+        <div class="coupon-header">
+          <div class="coupon-tier">
+            <span class="tier-icon">${coupon.icon}</span>
+            <span class="tier-name">${coupon.tier}</span>
+          </div>
+          <div class="coupon-status ${statusClass}">${statusText}</div>
+        </div>
+        
+        <div class="coupon-value">
+          <span class="coupon-amount">$${coupon.value.toLocaleString()}</span>
+          <div class="coupon-description">${coupon.description}</div>
+        </div>
+        
+        <div class="coupon-details">
+          <div class="coupon-id">${coupon.id}</div>
+          <div class="coupon-expiry ${expiryClass}">${expiryText}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  switchCouponFilter(filter) {
+    // Update active tab
+    document.querySelectorAll(".filter-tab").forEach(tab => {
+      tab.classList.remove("active");
+    });
+    document.querySelector(`[data-filter="${filter}"]`).classList.add("active");
+
+    // Update active content
+    document.querySelectorAll(".coupon-filter-content").forEach(content => {
+      content.classList.remove("active");
+    });
+    document.getElementById(`${filter}-coupons`).classList.add("active");
+  }
+
+  showRedeemPointsModal() {
+    const modal = document.getElementById("redeem-points-modal");
+    const currentPoints = this.pointsSystem.getUserPoints();
+    
+    // Update current points display
+    document.getElementById("modal-current-points").textContent = currentPoints.toLocaleString();
+    
+    // Populate coupon tiers
+    const tiersGrid = document.getElementById("coupon-tiers-grid");
+    const tiers = this.pointsSystem.getCouponTiers();
+    
+    tiersGrid.innerHTML = tiers.map(tier => {
+      const canAfford = currentPoints >= tier.pointsCost;
+      return `
+        <div class="tier-option ${canAfford ? 'affordable' : 'unaffordable'}" data-tier="${tier.name}">
+          <div class="tier-header">
+            <span class="tier-icon">${tier.icon}</span>
+            <span class="tier-name">${tier.name}</span>
+          </div>
+          <div class="tier-coupon-value">$${tier.couponValue.toLocaleString()}</div>
+          <div class="tier-points-cost">${tier.pointsCost.toLocaleString()} puntos</div>
+          <button class="tier-select-btn" ${!canAfford ? 'disabled' : ''} data-tier-name="${tier.name}">
+            ${canAfford ? 'Canjear' : 'Puntos insuficientes'}
+          </button>
+        </div>
+      `;
+    }).join("");
+    
+    // Add event listeners to tier selection buttons
+    document.querySelectorAll('.tier-select-btn:not([disabled])').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const tierName = e.target.dataset.tierName;
+        this.selectTierForRedemption(tierName);
+      });
+    });
+    
+    modal.classList.add("active");
+  }
+
+  hideRedeemPointsModal() {
+    document.getElementById("redeem-points-modal").classList.remove("active");
+  }
+
+  selectTierForRedemption(tierName) {
+    const tiers = this.pointsSystem.getCouponTiers();
+    const tier = tiers.find(t => t.name === tierName);
+    const currentPoints = this.pointsSystem.getUserPoints();
+    
+    if (!tier || currentPoints < tier.pointsCost) {
+      this.showMessage("No tienes suficientes puntos para este cupón.", "error");
+      return;
+    }
+
+    // Store selected tier for confirmation
+    this.selectedTier = tier;
+    
+    // Hide redeem modal and show confirmation modal
+    this.hideRedeemPointsModal();
+    this.showConfirmRedeemModal(tier, currentPoints);
+  }
+
+  showConfirmRedeemModal(tier, currentPoints) {
+    const modal = document.getElementById("confirm-redeem-modal");
+    
+    // Update coupon preview
+    const preview = document.getElementById("coupon-preview");
+    preview.innerHTML = `
+      <div class="preview-tier">
+        <span class="tier-icon">${tier.icon}</span>
+        <span class="tier-name">${tier.name}</span>
+      </div>
+      <div class="preview-value">$${tier.couponValue.toLocaleString()}</div>
+      <div class="preview-description">${tier.description}</div>
+    `;
+    
+    // Update confirmation details
+    document.getElementById("confirm-points-cost").textContent = tier.pointsCost.toLocaleString();
+    document.getElementById("remaining-points").textContent = (currentPoints - tier.pointsCost).toLocaleString();
+    
+    modal.classList.add("active");
+  }
+
+  hideConfirmRedeemModal() {
+    document.getElementById("confirm-redeem-modal").classList.remove("active");
+    this.selectedTier = null;
+  }
+
+  confirmPointsRedemption() {
+    if (!this.selectedTier) {
+      this.showMessage("Error: No se ha seleccionado ningún cupón.", "error");
+      return;
+    }
+
+    const result = this.pointsSystem.exchangePointsForCoupon(this.selectedTier.name);
+    
+    if (result.success) {
+      this.hideConfirmRedeemModal();
+      this.updatePointsDisplay();
+      this.updateCouponsDisplay();
+      this.showMessage(
+        `¡Cupón de $${result.coupon.value.toLocaleString()} canjeado exitosamente! 
+         Se descontaron ${result.pointsDeducted.toLocaleString()} puntos.`,
+        "success"
+      );
+      
+      // Switch to coupons tab to show new coupon
+      this.switchTab("coupons");
+    } else {
+      this.showMessage(result.error, "error");
+    }
+    
+    this.selectedTier = null;
+  }
+
+  showMessage(message, type) {
+    // Remove existing messages
+    const existingMessages = document.querySelectorAll('.coupon-message');
+    existingMessages.forEach(msg => msg.remove());
+    
+    // Create message element
+    const messageEl = document.createElement('div');
+    messageEl.className = `coupon-message ${type}`;
+    messageEl.innerHTML = message;
+    
+    // Insert at the top of the profile content
+    const profileContent = document.querySelector('.profile-content');
+    profileContent.insertBefore(messageEl, profileContent.firstChild);
+    
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+      messageEl.remove();
+    }, 5000);
+  }
+
   addTestPointsButton() {
     // Create test button for development
     const testSection = document.createElement("div");
@@ -642,6 +932,7 @@ class ProfileManager {
       <button id="add-test-points" style="margin: 2px; padding: 5px 8px; font-size: 11px;">+500 puntos</button>
       <button id="reset-points" style="margin: 2px; padding: 5px 8px; font-size: 11px;">Reset</button>
       <button id="set-1200-points" style="margin: 2px; padding: 5px 8px; font-size: 11px;">Set 1200</button>
+      <button id="set-15000-points" style="margin: 2px; padding: 5px 8px; font-size: 11px;">Set 15000</button>
     `;
 
     document.body.appendChild(testSection);
@@ -657,6 +948,10 @@ class ProfileManager {
 
     document.getElementById("set-1200-points").addEventListener("click", () => {
       this.pointsSystem.setPointsForTesting(1200);
+    });
+
+    document.getElementById("set-15000-points").addEventListener("click", () => {
+      this.pointsSystem.setPointsForTesting(15000);
     });
   }
 }

@@ -72,30 +72,86 @@ function clearCart() {
 }
 
 function getTotals() {
-  const { items } = getCart();
-  const subtotal = items.reduce(
-    (sum, i) => sum + (Number(i.price) || 0) * (i.qty || 0),
-    0
-  );
-  const count = items.reduce((sum, i) => sum + (i.qty || 0), 0);
-  return { subtotal, count };
+  const cart = getCart();
+  const count = cart.items.reduce((sum, item) => sum + item.qty, 0);
+  const subtotal = cart.items.reduce((sum, item) => sum + item.price * item.qty, 0);
+  
+  // Get applied coupon if any
+  const appliedCoupon = cart.appliedCoupon || null;
+  let discount = 0;
+  
+  if (appliedCoupon) {
+    discount = appliedCoupon.value;
+  }
+  
+  const total = Math.max(0, subtotal - discount);
+  
+  return { 
+    count, 
+    subtotal, 
+    discount,
+    total,
+    appliedCoupon
+  };
+}
+
+function applyCoupon(couponId) {
+  const result = pointsSystem.useCoupon(couponId);
+  
+  if (!result.success) {
+    return {
+      success: false,
+      error: result.error
+    };
+  }
+  
+  const cart = getCart();
+  cart.appliedCoupon = result.coupon;
+  saveCart(cart);
+  
+  return {
+    success: true,
+    coupon: result.coupon,
+    discountAmount: result.discountAmount
+  };
+}
+
+function removeCoupon() {
+  const cart = getCart();
+  const removedCoupon = cart.appliedCoupon;
+  
+  if (removedCoupon) {
+    // Restore the coupon as unused (since we're removing it before checkout)
+    const coupons = pointsSystem.getUserCoupons();
+    const couponIndex = coupons.findIndex(c => c.id === removedCoupon.id);
+    if (couponIndex !== -1) {
+      coupons[couponIndex].isUsed = false;
+      coupons[couponIndex].usedDate = null;
+      localStorage.setItem("userCoupons", JSON.stringify(coupons));
+    }
+  }
+  
+  delete cart.appliedCoupon;
+  saveCart(cart);
+  
+  return {
+    success: true,
+    removedCoupon
+  };
 }
 
 // Process checkout and award points
-async function processCheckout(paymentMethod = "default") {
-  const cart = getCart();
-  const { subtotal, count } = getTotals();
-
-  if (cart.items.length === 0) {
-    throw new Error("Cart is empty");
-  }
-
+async function processCheckout(paymentMethod = "credit") {
   try {
-    // Wait for points system to be initialized
-    await pointsSystem.init();
+    const cart = getCart();
+    if (cart.items.length === 0) {
+      throw new Error("El carrito está vacío");
+    }
 
-    // Process purchase and award points
-    const purchaseResult = pointsSystem.processPurchase(subtotal, cart.items);
+    const { count, subtotal, total, appliedCoupon } = getTotals();
+
+    // Process points for the final amount (after coupon discount)
+    const purchaseResult = pointsSystem.processPurchase(total, cart.items);
 
     // Create purchase record
     const purchase = {
@@ -103,8 +159,11 @@ async function processCheckout(paymentMethod = "default") {
       timestamp: new Date().toISOString(),
       items: [...cart.items],
       subtotal,
+      discount: appliedCoupon ? appliedCoupon.value : 0,
+      total,
       count,
       paymentMethod,
+      appliedCoupon: appliedCoupon ? { ...appliedCoupon } : null,
       pointsEarned: purchaseResult.pointsEarned,
       status: "completed",
     };
@@ -159,4 +218,6 @@ export const cart = {
   clear: clearCart,
   totals: getTotals,
   checkout: processCheckout,
+  applyCoupon: applyCoupon,
+  removeCoupon: removeCoupon,
 };

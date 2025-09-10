@@ -42,6 +42,9 @@
                   <span class="points-display"
                     >(<span id="user-points">0</span> puntos)</span
                   >
+                  <button class="btn btn-secondary btn-small" id="redeem-points-btn">
+                    Canjear Puntos
+                  </button>
                 </p>
                 <div class="level-progress">
                   <div class="progress-bar-container">
@@ -88,6 +91,7 @@
           <button class="tab-btn" data-tab="preferences">Preferencias</button>
           <button class="tab-btn" data-tab="address">Dirección</button>
           <button class="tab-btn" data-tab="gaming">Perfil Gamer</button>
+          <button class="tab-btn" data-tab="coupons">Mis Cupones</button>
           <button class="tab-btn" data-tab="security">Seguridad</button>
         </nav>
 
@@ -388,6 +392,72 @@
             </form>
           </section>
 
+          <!-- Tab: Mis Cupones -->
+          <section class="tab-content" id="coupons-tab">
+            <h2>Mis Cupones</h2>
+            
+            <!-- Coupon Statistics -->
+            <div class="coupon-stats">
+              <div class="stat-card">
+                <div class="stat-value" id="available-coupons-count">0</div>
+                <div class="stat-label">Cupones Disponibles</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="total-coupon-value">$0</div>
+                <div class="stat-label">Valor Total</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="used-coupons-count">0</div>
+                <div class="stat-label">Cupones Usados</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="total-saved-amount">$0</div>
+                <div class="stat-label">Total Ahorrado</div>
+              </div>
+            </div>
+
+            <!-- Coupon Filter Tabs -->
+            <div class="coupon-filter-tabs">
+              <button class="filter-tab active" data-filter="available">
+                Disponibles (<span id="available-count">0</span>)
+              </button>
+              <button class="filter-tab" data-filter="used">
+                Usados (<span id="used-count">0</span>)
+              </button>
+              <button class="filter-tab" data-filter="expired">
+                Expirados (<span id="expired-count">0</span>)
+              </button>
+            </div>
+
+            <!-- Coupons Container -->
+            <div class="coupons-container">
+              <div class="coupon-filter-content active" id="available-coupons">
+                <div class="coupons-grid" id="available-coupons-grid">
+                  <div class="no-coupons-message">
+                    <p>No tienes cupones disponibles.</p>
+                    <p>¡Canjea tus puntos por cupones para empezar a ahorrar!</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="coupon-filter-content" id="used-coupons">
+                <div class="coupons-grid" id="used-coupons-grid">
+                  <div class="no-coupons-message">
+                    <p>No has usado cupones aún.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="coupon-filter-content" id="expired-coupons">
+                <div class="coupons-grid" id="expired-coupons-grid">
+                  <div class="no-coupons-message">
+                    <p>No tienes cupones expirados.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
           <!-- Tab: Seguridad -->
           <section class="tab-content" id="security-tab">
             <h2>Configuración de Seguridad</h2>
@@ -507,6 +577,56 @@
           <button class="btn btn-danger" id="confirm-delete">
             Eliminar Definitivamente
           </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de canje de puntos -->
+    <div class="modal" id="redeem-points-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Canjear Puntos por Cupones</h3>
+          <button class="modal-close" id="close-redeem-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="current-points-display">
+            <p>Puntos disponibles: <strong><span id="modal-current-points">0</span> puntos</strong></p>
+          </div>
+          
+          <div class="coupon-tiers">
+            <h4>Selecciona un cupón para canjear:</h4>
+            <div class="tiers-grid" id="coupon-tiers-grid">
+              <!-- Coupon tiers will be populated here -->
+            </div>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" id="cancel-redeem">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de confirmación de canje -->
+    <div class="modal" id="confirm-redeem-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Confirmar Canje</h3>
+          <button class="modal-close" id="close-confirm-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="redeem-confirmation">
+            <div class="coupon-preview" id="coupon-preview">
+              <!-- Coupon preview will be populated here -->
+            </div>
+            <div class="redeem-details">
+              <p>¿Estás seguro de que quieres canjear <strong><span id="confirm-points-cost">0</span> puntos</strong> por este cupón?</p>
+              <p>Te quedarán <strong><span id="remaining-points">0</span> puntos</strong> después del canje.</p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" id="cancel-confirm-redeem">Cancelar</button>
+          <button class="btn btn-primary" id="confirm-redeem-btn">Confirmar Canje</button>
         </div>
       </div>
     </div>

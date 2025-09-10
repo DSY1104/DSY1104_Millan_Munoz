@@ -293,6 +293,263 @@ class PointsSystem {
   setPointsForTesting(points) {
     this.setUserPoints(points);
   }
+
+  /**
+   * Get coupon tiers configuration
+   * @returns {Array} Coupon tiers with point costs and values
+   */
+  getCouponTiers() {
+    return [
+      {
+        name: "Bronze",
+        pointsCost: 1000,
+        couponValue: 1000, // CLP
+        color: "#CD7F32",
+        icon: "🥉",
+        description: "Cupón de $1.000 CLP"
+      },
+      {
+        name: "Silver", 
+        pointsCost: 2500,
+        couponValue: 2000, // CLP
+        color: "#C0C0C0",
+        icon: "🥈",
+        description: "Cupón de $2.000 CLP"
+      },
+      {
+        name: "Gold",
+        pointsCost: 5000,
+        couponValue: 5000, // CLP
+        color: "#FFD700",
+        icon: "🥇",
+        description: "Cupón de $5.000 CLP"
+      },
+      {
+        name: "Platinum",
+        pointsCost: 10000,
+        couponValue: 10000, // CLP
+        color: "#E5E4E2",
+        icon: "💎",
+        description: "Cupón de $10.000 CLP"
+      }
+    ];
+  }
+
+  /**
+   * Exchange points for a coupon
+   * @param {string} tierName - The coupon tier to exchange for
+   * @returns {Object} Exchange result
+   */
+  exchangePointsForCoupon(tierName) {
+    const tiers = this.getCouponTiers();
+    const tier = tiers.find(t => t.name === tierName);
+    
+    if (!tier) {
+      return {
+        success: false,
+        error: "Tier de cupón no válido"
+      };
+    }
+
+    if (this.userPoints < tier.pointsCost) {
+      return {
+        success: false,
+        error: `Necesitas ${tier.pointsCost} puntos para este cupón. Tienes ${this.userPoints} puntos.`
+      };
+    }
+
+    // Deduct points
+    const previousPoints = this.userPoints;
+    this.setUserPoints(this.userPoints - tier.pointsCost);
+
+    // Generate coupon
+    const coupon = {
+      id: this.generateCouponId(),
+      tier: tier.name,
+      value: tier.couponValue,
+      pointsCost: tier.pointsCost,
+      issuedDate: new Date().toISOString(),
+      expiryDate: this.calculateExpiryDate(),
+      isUsed: false,
+      usedDate: null,
+      color: tier.color,
+      icon: tier.icon,
+      description: tier.description
+    };
+
+    // Save coupon
+    this.saveCoupon(coupon);
+
+    // Save exchange history
+    this.saveCouponExchangeHistory({
+      couponId: coupon.id,
+      tier: tier.name,
+      pointsCost: tier.pointsCost,
+      couponValue: tier.couponValue,
+      timestamp: new Date().toISOString(),
+      previousPoints,
+      newPoints: this.userPoints
+    });
+
+    return {
+      success: true,
+      coupon,
+      previousPoints,
+      newPoints: this.userPoints,
+      pointsDeducted: tier.pointsCost
+    };
+  }
+
+  /**
+   * Generate a unique coupon ID
+   * @returns {string} Unique coupon ID
+   */
+  generateCouponId() {
+    const timestamp = Date.now();
+    const random = Math.random().toString(36).substr(2, 9);
+    return `COUP-${timestamp}-${random}`.toUpperCase();
+  }
+
+  /**
+   * Calculate coupon expiry date (90 days from issue)
+   * @returns {string} ISO date string
+   */
+  calculateExpiryDate() {
+    const expiryDate = new Date();
+    expiryDate.setDate(expiryDate.getDate() + 90); // 90 days validity
+    return expiryDate.toISOString();
+  }
+
+  /**
+   * Save coupon to user's collection
+   * @param {Object} coupon - Coupon object
+   */
+  saveCoupon(coupon) {
+    const coupons = this.getUserCoupons();
+    coupons.unshift(coupon); // Add to beginning
+    storage.local.set("userCoupons", coupons);
+  }
+
+  /**
+   * Get user's coupons
+   * @param {boolean} includeUsed - Whether to include used coupons
+   * @returns {Array} User's coupons
+   */
+  getUserCoupons(includeUsed = true) {
+    const coupons = storage.local.get("userCoupons") || [];
+    if (includeUsed) {
+      return coupons;
+    }
+    return coupons.filter(coupon => !coupon.isUsed && new Date(coupon.expiryDate) > new Date());
+  }
+
+  /**
+   * Use a coupon
+   * @param {string} couponId - ID of coupon to use
+   * @returns {Object} Usage result
+   */
+  useCoupon(couponId) {
+    const coupons = this.getUserCoupons();
+    const couponIndex = coupons.findIndex(c => c.id === couponId);
+    
+    if (couponIndex === -1) {
+      return {
+        success: false,
+        error: "Cupón no encontrado"
+      };
+    }
+
+    const coupon = coupons[couponIndex];
+    
+    if (coupon.isUsed) {
+      return {
+        success: false,
+        error: "Este cupón ya ha sido utilizado"
+      };
+    }
+
+    if (new Date(coupon.expiryDate) < new Date()) {
+      return {
+        success: false,
+        error: "Este cupón ha expirado"
+      };
+    }
+
+    // Mark as used
+    coupon.isUsed = true;
+    coupon.usedDate = new Date().toISOString();
+    
+    // Update storage
+    coupons[couponIndex] = coupon;
+    storage.local.set("userCoupons", coupons);
+
+    return {
+      success: true,
+      coupon,
+      discountAmount: coupon.value
+    };
+  }
+
+  /**
+   * Save coupon exchange history
+   * @param {Object} exchange - Exchange details
+   */
+  saveCouponExchangeHistory(exchange) {
+    const history = storage.local.get("couponExchangeHistory") || [];
+    history.unshift(exchange); // Add to beginning
+    
+    // Keep only last 50 exchanges
+    if (history.length > 50) {
+      history.splice(50);
+    }
+    
+    storage.local.set("couponExchangeHistory", history);
+  }
+
+  /**
+   * Get coupon exchange history
+   * @returns {Array} Exchange history
+   */
+  getCouponExchangeHistory() {
+    return storage.local.get("couponExchangeHistory") || [];
+  }
+
+  /**
+   * Get coupon statistics
+   * @returns {Object} Coupon stats
+   */
+  getCouponStats() {
+    const coupons = this.getUserCoupons();
+    const availableCoupons = coupons.filter(c => !c.isUsed && new Date(c.expiryDate) > new Date());
+    const usedCoupons = coupons.filter(c => c.isUsed);
+    const expiredCoupons = coupons.filter(c => !c.isUsed && new Date(c.expiryDate) < new Date());
+    
+    const totalValue = availableCoupons.reduce((sum, coupon) => sum + coupon.value, 0);
+    const totalUsedValue = usedCoupons.reduce((sum, coupon) => sum + coupon.value, 0);
+    
+    return {
+      total: coupons.length,
+      available: availableCoupons.length,
+      used: usedCoupons.length,
+      expired: expiredCoupons.length,
+      totalValue,
+      totalUsedValue,
+      availableCoupons,
+      usedCoupons,
+      expiredCoupons
+    };
+  }
+
+  /**
+   * Check if user can afford a coupon tier
+   * @param {string} tierName - Tier to check
+   * @returns {boolean} Whether user can afford it
+   */
+  canAffordCoupon(tierName) {
+    const tiers = this.getCouponTiers();
+    const tier = tiers.find(t => t.name === tierName);
+    return tier && this.userPoints >= tier.pointsCost;
+  }
 }
 
 // Create singleton instance

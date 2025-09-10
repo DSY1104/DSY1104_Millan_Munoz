@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Carrito de Compras - LevelUp</title>
+    <link rel="stylesheet" href="../../assets/css/main.css" />
+    <link rel="stylesheet" href="../../assets/css/pages/cart.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <div id="navbar-placeholder"></div>
+
+    <main class="cart-main">
+      <div class="cart-container">
+        <!-- Cart Header -->
+        <section class="cart-header">
+          <h1>Carrito de Compras</h1>
+          <p class="cart-subtitle">Revisa tus productos antes de finalizar la compra</p>
+        </section>
+
+        <!-- Cart Content -->
+        <div class="cart-content">
+          <!-- Cart Items -->
+          <section class="cart-items-section">
+            <div class="cart-items" id="cart-items">
+              <!-- Cart items will be populated here -->
+            </div>
+          </section>
+
+          <!-- Cart Summary -->
+          <aside class="cart-summary">
+            <div class="summary-card">
+              <h3>Resumen del Pedido</h3>
+              
+              <!-- Order Totals -->
+              <div class="summary-line">
+                <span>Subtotal (<span id="cart-count">0</span> productos)</span>
+                <span id="cart-subtotal">$0</span>
+              </div>
+              
+              <!-- Coupon Section -->
+              <div class="coupon-section">
+                <div class="coupon-header">
+                  <h4>Cupones</h4>
+                  <button class="btn btn-link" id="select-coupon-btn">Seleccionar Cupón</button>
+                </div>
+                
+                <div class="applied-coupon" id="applied-coupon" style="display: none;">
+                  <div class="coupon-info">
+                    <span class="coupon-icon" id="applied-coupon-icon">🎫</span>
+                    <div class="coupon-details">
+                      <span class="coupon-name" id="applied-coupon-name">Cupón</span>
+                      <span class="coupon-discount" id="applied-coupon-discount">-$0</span>
+                    </div>
+                    <button class="btn btn-link remove-coupon" id="remove-coupon-btn">×</button>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Discount Line -->
+              <div class="summary-line discount-line" id="discount-line" style="display: none;">
+                <span>Descuento</span>
+                <span class="discount-amount" id="discount-amount">-$0</span>
+              </div>
+              
+              <!-- Total Line -->
+              <div class="summary-line total-line">
+                <span>Total</span>
+                <span class="total-amount" id="cart-total">$0</span>
+              </div>
+              
+              <!-- Points Information -->
+              <div class="points-info">
+                <p>🌟 Ganarás <strong><span id="points-to-earn">0</span> puntos</strong> con esta compra</p>
+              </div>
+              
+              <!-- Checkout Button -->
+              <button class="btn btn-primary checkout-btn" id="checkout-btn">
+                Proceder al Pago
+              </button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </main>
+
+    <!-- Coupon Selection Modal -->
+    <div class="modal" id="coupon-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Seleccionar Cupón</h3>
+          <button class="modal-close" id="close-coupon-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="available-coupons" id="available-coupons">
+            <!-- Available coupons will be populated here -->
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" id="cancel-coupon-selection">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../assets/js/components/navbar-include.js"></script>
+    <script type="module" src="../../assets/js/components/login.js"></script>
+    <script type="module" src="../../assets/js/components/register.js"></script>
+    <script type="module" src="../../assets/js/pages/cart-ui.js"></script>
+  </body>
+</html>
