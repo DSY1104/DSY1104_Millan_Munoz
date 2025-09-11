@@ -20,19 +20,44 @@
       <main class="catalog-main-layout">
         <!-- Sidebar de filtros eliminado para rehacer desde cero -->
         <aside id="catalog-sidebar">
-          <h2
-            class="filters-header"
+          <div
             style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
               margin-bottom: 1.2em;
-              color: var(--accent-blue);
-              font-size: 1.3em;
-              font-family: var(--font-body, Roboto, sans-serif);
-              font-weight: 700;
-              letter-spacing: 0.02em;
             "
           >
-            Filtros
-          </h2>
+            <h2
+              class="filters-header"
+              style="
+                color: var(--accent-blue);
+                font-size: 1.3em;
+                font-family: var(--font-body, Roboto, sans-serif);
+                font-weight: 700;
+                letter-spacing: 0.02em;
+                margin: 0;
+              "
+            >
+              Filtros
+            </h2>
+            <button
+              id="clear-all-filters"
+              type="button"
+              style="
+                margin-left: 1em;
+                padding: 0.3em 1em;
+                font-size: 0.95em;
+                background: var(--accent-blue);
+                color: #fff;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+              "
+            >
+              Limpiar Filtro
+            </button>
+          </div>
           <div id="category-filter-placeholder"></div>
           <div id="brand-filter-placeholder"></div>
           <div id="rating-filter-placeholder"></div>
@@ -46,13 +71,14 @@
               aria-label="Buscar producto"
             />
             <select id="sort-price" aria-label="Ordenar por precio">
+              <option value="none">Precio: Sin orden</option>
               <option value="precio-asc">Precio: Ascendente</option>
               <option value="precio-desc">Precio: Descendente</option>
             </select>
             <select id="sort-rating" aria-label="Ordenar por rating">
               <option value="none">Rating: Sin orden</option>
-              <option value="rating-desc">Rating: Ascendente</option>
-              <option value="rating-asc">Rating: Descendente</option>
+              <option value="rating-desc">Rating: Descendente</option>
+              <option value="rating-asc">Rating: Ascendente</option>
             </select>
           </form>
           <div class="product-grid" id="product-list"></div>
