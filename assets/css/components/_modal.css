@@ -142,6 +142,10 @@ form#login-form {
   margin-top: -4px;
 }
 
+.form-hint.success {
+  color: #28a745;
+}
+
 .form-row {
   display: flex;
   justify-content: space-between;

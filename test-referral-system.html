@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Sistema de Códigos de Referido</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <style>
+        .test-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--surface-color);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .test-info {
+            background: var(--info-color);
+            color: white;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 2rem;
+        }
+        .test-codes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .test-code {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            text-align: center;
+            font-family: monospace;
+        }
+        .points-display {
+            background: var(--success-color);
+            color: white;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🎯 Test - Sistema de Códigos de Referido</h1>
+        
+        <div class="test-info">
+            <h3>Instrucciones de Prueba</h3>
+            <p>1. Haz clic en "Probar Registro" para abrir el modal de registro</p>
+            <p>2. Llena los campos requeridos</p>
+            <p>3. Prueba alguno de los códigos de referido válidos mostrados abajo</p>
+            <p>4. Observa la validación en tiempo real y los puntos asignados</p>
+        </div>
+
+        <h3>Códigos de Referido Válidos para Prueba</h3>
+        <div class="test-codes">
+            <div class="test-code">LEVEL123</div>
+            <div class="test-code">GAME456</div>
+            <div class="test-code">DUOC789</div>
+            <div class="test-code">REF001</div>
+        </div>
+
+        <p><strong>Formato válido:</strong> 6-10 caracteres alfanuméricos</p>
+        <p><strong>Puntos esperados:</strong></p>
+        <ul>
+            <li>LEVEL*: 500 puntos</li>
+            <li>GAME*: 400 puntos</li>
+            <li>DUOC*: 600 puntos</li>
+            <li>REF*: 300 puntos</li>
+        </ul>
+
+        <button class="btn-primary" onclick="window.LevelUpRegister?.open()">
+            🚀 Probar Registro con Código de Referido
+        </button>
+
+        <div class="points-display" id="points-display" style="display: none;">
+            <h4>💎 Puntos Actuales</h4>
+            <p id="current-points">0 puntos LevelUp</p>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <button class="btn-secondary" onclick="showCurrentPoints()">
+                📊 Mostrar Puntos Actuales
+            </button>
+            <button class="btn-secondary" onclick="clearTestData()">
+                🧹 Limpiar Datos de Prueba
+            </button>
+        </div>
+    </div>
+
+    <!-- Include necessary JavaScript modules -->
+    <script type="module" src="assets/js/utils/storage.js"></script>
+    <script type="module" src="assets/js/components/register.js"></script>
+
+    <script>
+        function showCurrentPoints() {
+            const points = localStorage.getItem('userPoints') || '0';
+            const referralTransactions = JSON.parse(localStorage.getItem('referralTransactions') || '[]');
+            
+            document.getElementById('current-points').textContent = `${points} puntos LevelUp`;
+            document.getElementById('points-display').style.display = 'block';
+            
+            if (referralTransactions.length > 0) {
+                const lastTransaction = referralTransactions[referralTransactions.length - 1];
+                document.getElementById('points-display').innerHTML += 
+                    `<p>Última transacción: +${lastTransaction.points} puntos por código "${lastTransaction.referralCode}"</p>`;
+            }
+        }
+
+        function clearTestData() {
+            localStorage.removeItem('userPoints');
+            localStorage.removeItem('referralTransactions');
+            localStorage.removeItem('userRegistration');
+            localStorage.removeItem('users');
+            document.getElementById('points-display').style.display = 'none';
+            alert('Datos de prueba limpiados');
+        }
+
+        // Auto-show points if they exist
+        document.addEventListener('DOMContentLoaded', () => {
+            const points = localStorage.getItem('userPoints');
+            if (points && points !== '0') {
+                showCurrentPoints();
+            }
+        });
+    </script>
+</body>
+</html>
