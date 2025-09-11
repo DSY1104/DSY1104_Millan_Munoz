@@ -930,6 +930,10 @@
 /* Animation for smooth pagination transitions */
 .product-grid {
 	transition: opacity 0.2s ease;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.0rem !important;
+	justify-content: center;
 }
 
 .product-grid.loading {

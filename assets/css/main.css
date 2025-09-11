@@ -1,3 +1,4 @@
+@import url('components/_event-card.css');
 @import url("components/_footer.css");
 @import url("components/_hero.css");
 @import url("./fonts.css");
@@ -11,6 +12,69 @@
 
 @import url("components/_product-card.css");
 
+.event-card-row {
+  display: flex;
+  gap: 1.2rem;
+  align-items: flex-start;
+}
+.event-map-image {
+  width: 180px;
+  max-width: 45vw;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.event-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+
+/* Tarjeta de evento en blog/noticias */
+.event-blog-card {
+  background: #181a1f;
+  color: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(30,144,255,0.08);
+  border: 1px solid #23272f;
+  padding: 1.5rem 1.2rem;
+  margin-bottom: 2rem;
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  transition: box-shadow 0.2s;
+}
+.event-blog-card:hover {
+  box-shadow: 0 6px 24px rgba(30,144,255,0.16);
+}
+.event-blog-card .event-title {
+  color: var(--accent-blue, #39a7ff);
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+.event-blog-card .event-description {
+  color: #e0e7ef;
+  font-size: 1.05rem;
+  margin-bottom: 0.7rem;
+}
+.event-blog-card .event-location,
+.event-blog-card .event-region,
+.event-blog-card .event-dates,
+.event-blog-card .event-hours {
+  color: #444;
+  font-size: 0.98rem;
+  margin-right: 1.2rem;
+}
+.event-blog-card strong {
+  color: var(--accent-green, #009688);
+  font-weight: 600;
+}
+
+
 
 /* --- Forzar estilo index-header al final para máxima prioridad --- */
 .index-header {
@@ -19,8 +83,8 @@
   text-align: center;
   border-radius: 18px;
   box-shadow: 0 4px 24px 0 rgba(30,144,255,0.08);
-  width: 92%;
-  max-width: 1100px;
+  width: 100%;
+  max-width: 1430px;
   margin: 0 auto 2.5rem auto;
 }
 .index-header h1 {

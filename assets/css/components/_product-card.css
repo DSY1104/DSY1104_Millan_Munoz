@@ -8,8 +8,8 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 0.8rem;
-  height: 460px;
-  width: 260px;
+  height: 480px;
+  width: 320px;
   max-width: 100%;
   overflow: hidden;
   transition: box-shadow 0.2s, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
@@ -41,7 +41,7 @@
   position: relative;
   border-radius: 8px;
   overflow: hidden;
-  background: #181a1f;
+  background: #fff;
   margin-bottom: 0.5rem;
 }
 .product-image {

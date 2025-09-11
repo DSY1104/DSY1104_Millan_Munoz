@@ -2,7 +2,12 @@
 export function renderProductCard(product, container) {
   // Clona el template HTML
   // Ruta dinámica del template según ubicación del HTML
-  fetch("/components/product-card.html")
+  const templatePath =
+    window.location.pathname.endsWith("index.html") ||
+    window.location.pathname === "/"
+      ? "components/product-card.html"
+      : "/components/product-card.html";
+  fetch(templatePath)
     .then((res) => res.text())
     .then((template) => {
       const temp = document.createElement("div");
@@ -13,6 +18,12 @@ export function renderProductCard(product, container) {
       const img = card.querySelector(".product-image");
       img.src = product.imagen;
       img.alt = product.nombre;
+      img.title = product.nombre;
+      img.setAttribute("aria-label", product.nombre);
+      img.onerror = function () {
+        this.onerror = null;
+        this.src = "/assets/image/icon/login.svg";
+      };
 
       // Nombre y marca
       card.querySelector(".product-name").textContent = product.nombre;
