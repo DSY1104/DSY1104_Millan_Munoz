@@ -1,93 +1,103 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Test Reviews System</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background: #000;
-            color: #fff;
-        }
-        .test-section {
-            margin: 20px 0;
-            padding: 20px;
-            border: 1px solid #333;
-            border-radius: 8px;
-        }
-        button {
-            background: #1e90ff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            margin: 5px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .results {
-            background: #111;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 4px;
-            font-family: monospace;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #000;
+        color: #fff;
+      }
+      .test-section {
+        margin: 20px 0;
+        padding: 20px;
+        border: 1px solid #333;
+        border-radius: 8px;
+      }
+      button {
+        background: #1e90ff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin: 5px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .results {
+        background: #111;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 4px;
+        font-family: monospace;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Test Reviews System</h1>
-    
+
     <div class="test-section">
-        <h2>Test Reviews System</h2>
-        <button onclick="testGenerateMockReviews()">Generate Mock Reviews</button>
-        <button onclick="testGetReviews()">Get Reviews</button>
-        <button onclick="testGetStats()">Get Rating Stats</button>
-        <button onclick="testClearReviews()">Clear Reviews</button>
-        <div id="results" class="results"></div>
+      <h2>Test Reviews System</h2>
+      <button onclick="testGenerateMockReviews()">Generate Mock Reviews</button>
+      <button onclick="testGetReviews()">Get Reviews</button>
+      <button onclick="testGetStats()">Get Rating Stats</button>
+      <button onclick="testClearReviews()">Clear Reviews</button>
+      <div id="results" class="results"></div>
     </div>
 
     <script type="module">
-        import { reviewsSystem } from './assets/js/utils/reviews-system.js';
-        
-        window.reviewsSystem = reviewsSystem;
-        
-        window.testGenerateMockReviews = function() {
-            reviewsSystem.generateMockReviews('JM001', 5);
-            document.getElementById('results').textContent = 'Mock reviews generated for JM001';
+      import { reviewsSystem } from "./assets/js/utils/reviews-system.js";
+
+      window.reviewsSystem = reviewsSystem;
+
+      window.testGenerateMockReviews = function () {
+        reviewsSystem.generateMockReviews("JM001", 5);
+        document.getElementById("results").textContent =
+          "Mock reviews generated for JM001";
+      };
+
+      window.testGetReviews = function () {
+        const reviews = reviewsSystem.getProductReviews("JM001");
+        document.getElementById("results").textContent = JSON.stringify(
+          reviews,
+          null,
+          2
+        );
+      };
+
+      window.testGetStats = function () {
+        const stats = reviewsSystem.getProductRatingStats("JM001");
+        document.getElementById("results").textContent = JSON.stringify(
+          stats,
+          null,
+          2
+        );
+      };
+
+      window.testClearReviews = function () {
+        localStorage.removeItem("productReviews");
+        document.getElementById("results").textContent =
+          "Reviews cleared from localStorage";
+      };
+
+      // Test authentication
+      window.testAuth = function () {
+        // Simulate login
+        const mockSession = {
+          email: "test@example.com",
+          isAuthenticated: true,
+          loginTime: new Date().toISOString(),
         };
-        
-        window.testGetReviews = function() {
-            const reviews = reviewsSystem.getProductReviews('JM001');
-            document.getElementById('results').textContent = JSON.stringify(reviews, null, 2);
-        };
-        
-        window.testGetStats = function() {
-            const stats = reviewsSystem.getProductRatingStats('JM001');
-            document.getElementById('results').textContent = JSON.stringify(stats, null, 2);
-        };
-        
-        window.testClearReviews = function() {
-            localStorage.removeItem('productReviews');
-            document.getElementById('results').textContent = 'Reviews cleared from localStorage';
-        };
-        
-        // Test authentication
-        window.testAuth = function() {
-            // Simulate login
-            const mockSession = {
-                email: 'test@example.com',
-                isAuthenticated: true,
-                loginTime: new Date().toISOString()
-            };
-            
-            // Set mock session in cookies (simplified)
-            document.cookie = `userSession=${JSON.stringify(mockSession)}; path=/`;
-            
-            document.getElementById('results').textContent = 'Mock session created';
-        };
+
+        // Set mock session in cookies (simplified)
+        document.cookie = `userSession=${JSON.stringify(mockSession)}; path=/`;
+
+        document.getElementById("results").textContent = "Mock session created";
+      };
     </script>
-</body>
+  </body>
 </html>

@@ -3,18 +3,21 @@
 ## Test Scenarios
 
 ### ✅ 1. Reviews Section Display
-- [x] Shows reviews section with average rating (★) 
+
+- [x] Shows reviews section with average rating (★)
 - [x] Displays mock reviews list
 - [x] Shows rating average and total count
 - [x] Responsive design (desktop/mobile)
 
 ### ✅ 2. Rating Display
+
 - [x] Shows star rating (1-5 stars)
 - [x] Displays numerical average
 - [x] Shows total number of reviews
 - [x] Individual review ratings displayed
 
 ### ✅ 3. Review Form (Authenticated Users)
+
 - [x] Rating input (1-5 stars with interactive selection)
 - [x] Comment textarea (max 300 characters)
 - [x] Character counter display
@@ -22,18 +25,21 @@
 - [x] Submit button with disabled state
 
 ### ✅ 4. Authentication Integration
+
 - [x] Shows "Login Required" when not authenticated
 - [x] Shows review form when authenticated
 - [x] Shows "Already reviewed" if user has reviewed
 - [x] Prevents duplicate reviews per user per product
 
 ### ✅ 5. LocalStorage Persistence
+
 - [x] Reviews stored in localStorage by product code
 - [x] Reviews persist across page reloads
 - [x] User review history maintained
 - [x] Rating statistics calculated correctly
 
 ### ✅ 6. User Experience
+
 - [x] Visual feedback for star selection (hover effects)
 - [x] Form validation with error messages
 - [x] Success feedback after submission
@@ -42,15 +48,18 @@
 ## How to Test
 
 1. **Open test-login.html**
+
    - Click "Simulate Login" to authenticate
    - Go to product detail page
 
 2. **Test Product Detail with Reviews**
+
    - Navigate to: `/pages/products/detail.html?code=JM001`
    - Verify reviews section appears below product details
    - Mock reviews should be automatically generated
 
 3. **Test Review Submission**
+
    - When logged in: fill out review form
    - Select rating (1-5 stars)
    - Write comment (min 10 chars, max 300)

@@ -40,7 +40,7 @@ class ReviewsSystem {
         userName: review.userName,
         userEmail: review.userEmail,
         date: new Date().toISOString(),
-        verified: false // Could be true if user purchased the product
+        verified: false, // Could be true if user purchased the product
       };
 
       allReviews[productCode].unshift(newReview); // Add to beginning
@@ -59,12 +59,12 @@ class ReviewsSystem {
    */
   getProductRatingStats(productCode) {
     const reviews = this.getProductReviews(productCode);
-    
+
     if (reviews.length === 0) {
       return {
         average: 0,
         total: 0,
-        distribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 }
+        distribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 },
       };
     }
 
@@ -74,14 +74,14 @@ class ReviewsSystem {
 
     // Calculate rating distribution
     const distribution = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
-    reviews.forEach(review => {
+    reviews.forEach((review) => {
       distribution[review.rating]++;
     });
 
     return {
       average: Math.round(average * 10) / 10, // Round to 1 decimal
       total,
-      distribution
+      distribution,
     };
   }
 
@@ -93,7 +93,7 @@ class ReviewsSystem {
    */
   hasUserReviewed(productCode, userEmail) {
     const reviews = this.getProductReviews(productCode);
-    return reviews.some(review => review.userEmail === userEmail);
+    return reviews.some((review) => review.userEmail === userEmail);
   }
 
   /**
@@ -110,7 +110,7 @@ class ReviewsSystem {
       { name: "Luis K.", email: "luis@example.com" },
       { name: "Sofia P.", email: "sofia@example.com" },
       { name: "Diego T.", email: "diego@example.com" },
-      { name: "Carmen V.", email: "carmen@example.com" }
+      { name: "Carmen V.", email: "carmen@example.com" },
     ];
 
     const mockComments = [
@@ -123,11 +123,11 @@ class ReviewsSystem {
       "Buena experiencia de compra, producto como esperaba.",
       "Recomendable, buen servicio y producto de calidad.",
       "Muy bueno, superó mis expectativas.",
-      "Producto correcto, sin problemas."
+      "Producto correcto, sin problemas.",
     ];
 
     const allReviews = storage.local.get(this.reviewsKey) || {};
-    
+
     // Don't generate if reviews already exist
     if (allReviews[productCode] && allReviews[productCode].length > 0) {
       return;
@@ -137,17 +137,20 @@ class ReviewsSystem {
 
     for (let i = 0; i < count; i++) {
       const user = mockUsers[Math.floor(Math.random() * mockUsers.length)];
-      const comment = mockComments[Math.floor(Math.random() * mockComments.length)];
+      const comment =
+        mockComments[Math.floor(Math.random() * mockComments.length)];
       const rating = Math.floor(Math.random() * 3) + 3; // Ratings between 3-5 for realism
-      
+
       const mockReview = {
         id: (Date.now() - i * 1000).toString(),
         rating,
         comment,
         userName: user.name,
         userEmail: user.email,
-        date: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(), // Random date within 30 days
-        verified: Math.random() > 0.3 // 70% verified purchases
+        date: new Date(
+          Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000
+        ).toISOString(), // Random date within 30 days
+        verified: Math.random() > 0.3, // 70% verified purchases
       };
 
       allReviews[productCode].push(mockReview);

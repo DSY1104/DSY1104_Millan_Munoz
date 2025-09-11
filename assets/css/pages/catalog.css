@@ -824,3 +824,114 @@
 		flex: 1 1 100%;
 	}
 }
+
+/* === Pagination Controls === */
+.pagination-controls {
+	margin-top: 2rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
+	padding: 1.5rem;
+	background: var(--bg-light, #1a1a1a);
+	border-radius: 12px;
+	border: 1px solid rgba(30, 144, 255, 0.2);
+}
+
+.pagination-info {
+	color: var(--text-secondary, #ccc);
+	font-size: 0.9rem;
+	text-align: center;
+}
+
+.pagination-buttons {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.pagination-btn {
+	padding: 0.5rem 1rem;
+	border: 1px solid var(--accent-blue, #1e90ff);
+	background: transparent;
+	color: var(--accent-blue, #1e90ff);
+	border-radius: 6px;
+	cursor: pointer;
+	font-size: 0.9rem;
+	font-weight: 500;
+	transition: all 0.2s ease;
+	min-width: 44px; /* For accessibility */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 4px; /* 4px margin on each side */
+}
+
+/* Specific styles for page number buttons */
+.pagination-btn.page-btn {
+	background: var(--accent-blue, #1e90ff);
+	color: white;
+	font-family: var(--font-heading, 'Orbitron', sans-serif);
+	font-weight: 600;
+	border: 1px solid var(--accent-blue, #1e90ff);
+}
+
+.pagination-btn.page-btn:hover {
+	background: var(--accent-blue-dark, #0066cc);
+	transform: translateY(-1px);
+}
+
+.pagination-btn:hover:not(:disabled):not(.page-btn) {
+	background: var(--accent-blue, #1e90ff);
+	color: white;
+	transform: translateY(-1px);
+}
+
+.pagination-btn:disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
+	border-color: #666;
+	color: #666;
+}
+
+.pagination-btn.active {
+	background: var(--accent-blue-dark, #0066cc);
+	color: white;
+	font-weight: 700;
+	font-family: var(--font-heading, 'Orbitron', sans-serif);
+	border-color: var(--accent-blue-dark, #0066cc);
+}
+
+.pagination-ellipsis {
+	color: var(--text-secondary, #ccc);
+	padding: 0.5rem;
+	font-size: 0.9rem;
+}
+
+/* Mobile pagination styles */
+@media (max-width: 768px) {
+	.pagination-controls {
+		padding: 1rem;
+	}
+}
+
+/* Focus styles for accessibility */
+.pagination-btn:focus {
+	outline: 2px solid var(--accent-blue, #1e90ff);
+	outline-offset: 2px;
+}
+
+.pagination-controls:focus {
+	outline: none;
+}
+
+/* Animation for smooth pagination transitions */
+.product-grid {
+	transition: opacity 0.2s ease;
+}
+
+.product-grid.loading {
+	opacity: 0.6;
+}
