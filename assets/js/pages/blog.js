@@ -12,12 +12,11 @@ const blogArticles = [
     description:
       "Descubre nuestra selección de auriculares gaming que te darán la ventaja competitiva que necesitas. Desde audio 7.1 hasta cancelación de ruido.",
     category: "reviews",
-    date: "2024-09-10",
-    image:
-      "https://via.placeholder.com/400x200/1e90ff/ffffff?text=Auriculares+Gaming",
+    date: "2025-09-10",
+    image: "../../assets/image/blog/audio.webp",
     featured: true,
     readingTime: "5 min",
-    slug: "mejores-auriculares-gaming-2024",
+    slug: "auriculares-gaming-2025",
   },
   {
     id: 2,
@@ -25,12 +24,11 @@ const blogArticles = [
     description:
       "Todo lo que necesitas saber para crear el setup gaming perfecto. Desde la iluminación RGB hasta la ergonomía del espacio de trabajo.",
     category: "guias",
-    date: "2024-09-08",
-    image:
-      "https://via.placeholder.com/400x200/39ff14/000000?text=Setup+Gaming",
+    date: "2025-09-08",
+    image: "../../assets/image/blog/pc.webp",
     featured: false,
     readingTime: "8 min",
-    slug: "guia-setup-gaming-perfecto",
+    slug: "setup-gaming-completo",
   },
   {
     id: 3,
@@ -38,76 +36,48 @@ const blogArticles = [
     description:
       "Los monitores 4K más esperados del año ya están aquí. Conoce sus especificaciones, precios y disponibilidad en LevelUp.",
     category: "noticias",
-    date: "2024-09-05",
-    image:
-      "https://via.placeholder.com/400x200/ff6b35/ffffff?text=Monitores+4K",
+    date: "2025-09-05",
+    image: "../../assets/image/blog/monitor.webp",
     featured: false,
     readingTime: "4 min",
-    slug: "nuevos-monitores-4k-gaming",
+    slug: "monitores-4k-gaming",
   },
   {
     id: 4,
-    title: "Review: Teclado mecánico RGB para pros",
+    title: "Borderlands 4: Todo lo que sabemos sobre el esperado shooter-RPG",
     description:
-      "Probamos el último teclado mecánico RGB diseñado para jugadores profesionales. ¿Vale la pena la inversión?",
-    category: "reviews",
-    date: "2024-09-03",
-    image: "https://via.placeholder.com/400x200/9d4edd/ffffff?text=Teclado+RGB",
-    featured: false,
+      "Gearbox Software regresa con una nueva aventura épica llena de acción, humor y millones de armas. Descubre todas las novedades.",
+    category: "gaming",
+    date: "2025-09-11",
+    image: "../../assets/image/blog/games.webp",
+    featured: true,
     readingTime: "6 min",
-    slug: "review-teclado-mecanico-rgb",
+    slug: "borderlands-4-preview",
   },
   {
     id: 5,
-    title: "Evento LevelUp: Torneo de gaming",
+    title:
+      "Review: PlayStation 5 Pro - La consola definitiva para gamers exigentes",
     description:
-      "¡Prepárate para el torneo de gaming más grande del año! Premios increíbles, competencia épica y diversión garantizada.",
-    category: "eventos",
-    date: "2024-08-30",
-    image:
-      "https://via.placeholder.com/400x200/f72585/ffffff?text=Torneo+Gaming",
+      "Sony eleva el listón con su nueva consola de gama alta. Después de semanas de pruebas intensivas, te contamos si vale la pena.",
+    category: "reviews",
+    date: "2025-09-10",
+    image: "../../assets/image/blog/ps5.webp",
     featured: false,
-    readingTime: "3 min",
-    slug: "evento-torneo-gaming-levelup",
+    readingTime: "8 min",
+    slug: "ps5-pro-review",
   },
   {
     id: 6,
-    title: "Top 10 juegos más esperados",
+    title: "Gaming en 2025: Las tendencias que están redefiniendo la industria",
     description:
-      "Los juegos que todo gamer está esperando. Desde AAA hasta indies prometedores que marcarán tendencia este año.",
+      "Desde el cloud gaming hasta la integración de IA, exploramos las tendencias más importantes que están moldeando el futuro.",
     category: "gaming",
-    date: "2024-08-28",
-    image:
-      "https://via.placeholder.com/400x200/4cc9f0/000000?text=Top+10+Juegos",
+    date: "2025-09-09",
+    image: "../../assets/image/blog/trends.webp",
     featured: false,
     readingTime: "7 min",
-    slug: "top-10-juegos-mas-esperados",
-  },
-  {
-    id: 7,
-    title: "Cómo optimizar tu PC para gaming",
-    description:
-      "Consejos profesionales para sacar el máximo rendimiento de tu PC gaming sin gastar una fortuna en actualizaciones.",
-    category: "guias",
-    date: "2024-08-25",
-    image:
-      "https://via.placeholder.com/400x200/7209b7/ffffff?text=Optimizar+PC",
-    featured: false,
-    readingTime: "10 min",
-    slug: "optimizar-pc-gaming",
-  },
-  {
-    id: 8,
-    title: "Las mejores ofertas de gaming este mes",
-    description:
-      "No te pierdas las ofertas más increíbles en productos gaming. Descuentos especiales solo por tiempo limitado.",
-    category: "noticias",
-    date: "2024-08-22",
-    image:
-      "https://via.placeholder.com/400x200/f77f00/ffffff?text=Ofertas+Gaming",
-    featured: true,
-    readingTime: "4 min",
-    slug: "mejores-ofertas-gaming-mes",
+    slug: "gaming-trends-2025",
   },
 ];
 
@@ -287,13 +257,8 @@ function handleArticleClick(event) {
 
 // Navegar al detalle del artículo
 function navigateToArticle(article) {
-  // Guardar artículo en localStorage para la página de detalle
-  localStorage.setItem("currentArticle", JSON.stringify(article));
-
-  // Navegar a la página de detalle
-  window.location.href = `posts/post-${article.id
-    .toString()
-    .padStart(2, "0")}.html`;
+  // Navegar directamente a la página estática usando el slug
+  window.location.href = `posts/${article.slug}.html`;
 }
 
 // Formatear fecha

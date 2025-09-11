@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Gaming en 2024: Las tendencias que están redefiniendo la industria -
+      LevelUp Blog
+    </title>
+    <meta
+      name="description"
+      content="Descubre las principales tendencias del gaming en 2024: desde el cloud gaming hasta la realidad virtual, pasando por los esports y la inteligencia artificial."
+    />
+
+    <!-- Fuentes y variables locales -->
+    <link rel="stylesheet" href="../../../assets/css/fonts.css" />
+    <link rel="stylesheet" href="../../../assets/css/main.css" />
+    <link rel="stylesheet" href="../../../assets/css/pages/blog.css" />
+
+    <style>
+      /* Estilos específicos para la página de artículo */
+      .article-wrapper {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+
+      /* Breadcrumb */
+      .breadcrumb {
+        margin-bottom: 2rem;
+        font-size: 0.9rem;
+        color: var(--text-2);
+      }
+
+      .breadcrumb a {
+        color: var(--accent-blue);
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .breadcrumb a:hover {
+        color: var(--accent-green);
+      }
+
+      .breadcrumb-separator {
+        margin: 0 0.5rem;
+        color: var(--text-2);
+      }
+
+      /* Título principal con Orbitron */
+      .article-title-main {
+        font-family: "Orbitron", monospace;
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 1rem;
+        line-height: 1.2;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Bajada de título con Roboto */
+      .article-subtitle {
+        font-family: "Roboto", sans-serif;
+        font-size: 1.4rem;
+        color: var(--text-2);
+        margin-bottom: 2rem;
+        line-height: 1.4;
+        font-weight: 300;
+      }
+
+      /* Sección de autor y fecha */
+      .article-author-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .author-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .author-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(
+          45deg,
+          var(--accent-blue),
+          var(--accent-green)
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: var(--bg);
+        font-size: 1.2rem;
+      }
+
+      .author-details h4 {
+        color: var(--text);
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+
+      .author-details .author-role {
+        color: var(--text-2);
+        font-size: 0.9rem;
+        margin: 0;
+      }
+
+      .article-date-main {
+        color: var(--text-2);
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      /* Botones de compartir */
+      .share-buttons {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
+
+      .share-label {
+        color: var(--text-2);
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+
+      .share-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+        color: white;
+      }
+
+      .share-btn.facebook {
+        background: #1877f2;
+      }
+
+      .share-btn.twitter {
+        background: #1da1f2;
+      }
+
+      .share-btn.linkedin {
+        background: #0077b5;
+      }
+
+      .share-btn.whatsapp {
+        background: #25d366;
+      }
+
+      .share-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Imagen hero */
+      .article-hero-image {
+        width: 100%;
+        margin-bottom: 2rem;
+        position: relative;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .article-hero-image img {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        display: block;
+      }
+
+      .image-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+        color: white;
+        padding: 2rem 1.5rem 1rem;
+        font-size: 0.9rem;
+        font-style: italic;
+      }
+
+      /* Trend cards */
+      .trend-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin: 2rem 0;
+      }
+
+      .trend-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+      }
+
+      .trend-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent-blue);
+        box-shadow: 0 10px 25px rgba(30, 144, 255, 0.2);
+      }
+
+      .trend-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        display: block;
+      }
+
+      .trend-title {
+        font-family: "Orbitron", monospace;
+        font-size: 1.3rem;
+        color: var(--text);
+        margin-bottom: 1rem;
+        font-weight: 600;
+      }
+
+      .trend-description {
+        color: var(--text-2);
+        line-height: 1.6;
+        font-size: 0.95rem;
+      }
+
+      /* Contenido del artículo */
+      .article-content-main {
+        font-family: "Roboto", sans-serif;
+        line-height: 1.8;
+        font-size: 1.1rem;
+        color: var(--text-2);
+      }
+
+      .article-content-main h2 {
+        font-family: "Orbitron", monospace;
+        color: var(--text);
+        margin: 2.5rem 0 1.5rem 0;
+        font-size: 2rem;
+        font-weight: 600;
+        border-left: 4px solid var(--accent-blue);
+        padding-left: 1rem;
+      }
+
+      .article-content-main h3 {
+        font-family: "Orbitron", monospace;
+        color: var(--text);
+        margin: 2rem 0 1rem 0;
+        font-size: 1.5rem;
+        font-weight: 500;
+      }
+
+      .article-content-main p {
+        margin-bottom: 1.5rem;
+        text-align: justify;
+      }
+
+      .article-content-main a {
+        color: var(--accent-blue);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: all 0.3s ease;
+      }
+
+      .article-content-main a:hover {
+        color: var(--accent-green);
+        border-bottom-color: var(--accent-green);
+      }
+
+      /* Stats box */
+      .stats-box {
+        background: linear-gradient(
+          135deg,
+          var(--accent-blue),
+          var(--accent-green)
+        );
+        border-radius: 15px;
+        padding: 2rem;
+        margin: 2rem 0;
+        color: var(--bg);
+        text-align: center;
+      }
+
+      .stats-title {
+        font-family: "Orbitron", monospace;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .stat-item {
+        text-align: center;
+      }
+
+      .stat-number {
+        font-family: "Orbitron", monospace;
+        font-size: 2.5rem;
+        font-weight: 700;
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-label {
+        font-size: 0.9rem;
+        opacity: 0.9;
+      }
+
+      /* Breadcrumb mejorado */
+      .breadcrumb {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        padding: 1rem 1.5rem;
+        margin-bottom: 2rem;
+        font-size: 0.95rem;
+        color: var(--text-2);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .breadcrumb a {
+        color: var(--accent-blue);
+        text-decoration: none;
+        transition: color 0.3s ease;
+        font-weight: 500;
+      }
+
+      .breadcrumb a:hover {
+        color: var(--accent-green);
+      }
+
+      .breadcrumb-separator {
+        margin: 0 0.75rem;
+        color: var(--text-2);
+        font-weight: 600;
+      }
+
+      .breadcrumb > span:last-child {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .article-wrapper {
+          padding: 1rem;
+        }
+
+        .article-title-main {
+          font-size: 2.2rem;
+        }
+
+        .article-subtitle {
+          font-size: 1.2rem;
+        }
+
+        .article-author-section {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .share-buttons {
+          flex-wrap: wrap;
+        }
+
+        .article-hero-image img {
+          height: 250px;
+        }
+
+        .article-content-main h2 {
+          font-size: 1.6rem;
+        }
+
+        .trend-cards {
+          grid-template-columns: 1fr;
+        }
+
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .stat-number {
+          font-size: 2rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar modular -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- Contenido principal del artículo -->
+    <div class="content-wrapper">
+      <div class="article-wrapper">
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb" aria-label="Navegación de ruta">
+          <a href="../index.html">Blog</a>
+          <span class="breadcrumb-separator">></span>
+          <a href="../index.html?category=gaming">Gaming</a>
+          <span class="breadcrumb-separator">></span>
+          <span>Tendencias de la Industria</span>
+        </nav>
+
+        <!-- Artículo principal -->
+        <article>
+          <header>
+            <!-- Título principal con Orbitron -->
+            <h1 class="article-title-main">
+              Gaming en 2024: Las tendencias que están redefiniendo la industria
+            </h1>
+
+            <!-- Bajada de título con Roboto -->
+            <p class="article-subtitle">
+              Desde el cloud gaming hasta la integración de IA, pasando por los
+              mundos virtuales y los esports, exploramos las tendencias más
+              importantes que están moldeando el futuro de los videojuegos este
+              año.
+            </p>
+
+            <!-- Sección de autor y fecha -->
+            <div class="article-author-section">
+              <div class="author-info">
+                <div class="author-avatar">CP</div>
+                <div class="author-details">
+                  <h4>Carlos Pérez</h4>
+                  <p class="author-role">Analista de Tendencias Gaming</p>
+                </div>
+              </div>
+              <div class="article-date-main">
+                <span>📅</span>
+                <time datetime="2024-09-09">9 de Septiembre, 2024</time>
+              </div>
+            </div>
+
+            <!-- Botones de compartir -->
+            <div class="share-buttons">
+              <span class="share-label">Compartir:</span>
+              <a
+                href="#"
+                class="share-btn facebook"
+                aria-label="Compartir en Facebook"
+                >📘</a
+              >
+              <a
+                href="#"
+                class="share-btn twitter"
+                aria-label="Compartir en Twitter"
+                >🐦</a
+              >
+              <a
+                href="#"
+                class="share-btn linkedin"
+                aria-label="Compartir en LinkedIn"
+                >💼</a
+              >
+              <a
+                href="#"
+                class="share-btn whatsapp"
+                aria-label="Compartir en WhatsApp"
+                >💬</a
+              >
+            </div>
+          </header>
+
+          <!-- Imagen hero -->
+          <figure class="article-hero-image">
+            <img
+              src="../../../assets/image/blog/trends.webp"
+              alt="Representación futurista de las tendencias gaming 2025"
+            />
+            <figcaption class="image-caption">
+              El gaming en 2024 abraza nuevas tecnologías que prometen
+              revolucionar la experiencia de juego
+            </figcaption>
+          </figure>
+
+          <!-- Stats box -->
+          <div class="stats-box">
+            <div class="stats-title">Gaming en Números 2024</div>
+            <div class="stats-grid">
+              <div class="stat-item">
+                <span class="stat-number">3.2B</span>
+                <span class="stat-label">Gamers Mundial</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">$200B</span>
+                <span class="stat-label">Mercado Global</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">65%</span>
+                <span class="stat-label">Gaming Móvil</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">850M</span>
+                <span class="stat-label">Esports Viewers</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contenido del artículo -->
+          <div class="article-content-main">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. El año
+              2024 ha marcado un punto de inflexión en la industria del gaming,
+              con innovaciones tecnológicas que están redefiniendo la manera en
+              que jugamos, competimos y nos relacionamos dentro de los mundos
+              virtuales.
+            </p>
+
+            <p>
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+              reprehenderit in voluptate velit esse cillum dolore eu fugiat
+              nulla pariatur. Desde desarrolladores indie hasta gigantes de la
+              industria, todos están adaptándose a estos cambios
+              revolucionarios.
+            </p>
+
+            <h2>Principales Tendencias del Gaming 2024</h2>
+
+            <div class="trend-cards">
+              <div class="trend-card">
+                <span class="trend-icon">☁️</span>
+                <h3 class="trend-title">Cloud Gaming</h3>
+                <p class="trend-description">
+                  Los servicios de streaming de juegos están alcanzando su
+                  madurez, permitiendo jugar títulos AAA en cualquier
+                  dispositivo sin necesidad de hardware potente.
+                </p>
+              </div>
+
+              <div class="trend-card">
+                <span class="trend-icon">🤖</span>
+                <h3 class="trend-title">IA Generativa</h3>
+                <p class="trend-description">
+                  La inteligencia artificial está revolucionando el desarrollo
+                  de juegos, desde la generación de contenido hasta NPCs más
+                  inteligentes y realistas.
+                </p>
+              </div>
+
+              <div class="trend-card">
+                <span class="trend-icon">🥽</span>
+                <h3 class="trend-title">VR/AR Gaming</h3>
+                <p class="trend-description">
+                  La realidad virtual y aumentada están creando experiencias
+                  inmersivas nunca antes vistas, especialmente en gaming social
+                  y educativo.
+                </p>
+              </div>
+
+              <div class="trend-card">
+                <span class="trend-icon">🏆</span>
+                <h3 class="trend-title">Esports Evolution</h3>
+                <p class="trend-description">
+                  Los deportes electrónicos están profesionalizándose aún más,
+                  con ligas oficiales, universidades y patrocinios millonarios.
+                </p>
+              </div>
+            </div>
+
+            <p>
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+              officia deserunt mollit anim id est laborum. Sed ut perspiciatis
+              unde omnis iste natus error sit voluptatem accusantium doloremque
+              laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
+              veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+            </p>
+
+            <h3>El Impacto del Cloud Gaming</h3>
+
+            <p>
+              Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit
+              aut fugit, sed quia consequuntur magni dolores eos qui ratione
+              voluptatem sequi nesciunt. Plataformas como Xbox Game Pass
+              Ultimate, NVIDIA GeForce Now y Google Stadia han demostrado que el
+              futuro del gaming puede estar en la nube.
+            </p>
+
+            <p>
+              Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet,
+              consectetur, adipisci velit, sed quia non numquam eius modi
+              tempora incidunt ut labore et dolore magnam aliquam quaerat
+              voluptatem. La accesibilidad y conveniencia que ofrecen estos
+              servicios están atrayendo a una nueva generación de jugadores.
+            </p>
+
+            <h2>Inteligencia Artificial en los Videojuegos</h2>
+
+            <p>
+              Ut enim ad minima veniam, quis nostrum exercitationem ullam
+              corporis suscipit laboriosam, nisi ut aliquid ex ea commodi
+              consequatur? La IA está transformando no solo cómo se desarrollan
+              los juegos, sino también cómo los experimentamos como jugadores.
+            </p>
+
+            <p>
+              Quis autem vel eum iure reprehenderit qui in ea voluptate velit
+              esse quam nihil molestiae consequatur, vel illum qui dolorem eum
+              fugiat quo voluptas nulla pariatur? Desde la generación procedural
+              de mundos hasta asistentes de juego inteligentes, la IA está
+              presente en cada aspecto del gaming moderno.
+            </p>
+
+            <h3>El Futuro de los Esports</h3>
+
+            <p>
+              At vero eos et accusamus et iusto odio dignissimos ducimus qui
+              blanditiis praesentium voluptatum deleniti atque corrupti quos
+              dolores et quas molestias excepturi sint occaecati cupiditate non
+              provident, similique sunt in culpa qui officia deserunt mollitia
+              animi, id est laborum et dolorum fuga.
+            </p>
+
+            <p>
+              Et harum quidem rerum facilis est et expedita distinctio. Para
+              mantenerte al día con las últimas novedades en esports, te
+              recomendamos visitar nuestro
+              <a href="#" target="_blank">calendario de eventos gaming</a> donde
+              encontrarás información sobre todos los torneos importantes.
+            </p>
+
+            <h2>Conclusiones y Perspectivas</h2>
+
+            <p>
+              Temporibus autem quibusdam et aut officiis debitis aut rerum
+              necessitatibus saepe eveniet ut et voluptates repudiandae sint et
+              molestiae non recusandae. El gaming en 2024 no es solo
+              entretenimiento, se ha convertido en una plataforma social,
+              educativa y profesional.
+            </p>
+
+            <p>
+              Itaque earum rerum hic tenetur a sapiente delectus, ut aut
+              reiciendis voluptatibus maiores alias consequatur aut perferendis
+              doloribus asperiores repellat. Estas tendencias continuarán
+              evolucionando y dando forma al futuro de la industria. Si quieres
+              profundizar más en el tema, consulta nuestro
+              <a href="#" target="_blank"
+                >informe completo sobre el estado del gaming</a
+              >.
+            </p>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- Footer modular -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Scripts -->
+    <script src="../../../assets/js/components/navbar-include.js"></script>
+    <script src="../../../assets/js/components/footer-include.js"></script>
+    <script src="../../../assets/js/components/navbar.js"></script>
+  </body>
+</html>

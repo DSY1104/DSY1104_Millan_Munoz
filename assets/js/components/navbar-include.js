@@ -28,14 +28,27 @@ fetch("/components/navbar.html")
         /src="assets\/image\/icon\/login\.svg"/g,
         'src="../assets/image/icon/login.svg"'
       );
-    } else {
-      // Two or more levels deep (e.g., /pages/user/)
+    } else if (depth === 2) {
+      // Two levels deep (e.g., /pages/user/)
       html = html.replace(/href="index\.html"/g, 'href="../../index.html"');
       html = html.replace(/href="pages\//g, 'href="../');
       html = html.replace(/href="profile\.html"/g, 'href="profile.html"');
       html = html.replace(
         /src="assets\/image\/icon\/login\.svg"/g,
         'src="../../assets/image/icon/login.svg"'
+      );
+    } else {
+      // Three or more levels deep (e.g., /pages/blog/posts/)
+      html = html.replace(
+        /href="\/index\.html"/g,
+        'href="../../../index.html"'
+      );
+      html = html.replace(/href="\/pages\//g, 'href="../../');
+      html = html.replace(/href="index\.html"/g, 'href="../../../index.html"');
+      html = html.replace(/href="pages\//g, 'href="../../');
+      html = html.replace(
+        /src="assets\/image\/icon\/login\.svg"/g,
+        'src="../../../assets/image/icon/login.svg"'
       );
     }
 
