@@ -1,3 +1,18 @@
+// Lógica para el botón global de limpiar filtros (siempre visible y azul)
+document.addEventListener("DOMContentLoaded", () => {
+  const clearAllBtn = document.getElementById("clear-all-filters");
+  if (clearAllBtn) {
+    clearAllBtn.addEventListener("click", () => {
+      setSelectedCategory(null);
+      setSelectedBrand(null);
+      setSelectedRating(null);
+      if (searchInput) searchInput.value = "";
+      if (sortPrice) sortPrice.value = "precio-asc";
+      if (sortRating) sortRating.value = "none";
+      renderFiltered();
+    });
+  }
+});
 import {
   includeCategoryFilter,
   setupCategoryFilter,
@@ -118,10 +133,104 @@ let allProducts = [];
 let lastSortPrice = "precio-asc";
 let lastSortRating = "none";
 
+
 const container = document.getElementById("product-list");
 const searchInput = document.getElementById("search-input");
 const sortPrice = document.getElementById("sort-price");
 const sortRating = document.getElementById("sort-rating");
+
+// --- Sincronización con querystring ---
+function updateQueryString() {
+  const params = new URLSearchParams();
+  if (getSelectedCategory()) params.set("cat", getSelectedCategory());
+  if (getSelectedBrand()) params.set("brand", getSelectedBrand());
+  if (getSelectedRating() !== null) params.set("rating", getSelectedRating());
+  if (searchInput && searchInput.value.trim() !== "") params.set("q", searchInput.value.trim());
+  if (sortPrice && sortPrice.value !== "none") params.set("sortPrice", sortPrice.value);
+  if (sortRating && sortRating.value !== "none") params.set("sortRating", sortRating.value);
+  const qs = params.toString();
+  const url = qs ? `${location.pathname}?${qs}` : location.pathname;
+  window.history.replaceState({}, "", url);
+}
+
+function restoreFromQueryString() {
+  const params = new URLSearchParams(window.location.search);
+  let changed = false;
+  // Categoría
+  if (params.has("cat")) {
+    setSelectedCategory(params.get("cat"));
+    const catBtn = document.querySelector(`#category-filter-placeholder .category-btn[data-category="${params.get("cat")}"]`);
+    if (catBtn) {
+      catBtn.click();
+      changed = true;
+    }
+  }
+  // Marca
+  if (params.has("brand")) {
+    setSelectedBrand(params.get("brand"));
+    const brandBtn = document.querySelector(`#brand-filter-placeholder .brand-btn[data-brand="${params.get("brand")}"]`);
+    if (brandBtn) {
+      brandBtn.click();
+      changed = true;
+    }
+  }
+  // Rating
+  if (params.has("rating")) {
+    setSelectedRating(Number(params.get("rating")));
+    const ratingBtn = document.querySelector(`#rating-filter-placeholder .rating-btn[data-rating="${params.get("rating")}"]`);
+    if (ratingBtn) {
+      ratingBtn.click();
+      changed = true;
+    }
+  }
+  // Búsqueda
+  if (params.has("q") && searchInput) {
+    searchInput.value = params.get("q");
+    changed = true;
+  }
+  // Orden precio
+  if (params.has("sortPrice") && sortPrice) {
+    sortPrice.value = params.get("sortPrice");
+    changed = true;
+  }
+  // Orden rating
+  if (params.has("sortRating") && sortRating) {
+    sortRating.value = params.get("sortRating");
+    changed = true;
+  }
+  if (changed) renderFiltered();
+}
+
+// Hookear cambios de filtros para actualizar querystring
+function hookQuerySync() {
+  if (searchInput) searchInput.addEventListener("input", updateQueryString);
+  if (sortPrice) sortPrice.addEventListener("change", updateQueryString);
+  if (sortRating) sortRating.addEventListener("change", updateQueryString);
+}
+
+// Sobrescribir setters para actualizar querystring
+const _setSelectedCategory = setSelectedCategory;
+setSelectedCategory = function(val) {
+  _setSelectedCategory(val);
+  updateQueryString();
+};
+const _setSelectedBrand = setSelectedBrand;
+setSelectedBrand = function(val) {
+  _setSelectedBrand(val);
+  updateQueryString();
+};
+const _setSelectedRating = setSelectedRating;
+setSelectedRating = function(val) {
+  _setSelectedRating(val);
+  updateQueryString();
+};
+
+// Restaurar filtros desde querystring SOLO después de cargar productos y filtros
+function afterFiltersReady() {
+  restoreFromQueryString();
+  renderFiltered();
+  hookQuerySync();
+}
 
 import {
   includeCategoryTiles,
@@ -205,7 +314,8 @@ fetch("../../assets/data/products.json")
   .then((res) => res.json())
   .then((products) => {
     allProducts = products.map((p, idx) => ({ ...p, _idx: idx })); // _idx para sort estable
-    renderFiltered();
+    // Solo restaurar filtros desde querystring y renderizar (no renderFiltered antes)
+    afterFiltersReady();
   });
 
 function renderFiltered() {
@@ -238,21 +348,24 @@ function renderFiltered() {
       return p.rating >= selectedRating && p.rating < selectedRating + 1;
     });
   }
-  // Ordenamiento estable: primero rating (si corresponde), luego precio
-  filtered = stableSort(
-    filtered,
-    getSortRatingFn(sortRating?.value || lastSortRating)
-  );
-  filtered = stableSort(
-    filtered,
-    getSortPriceFn(sortPrice?.value || lastSortPrice)
-  );
+  // Ordenamiento: si precio está en 'none', solo rating; si no, primero rating, luego precio
+  const sortPriceVal = sortPrice?.value || lastSortPrice;
+  const sortRatingVal = sortRating?.value || lastSortRating;
+  if (sortPriceVal === "none") {
+    filtered = stableSort(filtered, getSortRatingFn(sortRatingVal));
+  } else {
+    filtered = stableSort(filtered, getSortRatingFn(sortRatingVal));
+    filtered = stableSort(filtered, getSortPriceFn(sortPriceVal));
+  }
   container.innerHTML = "";
   if (filtered.length === 0) {
-    container.innerHTML = `<div class="no-products-message fade-in">
-      <span class="no-products-title">Caracoles! No hay nada que coincida con tu búsqueda.</span>
-      <span class="no-products-sub">Intenta modificando los filtros aplicados.</span>
-    </div>`;
+    container.innerHTML = `
+      <div class="no-products-message fade-in" style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; min-height: 220px; text-align: center;">
+        <img src="../../image/icon/login.svg" alt="Sin resultados" style="width: 80px; margin-bottom: 1em; opacity: 0.7;" />
+        <span class="no-products-title" style="color: var(--accent-blue); font-size: 1.5em;">No encontramos productos</span>
+        <span class="no-products-sub" style="color: #888; font-size: 1.1em;">Prueba ajustando los filtros, revisa la ortografía o explora otras categorías.<br>¡Siempre hay algo nuevo por descubrir!</span>
+      </div>
+    `;
     return;
   }
   filtered.forEach((product) => renderProductCard(product, container));
