@@ -10,7 +10,7 @@
     "specs": ["3-4 jugadores", "60-90 min"],
     "descripcion": "Clásico de estrategia de colonización y comercio.",
     "tags": ["familiar", "estrategia"],
-    "imagen": "assets/products/jm001.jpg"
+    "imagen": "/assets/image/products/catan_01.webp"
   },
   {
     "code": "JM002",
@@ -23,7 +23,7 @@
     "specs": ["2-5 jugadores", "35 min"],
     "descripcion": "Construcción de losetas en la campiña medieval.",
     "tags": ["familiar", "colocación"],
-    "imagen": "assets/products/jm002.jpg"
+    "imagen": "/assets/image/products/carcassonne_01.webp"
   },
   {
     "code": "AC001",
@@ -36,7 +36,7 @@
     "specs": ["Bluetooth", "USB-C", "Xbox/PC"],
     "descripcion": "Comodidad mejorada con agarre texturizado y baja latencia.",
     "tags": ["xbox", "pc"],
-    "imagen": "assets/products/ac001.jpg"
+    "imagen": "/assets/image/products/xbox_controller_01.webp"
   },
   {
     "code": "AC002",
@@ -49,7 +49,7 @@
     "specs": ["Sonido 7.1", "Micrófono desmontable"],
     "descripcion": "Sonido envolvente y comodidad para largas sesiones.",
     "tags": ["audio", "microfono"],
-    "imagen": "assets/products/ac002.jpg"
+    "imagen": "/assets/image/products/hyperx_cloud_ii_01.webp"
   },
   {
     "code": "CO001",
@@ -62,7 +62,7 @@
     "specs": ["SSD ultra-rápido", "Ray Tracing"],
     "descripcion": "Consola de nueva generación con tiempos de carga mínimos.",
     "tags": ["ps5", "next-gen"],
-    "imagen": "assets/products/co001.jpg"
+    "imagen": "/assets/image/products/ps5_01.webp"
   },
   {
     "code": "CG001",
@@ -75,7 +75,7 @@
     "specs": ["CPU Ryzen", "GPU RTX", "16GB RAM"],
     "descripcion": "Rendimiento tope para juegos exigentes.",
     "tags": ["asus", "rtx"],
-    "imagen": "assets/products/cg001.jpg"
+    "imagen": "/assets/image/products/rog_strix_01.webp"
   },
   {
     "code": "SG001",
@@ -88,7 +88,7 @@
     "specs": ["Soporte lumbar", "Ajustes 4D"],
     "descripcion": "Confort ergonómico para sesiones prolongadas.",
     "tags": ["ergonomia"],
-    "imagen": "assets/products/sg001.jpg"
+    "imagen": "/assets/image/products/secret_lab_titan_01.webp"
   },
   {
     "code": "MS001",
@@ -101,7 +101,7 @@
     "specs": ["Sensor 25K", "11 botones programables"],
     "descripcion": "Precisión y personalización para FPS y MOBA.",
     "tags": ["logitech", "fps"],
-    "imagen": "assets/products/ms001.jpg"
+    "imagen": "/assets/image/products/logitech_g502_hero_01.webp"
   },
   {
     "code": "MP001",
@@ -114,7 +114,7 @@
     "specs": ["Superficie textil", "RGB"],
     "descripcion": "Gran área de deslizamiento con iluminación personalizable.",
     "tags": ["razer", "rgb"],
-    "imagen": "assets/products/mp001.jpg"
+    "imagen": "/assets/image/products/razer_goliathus_extended_01.webp"
   },
   {
     "code": "PP001",
