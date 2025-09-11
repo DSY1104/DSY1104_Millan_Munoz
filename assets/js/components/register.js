@@ -125,6 +125,39 @@ import { storage } from "../utils/storage.js";
     return validateEmailFormat(email) && validateEmailDomain(email);
   }
 
+  // Referral code validation (alphanumeric 6-10 characters)
+  function validateReferralCode(code) {
+    if (!code) return true; // Optional field
+    const alphanumericRegex = /^[a-zA-Z0-9]{6,10}$/;
+    return alphanumericRegex.test(code);
+  }
+
+  // Mock function to check if referral code exists and is valid
+  function isValidReferralCode(code) {
+    if (!code) return false;
+    // Mock validation - in real app this would check against database
+    // For demo purposes, codes starting with 'LEVEL' or 'GAME' are valid
+    const validPrefixes = ['LEVEL', 'GAME', 'DUOC', 'REF'];
+    return validPrefixes.some(prefix => code.toUpperCase().startsWith(prefix));
+  }
+
+  // Calculate referral points for new user and referrer
+  function calculateReferralPoints(referralCode) {
+    if (!referralCode) return { newUser: 0, referrer: 0 };
+    
+    // Mock points calculation based on code type
+    const code = referralCode.toUpperCase();
+    if (code.startsWith('LEVEL')) {
+      return { newUser: 500, referrer: 300 };
+    } else if (code.startsWith('GAME')) {
+      return { newUser: 400, referrer: 250 };
+    } else if (code.startsWith('DUOC')) {
+      return { newUser: 600, referrer: 400 };
+    } else {
+      return { newUser: 300, referrer: 200 };
+    }
+  }
+
   // Check if email qualifies for DUOC discount
   function isDuocEmail(email) {
     if (!email) return false;
@@ -159,6 +192,48 @@ import { storage } from "../utils/storage.js";
       }
     });
 
+    // Referral code validation and feedback
+    const referralCodeInput = modalRoot.querySelector("#register-referral-code");
+    const referralCodeError = modalRoot.querySelector("[data-error-referral-code]");
+    const referralCodeSuccess = modalRoot.querySelector("[data-success-referral-code]");
+    const referralCodeFormat = modalRoot.querySelector("[data-format-referral-code]");
+
+    referralCodeInput.addEventListener("focus", () => {
+      if (!referralCodeInput.value.trim()) {
+        referralCodeFormat.hidden = false;
+      }
+    });
+
+    referralCodeInput.addEventListener("blur", () => {
+      referralCodeFormat.hidden = true;
+    });
+
+    referralCodeInput.addEventListener("input", () => {
+      const code = referralCodeInput.value.trim();
+      
+      // Reset feedback
+      referralCodeError.hidden = true;
+      referralCodeSuccess.hidden = true;
+      
+      if (!code) {
+        referralCodeFormat.hidden = false;
+        return;
+      }
+      
+      referralCodeFormat.hidden = true;
+      
+      // Format validation
+      if (!validateReferralCode(code)) {
+        referralCodeError.hidden = false;
+        return;
+      }
+      
+      // Check if code exists (mock validation)
+      if (isValidReferralCode(code)) {
+        referralCodeSuccess.hidden = false;
+      }
+    });
+
     const form = modalRoot.querySelector("#register-form");
     form.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -170,7 +245,7 @@ import { storage } from "../utils/storage.js";
         email: form.email.value.trim(),
         birthdate: form.birthdate.value,
         password: form.password.value,
-        referrer: form.referrer.value.trim(),
+        referralCode: form.referralCode.value.trim(),
       };
 
       // Validation
@@ -215,6 +290,12 @@ import { storage } from "../utils/storage.js";
         valid = false;
       }
 
+      // Referral code validation (optional but must be valid if provided)
+      if (formData.referralCode && !validateReferralCode(formData.referralCode)) {
+        errors.referralCode = true;
+        valid = false;
+      }
+
       // Show/hide error messages
       Object.keys(errors).forEach((field) => {
         const errorEl = modalRoot.querySelector(`[data-error-${field}]`);
@@ -222,7 +303,7 @@ import { storage } from "../utils/storage.js";
       });
 
       // Hide error messages for valid fields
-      ["run", "nombre", "apellidos", "email", "birthdate", "password"].forEach(
+      ["run", "nombre", "apellidos", "email", "birthdate", "password", "referralCode"].forEach(
         (field) => {
           if (!errors[field]) {
             const errorEl = modalRoot.querySelector(`[data-error-${field}]`);
@@ -233,6 +314,12 @@ import { storage } from "../utils/storage.js";
 
       if (!valid) return;
 
+      // Calculate referral points if code is provided and valid
+      let referralPoints = { newUser: 0, referrer: 0 };
+      if (formData.referralCode && isValidReferralCode(formData.referralCode)) {
+        referralPoints = calculateReferralPoints(formData.referralCode);
+      }
+
       // Create user registration data
       const userData = {
         ...formData,
@@ -240,6 +327,8 @@ import { storage } from "../utils/storage.js";
         hasLifetimeDiscount: isDuocEmail(formData.email),
         registrationDate: new Date().toISOString(),
         id: Date.now().toString(), // Simple ID generation
+        referralPoints: referralPoints.newUser,
+        usedReferralCode: formData.referralCode || null,
       };
 
       // Don't store password in plain text (in real app, this would be hashed server-side)
@@ -252,6 +341,24 @@ import { storage } from "../utils/storage.js";
       const existingUsers = storage.local.get("users") || [];
       existingUsers.push(userData);
       storage.local.set("users", existingUsers);
+
+      // Award referral points to the new user if applicable
+      if (referralPoints.newUser > 0) {
+        const currentPoints = storage.local.get("userPoints") || 0;
+        const newPointsTotal = currentPoints + referralPoints.newUser;
+        storage.local.set("userPoints", newPointsTotal);
+        
+        // Store referral transaction for history
+        const referralTransactions = storage.local.get("referralTransactions") || [];
+        referralTransactions.push({
+          type: 'referral_bonus',
+          points: referralPoints.newUser,
+          referralCode: formData.referralCode,
+          date: new Date().toISOString(),
+          userId: userData.id
+        });
+        storage.local.set("referralTransactions", referralTransactions);
+      }
 
       // Also create a basic session
       const sessionData = {
@@ -269,20 +376,26 @@ import { storage } from "../utils/storage.js";
         email: userData.email,
         isDuocStudent: userData.isDuocStudent,
         hasDiscount: userData.hasLifetimeDiscount,
+        referralPoints: referralPoints.newUser,
+        referralCode: formData.referralCode
       });
 
       // TODO: call actual registration API endpoint here
 
       closeModal();
 
-      // Show success message or redirect
-      alert(
-        `¡Registro exitoso! ${
-          userData.hasLifetimeDiscount
-            ? "🎓 Descuento del 20% activado de por vida."
-            : ""
-        }`
-      );
+      // Show success message with points information
+      let successMessage = "¡Registro exitoso!";
+      
+      if (userData.hasLifetimeDiscount) {
+        successMessage += " 🎓 Descuento del 20% activado de por vida.";
+      }
+      
+      if (referralPoints.newUser > 0) {
+        successMessage += ` 🎯 Has ganado ${referralPoints.newUser} puntos LevelUp por usar el código de referido!`;
+      }
+      
+      alert(successMessage);
     });
   }
 

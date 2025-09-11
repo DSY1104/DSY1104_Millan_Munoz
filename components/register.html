@@ -109,13 +109,23 @@
         </div>
 
         <div class="form-control">
-          <label for="register-referrer">Referidor (opcional)</label>
+          <label for="register-referral-code">Código de referido (opcional)</label>
           <input
             type="text"
-            id="register-referrer"
-            name="referrer"
-            placeholder="Email de quien te refirió"
+            id="register-referral-code"
+            name="referralCode"
+            placeholder="Ej: ABC123"
+            maxlength="10"
           />
+          <p class="form-hint" data-error-referral-code hidden>
+            El código debe tener entre 6 y 10 caracteres alfanuméricos.
+          </p>
+          <p class="form-hint success" data-success-referral-code hidden>
+            ✓ Código válido. ¡Ganarás puntos LevelUp al registrarte!
+          </p>
+          <p class="form-hint" data-format-referral-code style="color: #666; font-size: 0.65rem;" hidden>
+            Formato: 6-10 caracteres alfanuméricos (A-Z, 0-9)
+          </p>
         </div>
 
         <div class="form-actions">
