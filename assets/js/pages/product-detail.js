@@ -9,7 +9,9 @@ class ProductReviewsSystem {
 
   getProductReviews(productCode) {
     try {
-      const allReviews = JSON.parse(localStorage.getItem(this.reviewsKey) || '{}');
+      const allReviews = JSON.parse(
+        localStorage.getItem(this.reviewsKey) || "{}"
+      );
       return allReviews[productCode] || [];
     } catch {
       return [];
@@ -18,7 +20,9 @@ class ProductReviewsSystem {
 
   addReview(productCode, review) {
     try {
-      const allReviews = JSON.parse(localStorage.getItem(this.reviewsKey) || '{}');
+      const allReviews = JSON.parse(
+        localStorage.getItem(this.reviewsKey) || "{}"
+      );
       if (!allReviews[productCode]) {
         allReviews[productCode] = [];
       }
@@ -30,7 +34,7 @@ class ProductReviewsSystem {
         userName: review.userName,
         userEmail: review.userEmail,
         date: new Date().toISOString(),
-        verified: Math.random() > 0.5 // Random verification for demo
+        verified: Math.random() > 0.5, // Random verification for demo
       };
 
       allReviews[productCode].unshift(newReview);
@@ -44,12 +48,12 @@ class ProductReviewsSystem {
 
   getProductRatingStats(productCode) {
     const reviews = this.getProductReviews(productCode);
-    
+
     if (reviews.length === 0) {
       return {
         average: 0,
         total: 0,
-        distribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 }
+        distribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 },
       };
     }
 
@@ -58,20 +62,20 @@ class ProductReviewsSystem {
     const average = sum / total;
 
     const distribution = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
-    reviews.forEach(review => {
+    reviews.forEach((review) => {
       distribution[review.rating]++;
     });
 
     return {
       average: Math.round(average * 10) / 10,
       total,
-      distribution
+      distribution,
     };
   }
 
   hasUserReviewed(productCode, userEmail) {
     const reviews = this.getProductReviews(productCode);
-    return reviews.some(review => review.userEmail === userEmail);
+    return reviews.some((review) => review.userEmail === userEmail);
   }
 
   generateMockReviews(productCode, count = 5) {
@@ -82,7 +86,7 @@ class ProductReviewsSystem {
       { name: "Ana R.", email: "ana@example.com" },
       { name: "Luis K.", email: "luis@example.com" },
       { name: "Sofia P.", email: "sofia@example.com" },
-      { name: "Diego T.", email: "diego@example.com" }
+      { name: "Diego T.", email: "diego@example.com" },
     ];
 
     const mockComments = [
@@ -95,11 +99,13 @@ class ProductReviewsSystem {
       "Buena experiencia de compra, producto como esperaba.",
       "Recomendable, buen servicio y producto de calidad.",
       "Muy bueno, superó mis expectativas.",
-      "Producto correcto, sin problemas."
+      "Producto correcto, sin problemas.",
     ];
 
-    const allReviews = JSON.parse(localStorage.getItem(this.reviewsKey) || '{}');
-    
+    const allReviews = JSON.parse(
+      localStorage.getItem(this.reviewsKey) || "{}"
+    );
+
     // Don't generate if reviews already exist
     if (allReviews[productCode] && allReviews[productCode].length > 0) {
       return;
@@ -109,17 +115,20 @@ class ProductReviewsSystem {
 
     for (let i = 0; i < count; i++) {
       const user = mockUsers[Math.floor(Math.random() * mockUsers.length)];
-      const comment = mockComments[Math.floor(Math.random() * mockComments.length)];
+      const comment =
+        mockComments[Math.floor(Math.random() * mockComments.length)];
       const rating = Math.floor(Math.random() * 3) + 3; // Ratings between 3-5 for realism
-      
+
       const mockReview = {
         id: (Date.now() - i * 1000).toString(),
         rating,
         comment,
         userName: user.name,
         userEmail: user.email,
-        date: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(),
-        verified: Math.random() > 0.3 // 70% verified purchases
+        date: new Date(
+          Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000
+        ).toISOString(),
+        verified: Math.random() > 0.3, // 70% verified purchases
       };
 
       allReviews[productCode].push(mockReview);
@@ -156,7 +165,9 @@ function renderProductDetail(product) {
   container.innerHTML = `
     <div class="product-detail-card">
       <div class="product-detail-image" style="position:relative;">
-        <img src="../../${product.imagen}" alt="${product.nombre}" />
+        <img src="../../${product.imagen}" alt="${
+    product.nombre
+  }" onerror="this.onerror=null;this.src='/assets/image/products/fallback.png';" />
         ${agotado ? '<span class="badge-agotado">Agotado</span>' : ""}
       </div>
       <div class="product-detail-info">
@@ -315,11 +326,11 @@ function renderProductDetail(product) {
 function isUserLoggedIn() {
   try {
     const sessionData = document.cookie
-      .split('; ')
-      .find(row => row.startsWith('userSession='));
-    
+      .split("; ")
+      .find((row) => row.startsWith("userSession="));
+
     if (sessionData) {
-      const session = JSON.parse(decodeURIComponent(sessionData.split('=')[1]));
+      const session = JSON.parse(decodeURIComponent(sessionData.split("=")[1]));
       return session && session.isAuthenticated;
     }
     return false;
@@ -332,25 +343,29 @@ function isUserLoggedIn() {
 function getCurrentUser() {
   try {
     const sessionData = document.cookie
-      .split('; ')
-      .find(row => row.startsWith('userSession='));
-    
+      .split("; ")
+      .find((row) => row.startsWith("userSession="));
+
     if (sessionData) {
-      const session = JSON.parse(decodeURIComponent(sessionData.split('=')[1]));
+      const session = JSON.parse(decodeURIComponent(sessionData.split("=")[1]));
       if (session && session.isAuthenticated) {
         // Try to get more user data from registration
-        const userRegistration = JSON.parse(localStorage.getItem("userRegistration") || 'null');
+        const userRegistration = JSON.parse(
+          localStorage.getItem("userRegistration") || "null"
+        );
         if (userRegistration && userRegistration.email === session.email) {
           return {
             email: session.email,
-            name: `${userRegistration.firstName} ${userRegistration.lastName.charAt(0)}.`
+            name: `${
+              userRegistration.firstName
+            } ${userRegistration.lastName.charAt(0)}.`,
           };
         }
-        
+
         // Fallback to email only
         return {
           email: session.email,
-          name: session.email.split('@')[0]
+          name: session.email.split("@")[0],
         };
       }
     }
@@ -366,15 +381,15 @@ function formatDate(dateString) {
   const now = new Date();
   const diffTime = Math.abs(now - date);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  
+
   if (diffDays === 1) return "Hace 1 día";
   if (diffDays < 7) return `Hace ${diffDays} días`;
   if (diffDays < 30) return `Hace ${Math.floor(diffDays / 7)} semanas`;
-  
-  return date.toLocaleDateString('es-ES', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
+
+  return date.toLocaleDateString("es-ES", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 }
 
@@ -385,12 +400,14 @@ function renderReviews(productCode) {
 
   // Generate mock reviews if none exist
   reviewsSystem.generateMockReviews(productCode, 5);
-  
+
   const reviews = reviewsSystem.getProductReviews(productCode);
   const stats = reviewsSystem.getProductRatingStats(productCode);
   const isLoggedIn = isUserLoggedIn();
   const currentUser = getCurrentUser();
-  const hasReviewed = currentUser ? reviewsSystem.hasUserReviewed(productCode, currentUser.email) : false;
+  const hasReviewed = currentUser
+    ? reviewsSystem.hasUserReviewed(productCode, currentUser.email)
+    : false;
 
   container.innerHTML = `
     <div class="reviews-header">
@@ -406,9 +423,12 @@ function renderReviews(productCode) {
     
     <div class="reviews-content">
       <div class="reviews-list">
-        ${reviews.length === 0 ? 
-          '<div class="no-reviews">Aún no hay reseñas para este producto. ¡Sé el primero en reseñarlo!</div>' :
-          reviews.map(review => `
+        ${
+          reviews.length === 0
+            ? '<div class="no-reviews">Aún no hay reseñas para este producto. ¡Sé el primero en reseñarlo!</div>'
+            : reviews
+                .map(
+                  (review) => `
             <div class="review-item">
               <div class="review-header">
                 <div class="review-user">
@@ -416,36 +436,53 @@ function renderReviews(productCode) {
                   <div class="review-date">${formatDate(review.date)}</div>
                 </div>
                 <div class="review-rating">
-                  <span class="review-stars">${renderReviewStars(review.rating)}</span>
-                  ${review.verified ? '<span class="review-verified">✓ Compra verificada</span>' : ''}
+                  <span class="review-stars">${renderReviewStars(
+                    review.rating
+                  )}</span>
+                  ${
+                    review.verified
+                      ? '<span class="review-verified">✓ Compra verificada</span>'
+                      : ""
+                  }
                 </div>
               </div>
               <p class="review-comment">${review.comment}</p>
             </div>
-          `).join('')
+          `
+                )
+                .join("")
         }
       </div>
       
       <div class="review-form-section">
         <h3 class="review-form-title">Escribir Reseña</h3>
-        ${!isLoggedIn ? `
+        ${
+          !isLoggedIn
+            ? `
           <div class="login-required">
             <div class="login-required-text">Inicia sesión para escribir una reseña</div>
             <button class="login-button" onclick="openLoginModal()">Iniciar Sesión</button>
           </div>
-        ` : hasReviewed ? `
+        `
+            : hasReviewed
+            ? `
           <div class="already-reviewed">
             <div class="already-reviewed-icon">✓</div>
             <div>Ya has reseñado este producto</div>
           </div>
-        ` : `
+        `
+            : `
           <form class="review-form" id="review-form">
             <div class="form-group">
               <label class="form-label">Calificación</label>
               <div class="rating-input" id="rating-input">
-                ${[1,2,3,4,5].map(star => `
+                ${[1, 2, 3, 4, 5]
+                  .map(
+                    (star) => `
                   <button type="button" class="star-input" data-rating="${star}">★</button>
-                `).join('')}
+                `
+                  )
+                  .join("")}
               </div>
               <div class="form-error" id="rating-error"></div>
             </div>
@@ -467,7 +504,8 @@ function renderReviews(productCode) {
               Publicar Reseña
             </button>
           </form>
-        `}
+        `
+        }
       </div>
     </div>
   `;
@@ -485,9 +523,9 @@ function setupReviewForm(productCode, currentUser) {
   const commentInput = document.getElementById("comment-input");
   const characterCount = document.getElementById("character-count");
   const submitBtn = document.getElementById("submit-review-btn");
-  
+
   let selectedRating = 0;
-  
+
   // Rating selection
   ratingInput.addEventListener("click", (e) => {
     if (e.target.classList.contains("star-input")) {
@@ -496,7 +534,7 @@ function setupReviewForm(productCode, currentUser) {
       validateForm();
     }
   });
-  
+
   // Star hover effects
   ratingInput.addEventListener("mouseover", (e) => {
     if (e.target.classList.contains("star-input")) {
@@ -504,15 +542,15 @@ function setupReviewForm(productCode, currentUser) {
       updateStarDisplay(hoverRating);
     }
   });
-  
+
   ratingInput.addEventListener("mouseleave", () => {
     updateStarDisplay();
   });
-  
+
   function updateStarDisplay(hoverRating = null) {
     const stars = ratingInput.querySelectorAll(".star-input");
     const displayRating = hoverRating || selectedRating;
-    
+
     stars.forEach((star, index) => {
       if (index < displayRating) {
         star.classList.add("active");
@@ -521,12 +559,12 @@ function setupReviewForm(productCode, currentUser) {
       }
     });
   }
-  
+
   // Comment input and character count
   commentInput.addEventListener("input", () => {
     const length = commentInput.value.length;
     characterCount.textContent = `${length}/300`;
-    
+
     characterCount.classList.remove("warning", "error");
     if (length > 250) {
       characterCount.classList.add("warning");
@@ -534,60 +572,61 @@ function setupReviewForm(productCode, currentUser) {
     if (length >= 300) {
       characterCount.classList.add("error");
     }
-    
+
     validateForm();
   });
-  
+
   function validateForm() {
     const ratingError = document.getElementById("rating-error");
     const commentError = document.getElementById("comment-error");
     let isValid = true;
-    
+
     // Reset errors
     ratingError.textContent = "";
     commentError.textContent = "";
-    
+
     // Validate rating
     if (selectedRating === 0) {
       ratingError.textContent = "Por favor selecciona una calificación";
       isValid = false;
     }
-    
+
     // Validate comment
     const comment = commentInput.value.trim();
     if (comment.length < 10) {
-      commentError.textContent = "El comentario debe tener al menos 10 caracteres";
+      commentError.textContent =
+        "El comentario debe tener al menos 10 caracteres";
       isValid = false;
     }
-    
+
     submitBtn.disabled = !isValid;
   }
-  
+
   // Form submission
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    
+
     const comment = commentInput.value.trim();
-    
+
     if (selectedRating === 0 || comment.length < 10) {
       validateForm();
       return;
     }
-    
+
     const review = {
       rating: selectedRating,
       comment: comment,
       userName: currentUser.name,
-      userEmail: currentUser.email
+      userEmail: currentUser.email,
     };
-    
+
     const success = reviewsSystem.addReview(productCode, review);
-    
+
     if (success) {
       // Show success message
       submitBtn.textContent = "¡Reseña publicada!";
       submitBtn.disabled = true;
-      
+
       // Reload reviews after a short delay
       setTimeout(() => {
         renderReviews(productCode);
@@ -599,13 +638,13 @@ function setupReviewForm(productCode, currentUser) {
 }
 
 // Make openLoginModal globally available
-window.openLoginModal = function() {
+window.openLoginModal = function () {
   if (window.LevelUpLogin) {
     window.LevelUpLogin.open();
   } else {
     alert("Sistema de login no disponible");
   }
-}
+};
 
 // Cargar datos y renderizar
 fetch("../../assets/data/products.json")
@@ -614,7 +653,7 @@ fetch("../../assets/data/products.json")
     const code = getProductCodeFromURL();
     const product = products.find((p) => p.code === code);
     renderProductDetail(product);
-    
+
     // Render reviews section
     if (product) {
       renderReviews(product.code);

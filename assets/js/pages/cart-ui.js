@@ -7,6 +7,34 @@ import { cart } from "./cart.js";
 import { pointsSystem } from "../utils/points-system.js";
 
 class CartUI {
+  // Cierra el modal de selección de cupones
+  hideCouponModal() {
+    const modal = document.getElementById("coupon-modal");
+    if (modal) {
+      modal.classList.remove("active");
+    }
+  }
+  // Renderiza el HTML de una opción de cupón para el modal
+  createCouponOptionHTML(coupon) {
+    // Puedes personalizar el diseño según los datos de tu cupón
+    return `
+      <div class="coupon-option" data-coupon-id="${coupon.id}" tabindex="0">
+        <div class="coupon-main">
+          <span class="coupon-icon">${coupon.icon || "🎫"}</span>
+          <span class="coupon-tier">${coupon.tier || ""}</span>
+          <span class="coupon-value">$${
+            coupon.value ? coupon.value.toLocaleString() : ""
+          }</span>
+        </div>
+        <div class="coupon-description">${coupon.description || ""}</div>
+        <div class="coupon-expiry">${
+          coupon.expiryDate
+            ? `Válido hasta ${new Date(coupon.expiryDate).toLocaleDateString()}`
+            : ""
+        }</div>
+      </div>
+    `;
+  }
   setupEmptyCartButton() {
     const btn = document.getElementById("empty-cart-btn");
     if (!btn) return;
@@ -81,7 +109,7 @@ class CartUI {
     this.setupEventListeners();
     this.renderCart();
     this.updateSummary();
-  this.setupEmptyCartButton();
+    this.setupEmptyCartButton();
   }
 
   setupEventListeners() {
@@ -162,7 +190,7 @@ class CartUI {
           <a href="../products/catalog.html" class="btn btn-primary">Ver Productos</a>
         </div>
       `;
-        if (emptyBtn) emptyBtn.style.display = "none";
+      if (emptyBtn) emptyBtn.style.display = "none";
       return;
     }
 
@@ -170,7 +198,7 @@ class CartUI {
       .map((item) => this.createCartItemHTML(item))
       .join("");
 
-      if (emptyBtn) emptyBtn.style.display = "block";
+    if (emptyBtn) emptyBtn.style.display = "block";
 
     // Add event listeners to quantity controls
     this.setupQuantityControls();
@@ -179,7 +207,9 @@ class CartUI {
   createCartItemHTML(item) {
     return `
       <div class="cart-item" data-id="${item.id}">
-        <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+        <img src="${item.image}" alt="${
+      item.name
+    }" class="cart-item-image" onerror="this.onerror=null;this.src='/assets/image/products/fallback.png';">
         <div class="cart-item-details">
           <div class="cart-item-name">${item.name}</div>
           <div class="cart-item-price">$${item.price.toLocaleString()}</div>
@@ -226,14 +256,19 @@ class CartUI {
         try {
           const res = await fetch("../../assets/data/products.json");
           const products = await res.json();
-          const prod = products.find((p) => p.code == item.id || p.code == item.code);
+          const prod = products.find(
+            (p) => p.code == item.id || p.code == item.code
+          );
           stock = prod ? prod.stock : null;
         } catch (err) {
           stock = null;
         }
 
         if (stock !== null && item.qty + 1 > stock) {
-          this.showMessage(`No puedes añadir más de ${stock} unidades.`, "error");
+          this.showMessage(
+            `No puedes añadir más de ${stock} unidades.`,
+            "error"
+          );
           return;
         }
         this.cart.updateQty(id, item.qty + 1);
@@ -252,15 +287,18 @@ class CartUI {
   }
 
   updateSummary() {
-  const totals = this.cart.totals();
-  // DEBUG: Mostrar el contenido real del carrito y los totales
-  console.log('[DEBUG] Carrito actual:', this.cart.get());
-  console.log('[DEBUG] Totales calculados:', totals);
+    const totals = this.cart.totals();
+    // DEBUG: Mostrar el contenido real del carrito y los totales
+    console.log("[DEBUG] Carrito actual:", this.cart.get());
+    console.log("[DEBUG] Totales calculados:", totals);
 
     // Update basic totals
-  document.getElementById("cart-count").textContent = totals.count;
-  // DEBUG: Mostrar el valor real en el DOM tras actualizar
-  console.log('[DEBUG] Valor DOM cart-count:', document.getElementById("cart-count").textContent);
+    document.getElementById("cart-count").textContent = totals.count;
+    // DEBUG: Mostrar el valor real en el DOM tras actualizar
+    console.log(
+      "[DEBUG] Valor DOM cart-count:",
+      document.getElementById("cart-count").textContent
+    );
     document.getElementById(
       "cart-subtotal"
     ).textContent = `$${totals.subtotal.toLocaleString()}`;
@@ -364,7 +402,8 @@ class CartUI {
     }, 10);
 
     // Foco atrapado dentro del modal
-    const focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    const focusableSelectors =
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
     const focusableEls = modal.querySelectorAll(focusableSelectors);
     const firstFocusable = focusableEls[0];
     const lastFocusable = focusableEls[focusableEls.length - 1];
@@ -442,7 +481,7 @@ class CartUI {
     }
   }
 
-  processCheckout() {
+  async processCheckout() {
     const totals = this.cart.totals();
 
     if (totals.count === 0) {
@@ -450,7 +489,7 @@ class CartUI {
       return;
     }
 
-    const result = this.cart.checkout("credit");
+    const result = await this.cart.checkout("credit");
 
     if (result.success) {
       this.showMessage(
@@ -474,7 +513,10 @@ class CartUI {
         window.location.href = "../user/profile.html";
       }, 3000);
     } else {
-      this.showMessage(result.error, "error");
+      this.showMessage(
+        result.error || "Ocurrió un error al procesar el pago.",
+        "error"
+      );
     }
   }
 

@@ -34,6 +34,13 @@ class ProfileManager {
     this.pointsSystem = pointsSystem;
 
     this.init();
+
+    // Actualizar puntos y header al volver a la página o al recuperar el foco
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) {
+        this.updatePointsDisplay();
+      }
+    });
   }
 
   async init() {
@@ -300,6 +307,17 @@ class ProfileManager {
   }
 
   updateProfileHeader() {
+    // Leer el total de compras actualizado desde localStorage si existe
+    const storedPurchases = parseInt(
+      localStorage.getItem("totalPurchases"),
+      10
+    );
+    if (!isNaN(storedPurchases)) {
+      this.userProfile.totalPurchases = storedPurchases;
+      // Guardar el perfil actualizado en storage para persistencia
+      profileStorage.set("userProfile", this.userProfile);
+    }
+
     const displayName =
       this.userProfile.firstName && this.userProfile.lastName
         ? `${this.userProfile.firstName} ${this.userProfile.lastName}`
@@ -311,7 +329,6 @@ class ProfileManager {
     ).textContent = `Miembro desde ${new Date(
       this.userProfile.joinDate
     ).getFullYear()}`;
-    document.getElementById("user-level").textContent = this.userProfile.level;
     document.getElementById("total-purchases").textContent =
       this.userProfile.totalPurchases;
     document.getElementById("wishlist-items").textContent =
@@ -609,16 +626,12 @@ class ProfileManager {
       this.showLevelUpNotification(event.detail);
     });
 
-    // Add test button for points (development only)
-    if (
-      window.location.hostname === "localhost" ||
-      window.location.hostname === "127.0.0.1"
-    ) {
-      this.addTestPointsButton();
-    }
+    // Eliminar test button para producción
   }
 
   updatePointsDisplay() {
+    // Forzar recarga de puntos desde storage antes de actualizar la UI
+    this.pointsSystem.userPoints = this.pointsSystem.getUserPoints();
     const userStatus = this.pointsSystem.getUserStatus();
     const { points, currentLevel, nextLevel, progress } = userStatus;
 
@@ -671,12 +684,17 @@ class ProfileManager {
   // Coupon-related methods
   updateCouponsDisplay() {
     const stats = this.pointsSystem.getCouponStats();
-    
+
     // Update statistics
-    document.getElementById("available-coupons-count").textContent = stats.available;
-    document.getElementById("total-coupon-value").textContent = `$${stats.totalValue.toLocaleString()}`;
+    document.getElementById("available-coupons-count").textContent =
+      stats.available;
+    document.getElementById(
+      "total-coupon-value"
+    ).textContent = `$${stats.totalValue.toLocaleString()}`;
     document.getElementById("used-coupons-count").textContent = stats.used;
-    document.getElementById("total-saved-amount").textContent = `$${stats.totalUsedValue.toLocaleString()}`;
+    document.getElementById(
+      "total-saved-amount"
+    ).textContent = `$${stats.totalUsedValue.toLocaleString()}`;
 
     // Update filter tab counts
     document.getElementById("available-count").textContent = stats.available;
@@ -691,7 +709,7 @@ class ProfileManager {
 
   updateCouponGrid(type, coupons) {
     const grid = document.getElementById(`${type}-coupons-grid`);
-    
+
     if (coupons.length === 0) {
       grid.innerHTML = `
         <div class="no-coupons-message">
@@ -701,7 +719,9 @@ class ProfileManager {
       return;
     }
 
-    grid.innerHTML = coupons.map(coupon => this.createCouponCard(coupon, type)).join("");
+    grid.innerHTML = coupons
+      .map((coupon) => this.createCouponCard(coupon, type))
+      .join("");
   }
 
   getEmptyMessage(type) {
@@ -719,26 +739,39 @@ class ProfileManager {
 
   createCouponCard(coupon, type) {
     const isExpired = new Date(coupon.expiryDate) < new Date();
-    const daysUntilExpiry = Math.ceil((new Date(coupon.expiryDate) - new Date()) / (1000 * 60 * 60 * 24));
-    
+    const daysUntilExpiry = Math.ceil(
+      (new Date(coupon.expiryDate) - new Date()) / (1000 * 60 * 60 * 24)
+    );
+
     let statusClass = type;
-    let statusText = type === "available" ? "Disponible" : type === "used" ? "Usado" : "Expirado";
-    
+    let statusText =
+      type === "available"
+        ? "Disponible"
+        : type === "used"
+        ? "Usado"
+        : "Expirado";
+
     let expiryClass = "";
     let expiryText = "";
-    
+
     if (type === "available") {
       if (daysUntilExpiry <= 7) {
         expiryClass = "warning";
-        expiryText = `Expira en ${daysUntilExpiry} día${daysUntilExpiry !== 1 ? "s" : ""}`;
+        expiryText = `Expira en ${daysUntilExpiry} día${
+          daysUntilExpiry !== 1 ? "s" : ""
+        }`;
       } else {
-        expiryText = `Expira el ${new Date(coupon.expiryDate).toLocaleDateString()}`;
+        expiryText = `Expira el ${new Date(
+          coupon.expiryDate
+        ).toLocaleDateString()}`;
       }
     } else if (type === "used") {
       expiryText = `Usado el ${new Date(coupon.usedDate).toLocaleDateString()}`;
     } else {
       expiryClass = "expired";
-      expiryText = `Expiró el ${new Date(coupon.expiryDate).toLocaleDateString()}`;
+      expiryText = `Expiró el ${new Date(
+        coupon.expiryDate
+      ).toLocaleDateString()}`;
     }
 
     return `
@@ -766,13 +799,13 @@ class ProfileManager {
 
   switchCouponFilter(filter) {
     // Update active tab
-    document.querySelectorAll(".filter-tab").forEach(tab => {
+    document.querySelectorAll(".filter-tab").forEach((tab) => {
       tab.classList.remove("active");
     });
     document.querySelector(`[data-filter="${filter}"]`).classList.add("active");
 
     // Update active content
-    document.querySelectorAll(".coupon-filter-content").forEach(content => {
+    document.querySelectorAll(".coupon-filter-content").forEach((content) => {
       content.classList.remove("active");
     });
     document.getElementById(`${filter}-coupons`).classList.add("active");
@@ -781,39 +814,48 @@ class ProfileManager {
   showRedeemPointsModal() {
     const modal = document.getElementById("redeem-points-modal");
     const currentPoints = this.pointsSystem.getUserPoints();
-    
+
     // Update current points display
-    document.getElementById("modal-current-points").textContent = currentPoints.toLocaleString();
-    
+    document.getElementById("modal-current-points").textContent =
+      currentPoints.toLocaleString();
+
     // Populate coupon tiers
     const tiersGrid = document.getElementById("coupon-tiers-grid");
     const tiers = this.pointsSystem.getCouponTiers();
-    
-    tiersGrid.innerHTML = tiers.map(tier => {
-      const canAfford = currentPoints >= tier.pointsCost;
-      return `
-        <div class="tier-option ${canAfford ? 'affordable' : 'unaffordable'}" data-tier="${tier.name}">
+
+    tiersGrid.innerHTML = tiers
+      .map((tier) => {
+        const canAfford = currentPoints >= tier.pointsCost;
+        return `
+        <div class="tier-option ${
+          canAfford ? "affordable" : "unaffordable"
+        }" data-tier="${tier.name}">
           <div class="tier-header">
             <span class="tier-icon">${tier.icon}</span>
             <span class="tier-name">${tier.name}</span>
           </div>
           <div class="tier-coupon-value">$${tier.couponValue.toLocaleString()}</div>
           <div class="tier-points-cost">${tier.pointsCost.toLocaleString()} puntos</div>
-          <button class="tier-select-btn" ${!canAfford ? 'disabled' : ''} data-tier-name="${tier.name}">
-            ${canAfford ? 'Canjear' : 'Puntos insuficientes'}
+          <button class="tier-select-btn" ${
+            !canAfford ? "disabled" : ""
+          } data-tier-name="${tier.name}">
+            ${canAfford ? "Canjear" : "Puntos insuficientes"}
           </button>
         </div>
       `;
-    }).join("");
-    
+      })
+      .join("");
+
     // Add event listeners to tier selection buttons
-    document.querySelectorAll('.tier-select-btn:not([disabled])').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const tierName = e.target.dataset.tierName;
-        this.selectTierForRedemption(tierName);
+    document
+      .querySelectorAll(".tier-select-btn:not([disabled])")
+      .forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const tierName = e.target.dataset.tierName;
+          this.selectTierForRedemption(tierName);
+        });
       });
-    });
-    
+
     modal.classList.add("active");
   }
 
@@ -823,17 +865,20 @@ class ProfileManager {
 
   selectTierForRedemption(tierName) {
     const tiers = this.pointsSystem.getCouponTiers();
-    const tier = tiers.find(t => t.name === tierName);
+    const tier = tiers.find((t) => t.name === tierName);
     const currentPoints = this.pointsSystem.getUserPoints();
-    
+
     if (!tier || currentPoints < tier.pointsCost) {
-      this.showMessage("No tienes suficientes puntos para este cupón.", "error");
+      this.showMessage(
+        "No tienes suficientes puntos para este cupón.",
+        "error"
+      );
       return;
     }
 
     // Store selected tier for confirmation
     this.selectedTier = tier;
-    
+
     // Hide redeem modal and show confirmation modal
     this.hideRedeemPointsModal();
     this.showConfirmRedeemModal(tier, currentPoints);
@@ -841,7 +886,7 @@ class ProfileManager {
 
   showConfirmRedeemModal(tier, currentPoints) {
     const modal = document.getElementById("confirm-redeem-modal");
-    
+
     // Update coupon preview
     const preview = document.getElementById("coupon-preview");
     preview.innerHTML = `
@@ -852,11 +897,14 @@ class ProfileManager {
       <div class="preview-value">$${tier.couponValue.toLocaleString()}</div>
       <div class="preview-description">${tier.description}</div>
     `;
-    
+
     // Update confirmation details
-    document.getElementById("confirm-points-cost").textContent = tier.pointsCost.toLocaleString();
-    document.getElementById("remaining-points").textContent = (currentPoints - tier.pointsCost).toLocaleString();
-    
+    document.getElementById("confirm-points-cost").textContent =
+      tier.pointsCost.toLocaleString();
+    document.getElementById("remaining-points").textContent = (
+      currentPoints - tier.pointsCost
+    ).toLocaleString();
+
     modal.classList.add("active");
   }
 
@@ -871,8 +919,10 @@ class ProfileManager {
       return;
     }
 
-    const result = this.pointsSystem.exchangePointsForCoupon(this.selectedTier.name);
-    
+    const result = this.pointsSystem.exchangePointsForCoupon(
+      this.selectedTier.name
+    );
+
     if (result.success) {
       this.hideConfirmRedeemModal();
       this.updatePointsDisplay();
@@ -882,30 +932,30 @@ class ProfileManager {
          Se descontaron ${result.pointsDeducted.toLocaleString()} puntos.`,
         "success"
       );
-      
+
       // Switch to coupons tab to show new coupon
       this.switchTab("coupons");
     } else {
       this.showMessage(result.error, "error");
     }
-    
+
     this.selectedTier = null;
   }
 
   showMessage(message, type) {
     // Remove existing messages
-    const existingMessages = document.querySelectorAll('.coupon-message');
-    existingMessages.forEach(msg => msg.remove());
-    
+    const existingMessages = document.querySelectorAll(".coupon-message");
+    existingMessages.forEach((msg) => msg.remove());
+
     // Create message element
-    const messageEl = document.createElement('div');
+    const messageEl = document.createElement("div");
     messageEl.className = `coupon-message ${type}`;
     messageEl.innerHTML = message;
-    
+
     // Insert at the top of the profile content
-    const profileContent = document.querySelector('.profile-content');
+    const profileContent = document.querySelector(".profile-content");
     profileContent.insertBefore(messageEl, profileContent.firstChild);
-    
+
     // Auto-hide after 5 seconds
     setTimeout(() => {
       messageEl.remove();
@@ -950,9 +1000,11 @@ class ProfileManager {
       this.pointsSystem.setPointsForTesting(1200);
     });
 
-    document.getElementById("set-15000-points").addEventListener("click", () => {
-      this.pointsSystem.setPointsForTesting(15000);
-    });
+    document
+      .getElementById("set-15000-points")
+      .addEventListener("click", () => {
+        this.pointsSystem.setPointsForTesting(15000);
+      });
   }
 }
 

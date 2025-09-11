@@ -1,3 +1,16 @@
+/* Unificar ancho de los botones dentro del menú de categorías */
+.categories-list .tile-btn {
+  width: 100%;
+  box-sizing: border-box;
+}
+/* Centrar el texto de los botones hamburguesa en todas las vistas */
+.tiles-hamburger .hamburger-title {
+  width: 100%;
+  display: block;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
 .product-grid > .no-products-message {
   grid-column: 1 / -1;
   background: none;
@@ -446,6 +459,9 @@
 .catalog-main-layout {
   display: flex;
   flex-direction: row;
+  gap: 2.5rem;
+  display: flex;
+  flex-direction: row;
   align-items: flex-start;
   gap: 0;
   margin: 0 4rem;
@@ -454,7 +470,127 @@
   flex: 1 1 0%;
   min-width: 0;
 }
+/* --- RESTAURAR LAYOUT ANTERIOR --- */
+.catalog-main-layout {
+  display: flex;
+  flex-direction: row;
+  gap: 2.5rem;
+}
 @media (max-width: 900px) {
+  .catalog-main-layout {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  #catalog-sidebar {
+    width: 100% !important;
+    max-width: 100vw;
+    min-width: 0;
+    margin: 0 0 1.2em 0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(30, 144, 255, 0.1);
+    padding: 1.2em 0.7em 1.2em 0.7em;
+  }
+  .product-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.7rem !important;
+  }
+}
+@media (max-width: 600px) {
+  .product-grid {
+    grid-template-columns: 1fr !important;
+  }
+  #catalog-sidebar {
+    padding: 0.7em 0.3em 0.7em 0.3em;
+  }
+}
+
+@media (max-width: 900px) {
+  #category-tiles-placeholder {
+    display: none !important;
+  }
+}
+/* Filtros móviles: mostrar solo en móvil, ocultar en desktop */
+#mobile-filters-container {
+  display: none;
+}
+@media (max-width: 900px) {
+  .tiles-hamburger .hamburger-title {
+    width: 100%;
+    display: block;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
+  #categories-hamburger {
+    position: relative;
+  }
+  #categories-hamburger .hamburger-title {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: max-content;
+    text-align: center;
+    pointer-events: none;
+    font-weight: 600;
+    font-size: 1.15em;
+    z-index: 1;
+  }
+  #categories-hamburger .hamburger-bar {
+    z-index: 2;
+  }
+  /* Centrar el texto de la hamburguesa de Categoría */
+  #categories-hamburger .hamburger-title {
+    flex: 1 1 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  /* Centrar texto de la hamburguesa de Categoría */
+  #categories-hamburger.tile-btn,
+  #categories-hamburger button {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    width: 100%;
+    font-size: 1.15em;
+    padding: 0.9em 1.2em;
+    border-radius: 8px;
+    box-sizing: border-box;
+    gap: 0.7em;
+  }
+  #categories-hamburger.tile-btn svg,
+  #categories-hamburger button svg {
+    margin: 0 !important;
+  }
+  /* Filtros hamburguesa ocupan todo el ancho y son más grandes */
+  .tiles-hamburger {
+    width: 100%;
+    justify-content: stretch;
+    gap: 1em;
+  }
+  .tiles-hamburger button,
+  .tiles-hamburger .tile-btn {
+    width: 100%;
+    font-size: 1.15em;
+    padding: 0.9em 1.2em;
+    border-radius: 8px;
+    text-align: left;
+    box-sizing: border-box;
+  }
+  .tiles-hamburger .tile-btn svg,
+  .tiles-hamburger button svg {
+    margin-right: 0.7em;
+  }
+  /* Espaciado extra entre hamburguesas */
+  #mobile-filters-container > * {
+    margin-bottom: 0.7em;
+  }
   #category-tiles-placeholder {
     display: none !important;
   }
@@ -469,173 +605,168 @@
     flex-direction: column;
     gap: 1em;
     margin: 1.2em 0 1.5em 0;
-    width: 100%;
+    /* (Eliminadas reglas duplicadas para mobile layout) */
+    #rating-tiles-placeholder {
+      display: none !important;
+    }
+    #brand-tiles-placeholder,
+    #rating-tiles-placeholder {
+      display: none !important;
+    }
   }
-  #mobile-categories-tiles-placeholder,
-  #mobile-brand-tiles-placeholder,
-  #mobile-rating-tiles-placeholder {
-    display: block !important;
-    margin: 0;
-    width: 100%;
+  /* Mostrar hamburguesas y ocultar los filtros colapsables por defecto */
+  .tiles-hamburger {
+    display: flex;
   }
-  #category-tiles-placeholder,
-  #brand-tiles-placeholder,
-  #rating-tiles-placeholder {
-    display: none !important;
+  .tiles-collapsible {
+    display: none;
   }
-}
-@media (min-width: 901px) {
-  #mobile-filters-container {
-    display: none !important;
+  .tiles-collapsible.open {
+    display: flex;
   }
-  #mobile-categories-tiles-placeholder,
-  #mobile-brand-tiles-placeholder,
-  #mobile-rating-tiles-placeholder {
-    display: none !important;
+  /* Estilos para filtro de categorías (reutiliza los de los otros filtros) */
+  #categories-hamburger {
+    margin-top: 0.5em;
   }
-}
-@media (min-width: 901px) {
-  #mobile-filters-container {
-    display: none !important;
-  }
-}
-@media (max-width: 900px) {
-  #brand-tiles-placeholder,
-  #rating-tiles-placeholder {
-    display: none !important;
-  }
-}
-/* Mostrar hamburguesas y ocultar los filtros colapsables por defecto */
-.tiles-hamburger {
-  display: flex;
-}
-.tiles-collapsible {
-  display: none;
-}
-.tiles-collapsible.open {
-  display: flex;
-}
-/* Estilos para filtro de categorías (reutiliza los de los otros filtros) */
-#categories-hamburger {
-  margin-top: 0.5em;
-}
-.categories-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-.categories-list .tile-btn {
-  font-size: 1.1em;
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-  text-align: center;
-}
-@media (max-width: 900px) {
-  #filters-hamburger-placeholder {
-    display: none !important;
-  }
-}
-/* Estilos para filtro de rating (reutiliza los de categorías) */
-#ratings-hamburger {
-  margin-top: 0.5em;
-}
-.ratings-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-.ratings-list .tile-btn {
-  font-size: 1.1em;
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-}
-/* Estilos para filtro de marcas (reutiliza los de categorías) */
-#brands-hamburger {
-  margin-top: 0.5em;
-}
-.brands-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-.tiles-hamburger {
-  gap: 0.7em;
-}
-.tiles-collapsible {
-  display: none;
-  flex-direction: column;
-  gap: 0.5rem;
-  background: var(--bg-light, #1a1a1a);
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(30, 144, 255, 0.1);
-  padding: 1.2rem 1rem 1.2rem 1rem;
-  margin-bottom: 1rem;
-  border: 1.5px solid var(--accent-blue);
-}
-.tiles-collapsible.open {
-  display: flex;
-  animation: fadeInTiles 0.2s;
-}
-
-@keyframes fadeInTiles {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInTiles {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.tile-clear-btn {
-  background: var(--bg, #23272f);
-  color: #ff4444;
-  border: 2px solid var(--accent-blue);
-  border-radius: 8px;
-  padding: 0.7em 1em;
-  font-size: 1rem;
-  font-family: var(--font-body, "Roboto", sans-serif);
-  cursor: pointer;
-  transition: background 0.2s, border 0.2s, color 0.2s, box-shadow 0.2s;
-  outline: none;
-  text-align: left;
-  box-shadow: 0 1px 4px rgba(30, 144, 255, 0.08);
-  margin-top: 1.2rem;
-}
-.tile-clear-btn:focus,
-.tile-clear-btn:hover {
-  border-color: #ff4444;
-  color: #fff;
-  background: #2a0a0a;
-  box-shadow: 0 0 0 2px #ff4444;
-}
-/* Layout principal: aside vertical y sección productos */
-.catalog-main-layout {
-  display: flex;
-  flex-direction: row;
-  gap: 2.5rem;
-}
-
-@media (max-width: 900px) {
-  .catalog-main-layout {
+  .categories-list {
+    display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .categories-list .tile-btn {
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    text-align: center;
+  }
+  @media (max-width: 900px) {
+    #filters-hamburger-placeholder {
+      display: none !important;
+    }
+  }
+  /* Estilos para filtro de rating (reutiliza los de categorías) */
+  #ratings-hamburger {
+    margin-top: 0.5em;
+  }
+  .ratings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .ratings-list .tile-btn {
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+  /* Estilos para filtro de marcas (reutiliza los de categorías) */
+  #brands-hamburger {
+    margin-top: 0.5em;
+  }
+  .brands-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .tiles-hamburger {
+    gap: 0.7em;
+  }
+  .tiles-collapsible {
+    display: none;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: var(--bg-light, #1a1a1a);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(30, 144, 255, 0.1);
+    padding: 1.2rem 1rem 1.2rem 1rem;
+    margin-bottom: 1rem;
+    border: 1.5px solid var(--accent-blue);
+  }
+  .tiles-collapsible.open {
+    display: flex;
+    animation: fadeInTiles 0.2s;
+  }
+
+  @keyframes fadeInTiles {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInTiles {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .tile-clear-btn {
+    background: var(--bg, #23272f);
+    color: #ff4444;
+    border: 2px solid var(--accent-blue);
+    border-radius: 8px;
+    padding: 0.7em 1em;
+    font-size: 1rem;
+    font-family: var(--font-body, "Roboto", sans-serif);
+    cursor: pointer;
+    transition: background 0.2s, border 0.2s, color 0.2s, box-shadow 0.2s;
+    outline: none;
+    text-align: left;
+    box-shadow: 0 1px 4px rgba(30, 144, 255, 0.08);
+    margin-top: 1.2rem;
+  }
+  .tile-clear-btn:focus,
+  .tile-clear-btn:hover {
+    border-color: #ff4444;
+    color: #fff;
+    background: #2a0a0a;
+    box-shadow: 0 0 0 2px #ff4444;
+  }
+  /* Layout principal: aside vertical y sección productos */
+  .catalog-main-layout {
+    display: flex;
+    flex-direction: row;
+    gap: 2.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .catalog-main-layout {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    #catalog-sidebar {
+      width: 100% !important;
+      max-width: 100vw;
+      min-width: 0;
+      margin: 0 0 1.2em 0;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(30, 144, 255, 0.1);
+      padding: 1.2em 0.7em 1.2em 0.7em;
+    }
+    .product-grid {
+      grid-template-columns: 1fr 1fr !important;
+      gap: 0.7rem !important;
+    }
+  }
+  @media (max-width: 600px) {
+    .product-grid {
+      grid-template-columns: 1fr !important;
+    }
+    #catalog-sidebar {
+      padding: 0.7em 0.3em 0.7em 0.3em;
+    }
   }
   .category-tiles {
     position: fixed;
