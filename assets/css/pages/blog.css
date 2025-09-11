@@ -3,16 +3,11 @@
 ESTILOS PARA PÁGINA DE BLOG
 ===========================================
 */
-
 /* Contenedor principal del blog */
 .blog-header {
   text-align: center;
-  padding: 2rem 1rem;
-  background: linear-gradient(
-    135deg,
-    var(--accent-blue-tint),
-    var(--accent-blue)
-  );
+  padding: 30px;
+  background: transparent;
   color: var(--bg);
   margin-bottom: 2rem;
 }

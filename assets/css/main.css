@@ -113,13 +113,15 @@
 
 body {
   font-family: var(--font-body, "Roboto", sans-serif);
-  background: url(/assets/image/bg.avif);
+  background-color: #000;
   color: var(--text, #ffffff);
   line-height: 1.6;
+  background: url(/assets/image/bg.avif) no-repeat center center fixed;
+  background-size: cover;
 }
 
 .content-wrapper {
-  max-width: 1440px;
+  /* max-width: 1440px; */
   margin-left: auto;
   margin-right: auto;
 }
@@ -206,5 +208,7 @@ footer {
 }
 
 .landing-section {
-  padding: 2rem;
+  padding: 4rem;
+  /* max-width: 1440px; */
+  /* margin: 0 4rem; */
 }

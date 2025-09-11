@@ -1,13 +1,8 @@
 /* Header estilo igual a cart-header */
 .support-header {
   padding: 30px;
-  background: linear-gradient(
-    135deg,
-    var(--accent-blue-tint),
-    var(--accent-blue)
-  );
+  background: transparent;
   text-align: center;
-  box-shadow: 0 4px 24px 0 rgba(30, 144, 255, 0.08);
   margin-bottom: 2.5rem;
 }
 
