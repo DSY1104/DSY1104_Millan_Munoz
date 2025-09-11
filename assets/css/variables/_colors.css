@@ -8,5 +8,10 @@ Modularizado para facilitar cambios futuros.
   --text: #ffffff;
   --text-2: #d3d3d3;
   --accent-blue: #1e90ff;
+  --accent-blue-shade: #1a7fe0;
+  --accent-blue-tint: #359bff;
   --accent-green: #39ff14;
+  --accent-green-shade: #32e012;
+  --accent-green-tint: #4dff2c;
+  --accent-green-contrast: #000;
 }

@@ -26,9 +26,7 @@ export function setupRatingFilter(onSelect, onClear) {
   for (let i = 0; i <= 5; i++) {
     const btn = document.createElement("button");
     btn.className = "tile-btn rating-btn";
-    btn.innerHTML = `${"★".repeat(i)}${"☆".repeat(
-      5 - i
-    )} <span class="rating-label">${i} estrellas</span>`;
+    btn.innerHTML = `${"★".repeat(i)}${"☆".repeat(5 - i)}`;
     btn.setAttribute("data-rating", i);
     btn.setAttribute("tabindex", "0");
     btn.setAttribute("aria-pressed", "false");

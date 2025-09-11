@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
           '<div style="margin-top:auto; display:flex; justify-content:flex-end;">' +
           '<button class="event-more-btn" data-event-idx="' +
           events.indexOf(event) +
-          '" style="background:var(--accent-blue,#1a237e);color:#fff;border:none;border-radius:6px;padding:0.5em 1.2em;font-size:1rem;cursor:pointer;transition:background 0.2s;">Más información</button>' +
+          '" style="background:var(--accent-green,#1a237e);color:#454545;border:none;border-radius:6px;padding:0.5em 1.2em;font-size:1rem;cursor:pointer;transition:background 0.2s;">Más información</button>' +
           "</div>";
         eventsContainer.appendChild(card);
       });

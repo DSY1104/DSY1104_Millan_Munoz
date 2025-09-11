@@ -189,8 +189,8 @@ form#login-form {
   all: unset;
   background: linear-gradient(
     135deg,
-    var(--accent-blue, #1e90ff),
-    var(--accent-green, #39ff14)
+    var(--accent-blue-tint),
+    var(--accent-blue)
   );
   padding: 12px 20px;
   width: 100%;
@@ -248,8 +248,8 @@ form#login-form {
 .discount-notice {
   background: linear-gradient(
     135deg,
-    var(--accent-green, #39ff14),
-    var(--accent-blue, #1e90ff)
+    var(--accent-blue-tint),
+    var(--accent-blue)
   );
   color: #000;
   padding: 8px 12px;

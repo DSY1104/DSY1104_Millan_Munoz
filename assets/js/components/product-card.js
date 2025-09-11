@@ -22,7 +22,7 @@ export function renderProductCard(product, container) {
       img.setAttribute("aria-label", product.nombre);
       img.onerror = function () {
         this.onerror = null;
-        this.src = "/assets/image/icon/login.svg";
+        this.src = `/assets/image/products/placeholder.webp`;
       };
 
       // Nombre y marca

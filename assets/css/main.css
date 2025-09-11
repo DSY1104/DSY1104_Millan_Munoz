@@ -1,4 +1,4 @@
-@import url('components/_event-card.css');
+@import url("components/_event-card.css");
 @import url("components/_footer.css");
 @import url("components/_hero.css");
 @import url("./fonts.css");
@@ -11,6 +11,9 @@
 @import url("pages/profile.css");
 
 @import url("components/_product-card.css");
+@import url("components/_landing-categories.css");
+@import url("components/_landing_news.css");
+@import url("components/_landing_why-buy.css");
 
 .event-card-row {
   display: flex;
@@ -29,17 +32,16 @@
   min-width: 0;
 }
 
-
 /* Tarjeta de evento en blog/noticias */
 .event-blog-card {
   background: #181a1f;
   color: #fff;
   border-radius: 14px;
-  box-shadow: 0 2px 12px rgba(30,144,255,0.08);
+  box-shadow: 0 2px 12px rgba(30, 144, 255, 0.08);
   border: 1px solid #23272f;
   padding: 1.5rem 1.2rem;
   margin-bottom: 2rem;
-  max-width: 550px;
+  max-width: 32%;
   margin-left: auto;
   margin-right: auto;
   display: flex;
@@ -48,7 +50,7 @@
   transition: box-shadow 0.2s;
 }
 .event-blog-card:hover {
-  box-shadow: 0 6px 24px rgba(30,144,255,0.16);
+  box-shadow: 0 6px 24px rgba(30, 144, 255, 0.16);
 }
 .event-blog-card .event-title {
   color: var(--accent-blue, #39a7ff);
@@ -74,31 +76,33 @@
   font-weight: 600;
 }
 
-
-
 /* --- Forzar estilo index-header al final para máxima prioridad --- */
-.index-header {
+.events-header {
   padding: 30px;
-  background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-green) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--accent-blue-tint),
+    var(--accent-blue)
+  );
   text-align: center;
-  border-radius: 18px;
-  box-shadow: 0 4px 24px 0 rgba(30,144,255,0.08);
+  /* border-radius: 18px; */
+  box-shadow: 0 4px 24px 0 rgba(30, 144, 255, 0.08);
   width: 100%;
   max-width: 1430px;
   margin: 0 auto 2.5rem auto;
 }
-.index-header h1 {
+.events-header h1 {
   color: #fff;
   margin-bottom: 10px;
   font-size: 2rem;
   font-weight: var(--weight-bold);
 }
-.index-subtitle {
+.events-subtitle {
   color: rgba(255, 255, 255, 0.9);
   margin: 0;
-  font-size: var(--size-small);
+  font-size: var(--size-body);
+  font-weight: 500;
 }
-
 
 /* Estilos globales */
 * {
@@ -109,14 +113,12 @@
 
 body {
   font-family: var(--font-body, "Roboto", sans-serif);
-  background: var(--bg, #000000);
+  background: url(/assets/image/bg.avif);
   color: var(--text, #ffffff);
   line-height: 1.6;
 }
 
 .content-wrapper {
-  margin-top: 80px; /* Espacio para navbar fijo */
-  padding: 20px;
   max-width: 1440px;
   margin-left: auto;
   margin-right: auto;
@@ -128,7 +130,6 @@ body {
   background: var(--bg-light, #1a1a1a);
   border-radius: 8px;
 }
-
 
 .product-grid {
   display: grid;
@@ -165,11 +166,10 @@ body {
   gap: 12px;
   justify-content: center;
 }
-}
 
 .add-to-cart {
-  background: var(--accent-blue, #1e90ff);
-  color: white;
+  background: var(--accent-green, #1e90ff);
+  color: var(--accent-green-contrast);
   border: none;
   padding: 10px 15px;
   border-radius: 4px;
@@ -203,4 +203,8 @@ h3 {
 
 footer {
   text-align: center;
+}
+
+.landing-section {
+  padding: 2rem;
 }

@@ -1,6 +1,7 @@
 /* HERO SECTION */
 .hero {
   position: relative;
+  height: 85vh;
   min-height: 380px;
   display: flex;
   align-items: center;
@@ -8,7 +9,6 @@
   background: var(--bg, #000000);
   overflow: hidden;
   margin-bottom: 40px;
-  margin-top: 70px; /* Agregado para evitar solapamiento con el navbar fijo */
 }
 .hero-media {
   position: absolute;
@@ -61,8 +61,8 @@
 }
 .hero-cta {
   display: inline-block;
-  background: var(--accent-blue, #1e90ff);
-  color: #fff;
+  background: var(--accent-green, #1e90ff);
+  color: var(--accent-green-contrast, #000);
   font-family: var(--font-heading, "Orbitron", sans-serif);
   font-weight: 500;
   font-size: 1.1rem;
@@ -79,9 +79,9 @@
 }
 @media (max-width: 768px) {
   .hero {
+    height: 85vh;
     min-height: 220px;
     padding: 2.5rem 0 2rem 0;
-    margin-top: 56px; /* Ajustado para pantallas pequeñas */
   }
   .hero-claim {
     font-size: 1.5rem;

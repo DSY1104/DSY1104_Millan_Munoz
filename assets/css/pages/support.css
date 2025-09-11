@@ -3,27 +3,25 @@
   padding: 30px;
   background: linear-gradient(
     135deg,
-    var(--accent-blue) 0%,
-    var(--accent-green) 100%
+    var(--accent-blue-tint),
+    var(--accent-blue)
   );
   text-align: center;
-  border-radius: 18px;
   box-shadow: 0 4px 24px 0 rgba(30, 144, 255, 0.08);
-  width: 50%;
-  margin: 40px auto 0 auto;
+  margin-bottom: 2.5rem;
 }
 
 .support-header h1 {
   color: #fff;
   margin-bottom: 10px;
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: var(--weight-bold);
 }
 
 .support-subtitle {
   color: rgba(255, 255, 255, 0.9);
   margin: 0;
-  font-size: var(--size-small);
+  font-size: 1.2rem;
 }
 /* Botón de WhatsApp en soporte */
 .whatsapp-btn {
@@ -58,7 +56,7 @@
 }
 .support-left h2,
 .support-left h3 {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
   margin: 0;
   color: var(--primary-color, #fff);
@@ -121,7 +119,7 @@
     padding: 0.5rem 0;
   }
   .support-right {
-    background: var(--bg, #000);
+    background: transparent;
     min-height: 120px;
   }
   .support-right::before {
@@ -197,7 +195,7 @@
   align-items: flex-start;
   text-align: left;
   gap: 1.2rem;
-  background: var(--bg, #000);
+  background: transparent;
   position: relative;
 }
 .support-right::before {

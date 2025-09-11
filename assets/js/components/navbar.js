@@ -13,19 +13,22 @@ const logoutBtn = document.getElementById("logout-btn");
 
 // Check login status and update UI
 function updateLoginState() {
-  // Wait for login system to be available
-  if (!window.LevelUpLogin) {
-    // Default to logged out state
-    if (loginBtn && userMenuBtn) {
-      loginBtn.style.display = "flex";
-      userMenuBtn.style.display = "none";
-    }
+  // Ensure UI elements exist
+  if (!loginBtn || !userMenuBtn) {
     return;
   }
 
-  const isLoggedIn = window.LevelUpLogin.isLoggedIn();
+  // Wait for login system to be available
+  if (!window.LevelUpLogin) {
+    // Default to logged out state when login system isn't ready
+    loginBtn.style.display = "flex";
+    userMenuBtn.style.display = "none";
+    return;
+  }
 
-  if (loginBtn && userMenuBtn) {
+  try {
+    const isLoggedIn = window.LevelUpLogin.isLoggedIn();
+
     if (isLoggedIn) {
       loginBtn.style.display = "none";
       userMenuBtn.style.display = "flex";
@@ -33,6 +36,11 @@ function updateLoginState() {
       loginBtn.style.display = "flex";
       userMenuBtn.style.display = "none";
     }
+  } catch (error) {
+    console.warn("Error checking login state:", error);
+    // Fallback to logged out state on error
+    loginBtn.style.display = "flex";
+    userMenuBtn.style.display = "none";
   }
 }
 
@@ -41,16 +49,39 @@ function openLoginModal() {
   if (window.LevelUpLogin) {
     window.LevelUpLogin.open();
   } else {
-    console.error("Login system not available. Attempting to load...");
-    // Try to wait a bit and retry
-    setTimeout(() => {
-      if (window.LevelUpLogin) {
+    console.log("Login system loading, please wait...");
+    // Wait for login system to become available with exponential backoff
+    waitForLoginSystem()
+      .then(() => {
         window.LevelUpLogin.open();
-      } else {
+      })
+      .catch(() => {
         alert("Sistema de login no disponible. Por favor, recarga la página.");
-      }
-    }, 1000);
+      });
   }
+}
+
+// Helper function to wait for login system with timeout
+function waitForLoginSystem(maxAttempts = 10, attempt = 1) {
+  return new Promise((resolve, reject) => {
+    if (window.LevelUpLogin) {
+      resolve();
+      return;
+    }
+
+    if (attempt >= maxAttempts) {
+      console.error("Login system failed to load after maximum attempts");
+      reject(new Error("Login system not available"));
+      return;
+    }
+
+    const delay = Math.min(100 * Math.pow(1.5, attempt - 1), 2000); // Exponential backoff, max 2s
+    setTimeout(() => {
+      waitForLoginSystem(maxAttempts, attempt + 1)
+        .then(resolve)
+        .catch(reject);
+    }, delay);
+  });
 }
 
 // Cargar contador del carrito (suma real de cantidades)
@@ -231,11 +262,38 @@ window.addEventListener("userLoggedOut", () => {
 
 window.addEventListener("resize", handleResize);
 
-// Check for login state changes - start after a delay to allow login system to load
-setTimeout(() => {
-  updateLoginState(); // Initial check
-  setInterval(updateLoginState, 2000); // Check every 2 seconds
-}, 1000);
+// Check for login state changes - wait for login system to be available
+function initializeLoginStateMonitoring() {
+  waitForLoginSystem(20) // Give more time for initial load
+    .then(() => {
+      console.log("Login system available, starting state monitoring");
+      updateLoginState(); // Initial check
+      setInterval(updateLoginState, 2000); // Check every 2 seconds
+    })
+    .catch(() => {
+      console.warn(
+        "Login system not available, using fallback state monitoring"
+      );
+      // Fallback: check periodically if login system becomes available
+      const fallbackCheck = setInterval(() => {
+        if (window.LevelUpLogin) {
+          clearInterval(fallbackCheck);
+          console.log(
+            "Login system became available, starting state monitoring"
+          );
+          updateLoginState();
+          setInterval(updateLoginState, 2000);
+        }
+      }, 1000);
+
+      // Stop fallback after 30 seconds
+      setTimeout(() => {
+        clearInterval(fallbackCheck);
+      }, 30000);
+    });
+}
+
+initializeLoginStateMonitoring();
 
 // Inicializar
 loadCartCount();

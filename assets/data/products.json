@@ -10,7 +10,7 @@
     "specs": ["3-4 jugadores", "60-90 min"],
     "descripcion": "Clásico de estrategia de colonización y comercio.",
     "tags": ["familiar", "estrategia"],
-    "imagen": "/assets/image/products/catan_01.webp"
+    "imagen": "/assets/image/products/jm001.webp"
   },
   {
     "code": "JM002",
@@ -23,7 +23,7 @@
     "specs": ["2-5 jugadores", "35 min"],
     "descripcion": "Construcción de losetas en la campiña medieval.",
     "tags": ["familiar", "colocación"],
-    "imagen": "/assets/image/products/carcassonne_01.webp"
+    "imagen": "/assets/image/products/jm002.webp"
   },
   {
     "code": "AC001",
@@ -36,7 +36,7 @@
     "specs": ["Bluetooth", "USB-C", "Xbox/PC"],
     "descripcion": "Comodidad mejorada con agarre texturizado y baja latencia.",
     "tags": ["xbox", "pc"],
-    "imagen": "/assets/image/products/xbox_controller_01.webp"
+    "imagen": "/assets/image/products/ac001.webp"
   },
   {
     "code": "AC002",
@@ -49,7 +49,7 @@
     "specs": ["Sonido 7.1", "Micrófono desmontable"],
     "descripcion": "Sonido envolvente y comodidad para largas sesiones.",
     "tags": ["audio", "microfono"],
-    "imagen": "/assets/image/products/hyperx_cloud_ii_01.webp"
+    "imagen": "/assets/image/products/ac002.webp"
   },
   {
     "code": "CO001",
@@ -62,7 +62,7 @@
     "specs": ["SSD ultra-rápido", "Ray Tracing"],
     "descripcion": "Consola de nueva generación con tiempos de carga mínimos.",
     "tags": ["ps5", "next-gen"],
-    "imagen": "/assets/image/products/ps5_01.webp"
+    "imagen": "/assets/image/products/co001.webp"
   },
   {
     "code": "CG001",
@@ -75,7 +75,7 @@
     "specs": ["CPU Ryzen", "GPU RTX", "16GB RAM"],
     "descripcion": "Rendimiento tope para juegos exigentes.",
     "tags": ["asus", "rtx"],
-    "imagen": "/assets/image/products/rog_strix_01.webp"
+    "imagen": "/assets/image/products/cg001.webp"
   },
   {
     "code": "SG001",
@@ -88,7 +88,7 @@
     "specs": ["Soporte lumbar", "Ajustes 4D"],
     "descripcion": "Confort ergonómico para sesiones prolongadas.",
     "tags": ["ergonomia"],
-    "imagen": "/assets/image/products/secret_lab_titan_01.webp"
+    "imagen": "/assets/image/products/sg001.webp"
   },
   {
     "code": "MS001",
@@ -101,7 +101,7 @@
     "specs": ["Sensor 25K", "11 botones programables"],
     "descripcion": "Precisión y personalización para FPS y MOBA.",
     "tags": ["logitech", "fps"],
-    "imagen": "/assets/image/products/logitech_g502_hero_01.webp"
+    "imagen": "/assets/image/products/ms001.webp"
   },
   {
     "code": "MP001",
@@ -114,7 +114,7 @@
     "specs": ["Superficie textil", "RGB"],
     "descripcion": "Gran área de deslizamiento con iluminación personalizable.",
     "tags": ["razer", "rgb"],
-    "imagen": "/assets/image/products/razer_goliathus_extended_01.webp"
+    "imagen": "/assets/image/products/mp001.webp"
   },
   {
     "code": "PP001",
@@ -127,7 +127,7 @@
     "specs": ["Personalización gamer tag"],
     "descripcion": "Camiseta cómoda con diseño personalizado.",
     "tags": ["merch"],
-    "imagen": "assets/products/pp001.jpg"
+    "imagen": "/assets/image/products/pp001.png"
   },
   {
     "code": "JM003",
@@ -140,7 +140,7 @@
     "specs": ["1-5 jugadores", "60-90 min"],
     "descripcion": "Juego de estrategia sobre aves y sus hábitats.",
     "tags": ["estrategia", "naturaleza"],
-    "imagen": "assets/products/jm003.jpg"
+    "imagen": "/assets/image/products/jm003.webp"
   },
   {
     "code": "JM004",
@@ -153,7 +153,7 @@
     "specs": ["2-4 jugadores", "45 min"],
     "descripcion": "Hermoso juego de colocación de azulejos.",
     "tags": ["familiar", "abstracto"],
-    "imagen": "assets/products/jm004.jpg"
+    "imagen": "/assets/image/products/jm004.webp"
   },
   {
     "code": "JM005",
@@ -166,7 +166,7 @@
     "specs": ["2-5 jugadores", "60 min"],
     "descripcion": "Aventura ferroviaria por todo el continente.",
     "tags": ["familiar", "rutas"],
-    "imagen": "assets/products/jm005.jpg"
+    "imagen": "/assets/image/products/jm005.webp"
   },
   {
     "code": "AC003",
@@ -179,7 +179,7 @@
     "specs": ["Haptic feedback", "Adaptive triggers", "PS5"],
     "descripcion": "Control de nueva generación con retroalimentación háptica.",
     "tags": ["ps5", "controller"],
-    "imagen": "assets/products/ac003.jpg"
+    "imagen": "/assets/image/products/ac003.webp"
   },
   {
     "code": "AC004",
@@ -192,7 +192,7 @@
     "specs": ["Cherry MX Red", "RGB", "Tenkeyless"],
     "descripcion": "Teclado mecánico de alto rendimiento para gaming.",
     "tags": ["mechanical", "rgb"],
-    "imagen": "assets/products/ac004.jpg"
+    "imagen": "/assets/image/products/ac004.webp"
   },
   {
     "code": "AC005",
@@ -205,7 +205,7 @@
     "specs": ["1080p", "Micrófono integrado", "USB"],
     "descripcion": "Perfecta para streaming y videollamadas.",
     "tags": ["streaming", "camera"],
-    "imagen": "assets/products/ac005.jpg"
+    "imagen": "/assets/image/products/ac005.webp"
   },
   {
     "code": "CO002",
@@ -218,7 +218,7 @@
     "specs": ["Pantalla OLED 7\"", "Dock incluido", "64GB"],
     "descripcion": "Consola híbrida con pantalla OLED mejorada.",
     "tags": ["portable", "dock"],
-    "imagen": "assets/products/co002.jpg"
+    "imagen": "/assets/image/products/co002.webp"
   },
   {
     "code": "CO003",
@@ -231,7 +231,7 @@
     "specs": ["Sin unidad de disco", "Ultra HD", "SSD"],
     "descripcion": "La experiencia de nueva generación completamente digital.",
     "tags": ["digital", "nextgen"],
-    "imagen": "assets/products/co003.jpg"
+    "imagen": "/assets/image/products/co003.webp"
   },
   {
     "code": "CG002",
@@ -244,7 +244,7 @@
     "specs": ["RTX 4070", "32GB RAM", "1TB SSD"],
     "descripcion": "Potencia extrema para los gamers más exigentes.",
     "tags": ["rtx", "high-end"],
-    "imagen": "assets/products/cg002.jpg"
+    "imagen": "/assets/image/products/cg002.webp"
   },
   {
     "code": "CG003",
@@ -257,7 +257,7 @@
     "specs": ["GTX 1660", "16GB RAM", "500GB SSD"],
     "descripcion": "Excelente rendimiento a precio accesible.",
     "tags": ["budget", "gaming"],
-    "imagen": "assets/products/cg003.jpg"
+    "imagen": "/assets/image/products/cg003.webp"
   },
   {
     "code": "SG002",
@@ -270,7 +270,7 @@
     "specs": ["Cuero PU", "Reclinable 180°", "Apoyabrazos 4D"],
     "descripcion": "Comodidad premium para sesiones de gaming extendidas.",
     "tags": ["profesional", "reclinable"],
-    "imagen": "assets/products/sg002.jpg"
+    "imagen": "/assets/image/products/sg002.webp"
   },
   {
     "code": "SG003",
@@ -283,7 +283,7 @@
     "specs": ["Tela mesh", "Altura ajustable", "Apoyabrazos fijos"],
     "descripcion": "Buena calidad a precio accesible.",
     "tags": ["economica", "mesh"],
-    "imagen": "assets/products/sg003.jpg"
+    "imagen": "/assets/image/products/sg003.webp"
   },
   {
     "code": "MS002",
@@ -296,7 +296,7 @@
     "specs": ["20000 DPI", "RGB", "Inalámbrico"],
     "descripcion": "Precisión extrema sin cables.",
     "tags": ["wireless", "rgb"],
-    "imagen": "assets/products/ms002.jpg"
+    "imagen": "/assets/image/products/ms002.webp"
   },
   {
     "code": "MS003",
@@ -309,7 +309,7 @@
     "specs": ["Diseño vertical", "6 botones", "USB"],
     "descripcion": "Reduce la tensión en la muñeca.",
     "tags": ["ergonomico", "vertical"],
-    "imagen": "assets/products/ms003.jpg"
+    "imagen": "/assets/image/products/ms003.webp"
   },
   {
     "code": "MP002",
@@ -322,7 +322,7 @@
     "specs": ["90x40cm", "Superficie de control", "Base de goma"],
     "descripcion": "Máximo espacio para tu setup gaming.",
     "tags": ["xxl", "control"],
-    "imagen": "assets/products/mp002.jpg"
+    "imagen": "/assets/image/products/mp002.webp"
   },
   {
     "code": "MP003",
@@ -335,7 +335,7 @@
     "specs": ["Iluminación RGB", "35x25cm", "USB"],
     "descripcion": "Añade estilo luminoso a tu escritorio.",
     "tags": ["rgb", "illuminated"],
-    "imagen": "assets/products/mp003.jpg"
+    "imagen": "/assets/image/products/mp003.webp"
   },
   {
     "code": "PP002",
@@ -348,7 +348,7 @@
     "specs": ["100% Algodón", "Diseño retro", "Unisex"],
     "descripcion": "Diseños clásicos de videojuegos retro.",
     "tags": ["retro", "pixel"],
-    "imagen": "assets/products/pp002.jpg"
+    "imagen": "/assets/image/products/pp002.webp"
   },
   {
     "code": "PP003",
@@ -361,7 +361,7 @@
     "specs": ["Dry-fit", "Logo bordado", "Slim fit"],
     "descripcion": "Representa a tu equipo favorito de e-sports.",
     "tags": ["esports", "team"],
-    "imagen": "assets/products/pp003.jpg"
+    "imagen": "/assets/image/products/pp003.webp"
   },
   {
     "code": "PG001",
@@ -374,20 +374,7 @@
     "specs": ["80% Algodón", "Capucha ajustable", "Bolsillo canguro"],
     "descripcion": "Comodidad y estilo para gamers.",
     "tags": ["hoodie", "comfort"],
-    "imagen": "assets/products/pg001.jpg"
-  },
-  {
-    "code": "PG002",
-    "nombre": "Polerón Zip RGB Led",
-    "categoriaId": "PG",
-    "precioCLP": 45990,
-    "stock": 12,
-    "marca": "Tech Wear",
-    "rating": 4.2,
-    "specs": ["LEDs RGB", "Recargable USB", "Resistente al agua"],
-    "descripcion": "Polerón del futuro con iluminación personalizable.",
-    "tags": ["led", "tech"],
-    "imagen": "assets/products/pg002.jpg"
+    "imagen": "/assets/image/products/pg001.webp"
   },
   {
     "code": "JM006",
@@ -400,7 +387,7 @@
     "specs": ["2-4 jugadores", "30 min"],
     "descripcion": "Comercio de gemas en el Renacimiento.",
     "tags": ["comercio", "motor"],
-    "imagen": "assets/products/jm006.jpg"
+    "imagen": "/assets/image/products/jm006.webp"
   },
   {
     "code": "JM007",
@@ -413,7 +400,7 @@
     "specs": ["3-7 jugadores", "30 min"],
     "descripcion": "Construye tu civilización antigua.",
     "tags": ["civilización", "drafting"],
-    "imagen": "assets/products/jm007.jpg"
+    "imagen": "/assets/image/products/jm007.webp"
   },
   {
     "code": "JM008",
@@ -426,7 +413,7 @@
     "specs": ["2-4 jugadores", "45 min"],
     "descripcion": "Coopera para salvar el mundo de las enfermedades.",
     "tags": ["cooperativo", "estrategia"],
-    "imagen": "assets/products/jm008.jpg"
+    "imagen": "/assets/image/products/jm008.webp"
   },
   {
     "code": "AC006",
@@ -439,7 +426,7 @@
     "specs": ["24\"", "144Hz", "1ms", "G-Sync"],
     "descripcion": "Experiencia visual fluida para gaming competitivo.",
     "tags": ["monitor", "144hz"],
-    "imagen": "assets/products/ac006.jpg"
+    "imagen": "/assets/image/products/ac006.webp"
   },
   {
     "code": "AC007",
@@ -452,7 +439,7 @@
     "specs": ["USB", "Cardioide", "Monitoreo"],
     "descripcion": "Calidad profesional para streamers.",
     "tags": ["streaming", "usb"],
-    "imagen": "assets/products/ac007.jpg"
+    "imagen": "/assets/image/products/ac007.webp"
   },
   {
     "code": "CO004",
@@ -465,7 +452,7 @@
     "specs": ["Digital", "4K upscaling", "512GB SSD"],
     "descripcion": "Gaming de nueva generación más compacto.",
     "tags": ["compact", "digital"],
-    "imagen": "assets/products/co004.jpg"
+    "imagen": "/assets/image/products/co004.webp"
   },
   {
     "code": "ST001",
@@ -478,7 +465,7 @@
     "specs": ["Diagnóstico", "Limpieza", "Optimización"],
     "descripcion": "Mantenimiento básico para tu equipo.",
     "tags": ["servicio", "mantenimiento"],
-    "imagen": "assets/products/st001.jpg"
+    "imagen": "/assets/image/products/st001.webp"
   },
   {
     "code": "ST002",
@@ -491,7 +478,7 @@
     "specs": ["Reparación", "Upgrade", "Garantía 3 meses"],
     "descripcion": "Reparaciones complejas y mejoras de hardware.",
     "tags": ["reparacion", "upgrade"],
-    "imagen": "assets/products/st002.jpg"
+    "imagen": "/assets/image/products/st002.webp"
   },
   {
     "code": "MS004",
@@ -504,7 +491,7 @@
     "specs": ["58g", "25600 DPI", "Paracord"],
     "descripcion": "El mouse más ligero para gaming competitivo.",
     "tags": ["ultralight", "pro"],
-    "imagen": "assets/products/ms004.jpg"
+    "imagen": "/assets/image/products/ms004.webp"
   },
   {
     "code": "CG004",
@@ -517,6 +504,6 @@
     "specs": ["RTX 3060", "15.6\"", "144Hz", "16GB RAM"],
     "descripcion": "Gaming portátil de alto rendimiento.",
     "tags": ["laptop", "portable"],
-    "imagen": "assets/products/cg004.jpg"
+    "imagen": "/assets/image/products/cg004.webp"
   }
 ]

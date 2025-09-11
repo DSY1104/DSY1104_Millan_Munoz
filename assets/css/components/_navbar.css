@@ -254,6 +254,7 @@ Carrito
 /* User Menu Styles */
 .navbar-user {
   position: relative;
+  right: -1rem;
 }
 
 .navbar-user-btn {
@@ -294,13 +295,13 @@ Carrito
 }
 
 .navbar-login-btn:hover {
-  background-color: var(--accent-blue, #1e90ff);
+  /* background-color: var(--accent-blue, #1e90ff); */
   transform: scale(1.1);
 }
 
 .navbar-login-btn img {
-  width: 20px;
-  height: 20px;
+  width: 32px;
+  height: 32px;
   /* SVG is already white, no filter needed */
   transition: all 0.3s ease;
 }

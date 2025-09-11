@@ -1,53 +1,513 @@
 <!DOCTYPE html>
 <html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LevelUp</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LevelUp</title>
+    <!-- Fuentes y variables locales -->
+    <link rel="stylesheet" href="assets/css/fonts.css" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+  </head>
 
-  <!-- Fuentes y variables locales -->
-  <link rel="stylesheet" href="assets/css/fonts.css" />
-  <link rel="stylesheet" href="assets/css/main.css" />
-</head>
+  <body>
+    <!-- Navbar modular -->
+    <div id="navbar-placeholder"></div>
 
-<body>
-  <!-- Navbar modular -->
-  <div id="navbar-placeholder"></div>
+    <div class="content-wrapper">
+      <main>
+        <!-- Hero modular -->
+        <div id="hero-placeholder"></div>
 
-  <!-- Hero modular -->
-  <div id="hero-placeholder"></div>
+        <!-- Contenido principal -->
+        <section class="categories landing-section">
+          <section class="events-header">
+            <h1>Principales Categorías</h1>
+            <p class="events-subtitle">Ve lo que LevelUP tiene para ti</p>
+          </section>
+          <section
+            id="categories-list-index"
+            class="categories-list-index"
+            style="margin-bottom: 2.5rem"
+          >
+            <div class="BentoBox_section-container__yBYID">
+              <div>
+                <div class="BentoBox_bento-container__23r4y">
+                  <div
+                    id="categorasdeproducto"
+                    aria-hidden="false"
+                    class="BentoBox_bento-content-item__3UayJ BentoBox_top-center-copy__3UeyQ BentoBox_active__1FGCg"
+                  >
+                    <div class="BentoBox_bento-tiles__3e5Y-">
+                      <div
+                        class="BentoBox_left-column__3nDnA BentoBox_style-two__2WnXc"
+                      >
+                        <a
+                          data-bannertype="Product Categories"
+                          data-bannername="JUEGOS DE MESA"
+                          style="
+                            --background-image: url(/assets/image/categories/juegos-de-mesa.png);
+                          "
+                          role="button"
+                          tabindex="0"
+                          aria-label="Visit JUEGOS DE MESA - Opens in the current Tab"
+                          href="pages/products/catalog.html?cat=JM"
+                          class="BentoBox_product-card__1IZaK NOPE"
+                        >
+                          <h2>JUEGOS DE MESA</h2>
+                          <p class="BentoBox_link-text__1UaLx">
+                            COMPRAR AHORA<img
+                              src="https://assets.corsair.com/image/upload/f_auto,q_auto/content/tlc-lp-design/memory/icon-right-arrow-yellow.png"
+                              alt="right facing arrow"
+                            />
+                          </p>
+                        </a>
+                        <div class="BentoBox_product-card-double__3Aavy NOPE">
+                          <a
+                            data-bannertype="Product Categories"
+                            data-bannername="ACCESORIOS"
+                            style="
+                              --background-image: url(https://assets.corsair.com/image/upload/f_auto/q_auto/v1716913780/akamai/hybris/homepage/refresh/category-tile-headsets.png);
+                            "
+                            role="button"
+                            tabindex="0"
+                            aria-label="Visit ACCESORIOS - Opens in the current Tab"
+                            href="pages/products/catalog.html?cat=AC"
+                            class="BentoBox_product-card__1IZaK NOPE"
+                          >
+                            <h2>ACCESORIOS</h2>
+                            <p class="BentoBox_link-text__1UaLx">
+                              COMPRAR AHORA<img
+                                src="https://assets.corsair.com/image/upload/f_auto,q_auto/content/tlc-lp-design/memory/icon-right-arrow-yellow.png"
+                                alt="right facing arrow"
+                              />
+                            </p> </a
+                          ><a
+                            data-bannertype="Product Categories"
+                            data-bannername="FUENTES DE ALIMENTACIÓN"
+                            style="
+                              --background-image: url(https://assets.corsair.com/image/upload/f_auto/q_auto/v1716913783/akamai/hybris/homepage/refresh/category-tile-psu.png);
+                            "
+                            role="button"
+                            tabindex="0"
+                            aria-label="Visit FUENTES DE ALIMENTACIÓN - Opens in the current Tab"
+                            href="pages/products/catalog.html?cat=FA"
+                            class="BentoBox_product-card__1IZaK NOPE"
+                          >
+                            <h2>FUENTES DE ALIMENTACIÓN</h2>
+                            <p class="BentoBox_link-text__1UaLx">
+                              COMPRAR AHORA<img
+                                src="https://assets.corsair.com/image/upload/f_auto,q_auto/content/tlc-lp-design/memory/icon-right-arrow-yellow.png"
+                                alt="right facing arrow"
+                              />
+                            </p>
+                          </a>
+                        </div>
+                        <a
+                          data-bannertype="Product Categories"
+                          data-bannername="COMPUTADORES GAMER"
+                          style="
+                            --background-image: url(https://assets.corsair.com/image/upload/f_auto/q_auto/v1717186447/akamai/hybris/homepage/refresh/alternates/category-tile-cases-alt1.png);
+                          "
+                          role="button"
+                          tabindex="0"
+                          aria-label="Visit COMPUTADORES GAMER - Opens in the current Tab"
+                          href="pages/products/catalog.html?cat=CG"
+                          class="BentoBox_product-card__1IZaK NOPE"
+                        >
+                          <h2>COMPUTADORES GAMER</h2>
+                          <p class="BentoBox_link-text__1UaLx">
+                            COMPRAR AHORA<img
+                              src="https://assets.corsair.com/image/upload/f_auto,q_auto/content/tlc-lp-design/memory/icon-right-arrow-yellow.png"
+                              alt="right facing arrow"
+                            />
+                          </p>
+                        </a>
+                      </div>
+                      <div class="BentoBox_right-column__2p8kY">
+                        <div class="BentoBox_product-card-double__3Aavy NOPE">
+                          <a
+                            data-bannertype="Product Categories"
+                            data-bannername="MOUSE"
+                            style="
+                              --background-image: url(https://assets.corsair.com/image/upload/f_auto/q_auto/v1748382136/akamai/hybris/homepage/refresh/category-tile-Gaming-Mice.png);
+                            "
+                            role="button"
+                            tabindex="0"
+                            aria-label="Visit MOUSE - Opens in the current Tab"
+                            href="pages/products/catalog.html?cat=MS"
+                            class="BentoBox_product-card__1IZaK NOPE"
+                          >
+                            <h2>MOUSE</h2>
+                            <p class="BentoBox_link-text__1UaLx">
+                              COMPRAR AHORA<img
+                                src="https://assets.corsair.com/image/upload/f_auto,q_auto/content/tlc-lp-design/memory/icon-right-arrow-yellow.png"
+                                alt="right facing arrow"
+                              />
+                            </p> </a
+                          ><a
+                            data-bannertype="Product Categories"
+                            data-bannername="MOUSEPAD"
+                            style="
+                              --background-image: url(/assets/image/categories/mousepad.png);
+                            "
+                            role="button"
+                            tabindex="0"
+                            aria-label="Visit MOUSEPAD - Opens in the current Tab"
+                            href="pages/products/catalog.html?cat=MP"
+                            class="BentoBox_product-card__1IZaK NOPE"
+                          >
+                            <h2>MOUSEPAD</h2>
+                            <p class="BentoBox_link-text__1UaLx">
+                              COMPRAR AHORA<img
+                                src="https://assets.corsair.com/image/upload/f_auto,q_auto/content/tlc-lp-design/memory/icon-right-arrow-yellow.png"
+                                alt="right facing arrow"
+                              />
+                            </p>
+                          </a>
+                        </div>
+                        <a
+                          data-bannertype="Product Categories"
+                          data-bannername="SILLAS GAMER"
+                          style="
+                            --background-image: url(https://assets.corsair.com/image/upload/f_auto/q_auto/v1721335978/akamai/hybris/homepage/refresh/category-tile-furniture.png);
+                          "
+                          role="button"
+                          tabindex="0"
+                          aria-label="Visit SILLAS GAMER - Opens in the current Tab"
+                          href="pages/products/catalog.html?cat=SG"
+                          class="BentoBox_product-card__1IZaK NOPE"
+                        >
+                          <h2>SILLAS GAMER</h2>
+                          <p class="BentoBox_link-text__1UaLx">
+                            COMPRAR AHORA<img
+                              src="https://assets.corsair.com/image/upload/f_auto,q_auto/content/tlc-lp-design/memory/icon-right-arrow-yellow.png"
+                              alt="right facing arrow"
+                            />
+                          </p>
+                        </a>
+                        <div class="BentoBox_product-card-double__3Aavy NOPE">
+                          <a
+                            data-bannertype="Product Categories"
+                            data-bannername="POLERAS"
+                            style="
+                              --background-image: url(/assets/image/categories/poleras.png);
+                            "
+                            role="button"
+                            tabindex="0"
+                            aria-label="Visit POLERAS - Opens in the current Tab"
+                            href="pages/products/catalog.html?cat=PP"
+                            class="BentoBox_product-card__1IZaK NOPE"
+                          >
+                            <h2>POLERAS</h2>
+                            <p class="BentoBox_link-text__1UaLx">
+                              COMPRAR AHORA<img
+                                src="https://assets.corsair.com/image/upload/f_auto,q_auto/content/tlc-lp-design/memory/icon-right-arrow-yellow.png"
+                                alt="right facing arrow"
+                              />
+                            </p> </a
+                          ><a
+                            data-bannertype="Product Categories"
+                            data-bannername="POLERONES"
+                            style="
+                              --background-image: url(/assets/image/categories/polerones.png);
+                            "
+                            role="button"
+                            tabindex="0"
+                            aria-label="Visit POLERONES - Opens in the current Tab"
+                            href="pages/products/catalog.html?cat=PG"
+                            class="BentoBox_product-card__1IZaK NOPE"
+                          >
+                            <h2>POLERONES</h2>
+                            <p class="BentoBox_link-text__1UaLx">
+                              COMPRAR AHORA<img
+                                src="https://assets.corsair.com/image/upload/f_auto,q_auto/content/tlc-lp-design/memory/icon-right-arrow-yellow.png"
+                                alt="right facing arrow"
+                              />
+                            </p>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
 
-  <!-- Contenido principal -->
+        <div class="why-buy landing-section">
+          <div>
+            <div id="home" class="text-white">
+              <section
+                data-region="uk|eu|cn|jp|fr|es|de|ca|kr|pt|pl|ru|it|us"
+                id="why-buy"
+              >
+                <div class="copy-container">
+                  <h2 style="font-size: 24px">¿POR QUÉ COMPRAR EN LEVELUP?</h2>
+                </div>
+                <a
+                  href="/lm/es/s/buy-direct#selection"
+                  data-bannertype="Why Buy"
+                  data-bannermessage="exclusive products &amp; bundles"
+                  class="why-buy-link"
+                  aria-label="productos y sets exclusivos - Opens in the current Tab"
+                >
+                  <img
+                    src="https://assets.corsair.com/image/upload/f_auto,q_auto/akamai/hybris/homepage/refresh/hp-icon-why-buy-exclusives.png"
+                    alt=""
+                    title=""
+                    style=""
+                  />
+                  <p>productos y sets exclusivos</p>
+                </a>
+                <a
+                  href="/lm/es/s/buy-direct#ship"
+                  data-bannertype="Why Buy"
+                  data-bannermessage="SHIPS FREE NEXT BUSINESS DAY"
+                  class="why-buy-link"
+                  aria-label="SE ENVÍA GRATIS EL SIGUIENTE DÍA HÁBIL* - Opens in the current Tab"
+                >
+                  <img
+                    src="https://assets.corsair.com/image/upload/f_auto,q_auto/akamai/hybris/homepage/refresh/hp-icon-why-buy-shipping.png"
+                    alt=""
+                    title=""
+                    style=""
+                  />
+                  <p>SE ENVÍA GRATIS EL SIGUIENTE DÍA HÁBIL*</p>
+                </a>
+                <a
+                  href="/lm/es/s/buy-direct#chat"
+                  data-bannertype="Why Buy"
+                  data-bannermessage="LIVE CHAT WITH PRODUCT SPECIALISTS"
+                  class="why-buy-link"
+                  aria-label="CHAT EN VIVO CON ESPECIALISTAS EN PRODUCTOS - Opens in the current Tab"
+                >
+                  <img
+                    src="https://assets.corsair.com/image/upload/f_auto,q_auto/akamai/hybris/homepage/refresh/hp-icon-why-buy-live-chat.png"
+                    alt=""
+                  />
+                  <p>CHAT EN VIVO CON ESPECIALISTAS EN PRODUCTOS</p>
+                </a>
+                <a
+                  href="/lm/es/s/buy-direct#returns"
+                  data-bannertype="Why Buy"
+                  data-bannermessage="60-DAYS RISK FREE RETURNS"
+                  class="why-buy-link"
+                  aria-label="60 DÍAS DE DEVOLUCIONES SIN RIESGO - Opens in the current Tab"
+                >
+                  <img
+                    src="https://assets.corsair.com/image/upload/f_auto,q_auto/akamai/hybris/homepage/refresh/hp-icons-why-buy-returns.png"
+                    alt=""
+                  />
+                  <p>60 DÍAS DE DEVOLUCIONES SIN RIESGO</p>
+                </a>
+              </section>
+            </div>
+          </div>
+        </div>
 
-  <section class="index-header">
-    <h1>Échale un ojo a los próximos eventos</h1>
-    <p class="index-subtitle">
-      Lo mejor del Gaming, la tecnología y el entretenimiento
-      digital a lo largo de Chile.
-    </p>
-  </section>
+        <section class="news landing-section">
+          <section id="guides">
+            <div class="width-restrict">
+              <section class="events-header">
+                <h1>Noticias, Guías y Consejos</h1>
+                <p class="events-subtitle">
+                  Encuentra las últimas noticias, guías y consejos para mejorar
+                  tu experiencia gamer y tecnológica.
+                </p>
+              </section>
+              <div class="article-group">
+                <div
+                  id="featuredArticles"
+                  aria-hidden="false"
+                  class="article-container active"
+                >
+                  <a
+                    href="pages/blog/posts/borderlands-4-preview.html"
+                    role="button"
+                    aria-label="Link to the Borderlands 4: Todo lo que sabemos sobre el esperado shooter-RPG blog page - Opens in the current Tab"
+                    class="article"
+                    data-bannertype="Featured Articles"
+                    data-bannername="GAMING"
+                    data-bannermessage="Borderlands 4: Todo lo que sabemos sobre el esperado shooter-RPG"
+                  >
+                    <img
+                      loading="lazy"
+                      src="assets/image/blog/borderlands.webp"
+                      alt="Borderlands 4: Todo lo que sabemos sobre el esperado shooter-RPG"
+                      title=""
+                    />
+                    <div class="text-container">
+                      <h3>GAMING</h3>
+                      <p>
+                        Borderlands 4: Todo lo que sabemos sobre el esperado
+                        shooter-RPG
+                      </p>
+                    </div>
+                  </a>
 
-  <section id="events-list-index" class="events-list-index" style="display: flex; gap: 1.2rem; flex-wrap: wrap; align-items: stretch; justify-content: center; margin-bottom: 2.5rem;">
-    <!-- Las tarjetas de eventos se cargarán aquí dinámicamente -->
-  </section>
+                  <a
+                    href="pages/blog/posts/monitores-4k-gaming.html"
+                    role="button"
+                    aria-label="Link to the Nuevos lanzamientos de monitores 4K para gaming 2024 blog page - Opens in the current Tab"
+                    class="article"
+                    data-bannertype="Featured Articles"
+                    data-bannername="NOTICIAS"
+                    data-bannermessage="Nuevos lanzamientos de monitores 4K para gaming 2024"
+                  >
+                    <img
+                      loading="lazy"
+                      src="assets/image/blog/monitor.webp"
+                      alt="Nuevos lanzamientos de monitores 4K para gaming 2024"
+                      title=""
+                    />
+                    <div class="text-container">
+                      <h3>NOTICIAS</h3>
+                      <p>
+                        Nuevos lanzamientos de monitores 4K para gaming 2024
+                      </p>
+                    </div>
+                  </a>
 
-  <div class="content-wrapper">
-    <main>
-    </main>
-  </div>
+                  <a
+                    href="pages/blog/posts/setup-gaming-completo.html"
+                    role="button"
+                    aria-label="Link to the Guía completa para configurar tu setup gaming perfecto blog page - Opens in the current Tab"
+                    class="article"
+                    data-bannertype="Featured Articles"
+                    data-bannername="GUÍAS"
+                    data-bannermessage="Guía completa para configurar tu setup gaming perfecto"
+                  >
+                    <img
+                      loading="lazy"
+                      src="assets/image/blog/pc.webp"
+                      alt="Guía completa para configurar tu setup gaming perfecto"
+                      title=""
+                    />
+                    <div class="text-container">
+                      <h3>GUÍAS</h3>
+                      <p>
+                        Guía completa para configurar tu setup gaming perfecto
+                      </p>
+                    </div>
+                  </a>
+                </div>
+                <div
+                  id="latestArticles"
+                  aria-hidden="true"
+                  class="article-container"
+                >
+                  <a
+                    href="pages/blog/posts/setup-gaming-completo.html"
+                    role="button"
+                    aria-label="Link to the Guía completa para configurar tu setup gaming perfecto blog page - Opens in the current Tab"
+                    class="article"
+                    data-bannertype="Latest Articles"
+                    data-bannername="GUÍAS"
+                    data-bannermessage="Guía completa para configurar tu setup gaming perfecto"
+                    tabindex="-1"
+                  >
+                    <img
+                      loading="lazy"
+                      src="assets/image/blog/pc.webp"
+                      alt="Guía completa para configurar tu setup gaming perfecto"
+                    />
+                    <div class="text-container">
+                      <h3>GUÍAS</h3>
+                      <p>
+                        Guía completa para configurar tu setup gaming perfecto
+                      </p>
+                    </div>
+                  </a>
 
-  <!-- Footer modular -->
-  <div id="footer-placeholder"></div>
-  </div>
+                  <a
+                    href="pages/blog/posts/monitores-4k-gaming.html"
+                    role="button"
+                    aria-label="Link to the Nuevos lanzamientos de monitores 4K para gaming 2024 blog page - Opens in the current Tab"
+                    class="article"
+                    data-bannertype="Latest Articles"
+                    data-bannername="NOTICIAS"
+                    data-bannermessage="Nuevos lanzamientos de monitores 4K para gaming 2024"
+                    tabindex="-1"
+                  >
+                    <img
+                      loading="lazy"
+                      src="assets/image/blog/monitor.webp"
+                      alt="Nuevos lanzamientos de monitores 4K para gaming 2024"
+                    />
+                    <div class="text-container">
+                      <h3>NOTICIAS</h3>
+                      <p>
+                        Nuevos lanzamientos de monitores 4K para gaming 2024
+                      </p>
+                    </div>
+                  </a>
 
-  <!-- JavaScript -->
-  <script src="assets/js/components/navbar-include.js"></script>
-  <script src="assets/js/components/hero-include.js"></script>
-  <script src="assets/js/components/footer-include.js"></script>
-  <script type="module" src="assets/js/pages/index.js"></script>
-  <script type="module" src="assets/js/components/login.js"></script>
-  <script type="module" src="assets/js/components/register.js"></script>
-</body>
+                  <a
+                    href="pages/blog/posts/borderlands-4-preview.html"
+                    role="button"
+                    aria-label="Link to the Borderlands 4: Todo lo que sabemos sobre el esperado shooter-RPG blog page - Opens in the current Tab"
+                    class="article"
+                    data-bannertype="Latest Articles"
+                    data-bannername="GAMING"
+                    data-bannermessage="Borderlands 4: Todo lo que sabemos sobre el esperado shooter-RPG"
+                    tabindex="-1"
+                  >
+                    <img
+                      loading="lazy"
+                      src="assets/image/blog/borderlands.webp"
+                      alt="Borderlands 4: Todo lo que sabemos sobre el esperado shooter-RPG"
+                    />
+                    <div class="text-container">
+                      <h3>GAMING</h3>
+                      <p>
+                        Borderlands 4: Todo lo que sabemos sobre el esperado
+                        shooter-RPG
+                      </p>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
 
+        <section class="events landing-section">
+          <section class="events-header">
+            <h1>Échale un ojo a los próximos eventos</h1>
+            <p class="events-subtitle">
+              Lo mejor del Gaming, la tecnología y el entretenimiento digital a
+              lo largo de Chile.
+            </p>
+          </section>
+          <section
+            id="events-list-index"
+            class="events-list-index"
+            style="
+              display: flex;
+              gap: 1.2rem;
+              flex-wrap: wrap;
+              align-items: stretch;
+              justify-content: center;
+              margin-bottom: 2.5rem;
+            "
+          >
+            <!-- Las tarjetas de eventos se cargarán aquí dinámicamente -->
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <!-- Footer modular -->
+    <div id="footer-placeholder"></div>
+
+    <!-- JavaScript -->
+    <script src="assets/js/components/navbar-include.js"></script>
+    <script src="assets/js/components/hero-include.js"></script>
+    <script src="assets/js/components/footer-include.js"></script>
+    <script type="module" src="assets/js/pages/index.js"></script>
+    <script type="module" src="assets/js/components/login.js"></script>
+    <script type="module" src="assets/js/components/register.js"></script>
+  </body>
 </html>

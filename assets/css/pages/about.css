@@ -4,27 +4,25 @@
   padding: 30px;
   background: linear-gradient(
     135deg,
-    var(--accent-blue) 0%,
-    var(--accent-green) 100%
+    var(--accent-blue-tint),
+    var(--accent-blue)
   ) !important;
   text-align: center;
-  width: 65%;
-  margin: 40px auto 0 auto;
-  border-radius: 18px;
+  margin-bottom: 2.5rem;
   box-shadow: 0 4px 24px 0 rgba(30, 144, 255, 0.08);
 }
 
 .about-header h1 {
   color: #fff;
   margin-bottom: 10px;
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: var(--weight-bold);
 }
 
 .about-subtitle {
   color: rgba(255, 255, 255, 0.9);
   margin: 0;
-  font-size: var(--size-small);
+  font-size: 1.2rem;
 }
 /* Título grande y centrado para LevelUp */
 .about-title {
@@ -85,7 +83,7 @@
 }
 .about-left h1,
 .about-left h2 {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
   margin: 0;
   color: var(--primary-color, #fff);
@@ -94,7 +92,7 @@
   align-items: flex-start;
   text-align: left;
   gap: 1.2rem;
-  background: var(--bg, #000);
+  background: transparent;
   position: relative;
 }
 
@@ -141,7 +139,7 @@
     padding: 0.5rem 0;
   }
   .about-right {
-    background: var(--bg, #000);
+    background: transparent;
     min-height: 120px;
   }
   .about-right::before {
