@@ -17,128 +17,135 @@
         <h2 id="register-modal-title">Crear cuenta</h2>
       </header>
       <div class="lu-modal__body">
-      <form id="register-form" novalidate>
-        <div class="form-control">
-          <label for="register-run">RUN (opcional)</label>
-          <input
-            type="text"
-            id="register-run"
-            name="run"
-            placeholder="12.345.678-9"
-          />
-          <p class="form-hint" data-error-run hidden>
-            Formato de RUN inválido.
-          </p>
-        </div>
-
-        <div class="form-row">
-          <div class="form-control half">
-            <label for="register-nombre">Nombre</label>
+        <form id="register-form" novalidate>
+          <div class="form-control">
+            <label for="register-run">RUN (opcional)</label>
             <input
               type="text"
-              id="register-nombre"
-              name="nombre"
-              required
-              placeholder="Juan"
+              id="register-run"
+              name="run"
+              placeholder="12.345.678-9"
             />
-            <p class="form-hint" data-error-nombre hidden>
-              Nombre es requerido.
+            <p class="form-hint" data-error-run hidden>
+              Formato de RUN inválido.
             </p>
           </div>
-          <div class="form-control half">
-            <label for="register-apellidos">Apellidos</label>
+
+          <div class="form-row">
+            <div class="form-control half">
+              <label for="register-nombre">Nombre</label>
+              <input
+                type="text"
+                id="register-nombre"
+                name="nombre"
+                required
+                placeholder="Juan"
+              />
+              <p class="form-hint" data-error-nombre hidden>
+                Nombre es requerido.
+              </p>
+            </div>
+            <div class="form-control half">
+              <label for="register-apellidos">Apellidos</label>
+              <input
+                type="text"
+                id="register-apellidos"
+                name="apellidos"
+                required
+                placeholder="Pérez González"
+              />
+              <p class="form-hint" data-error-apellidos hidden>
+                Apellidos son requeridos.
+              </p>
+            </div>
+          </div>
+
+          <div class="form-control">
+            <label for="register-email">Correo electrónico</label>
+            <input
+              type="email"
+              id="register-email"
+              name="email"
+              autocomplete="email"
+              required
+              maxlength="100"
+              placeholder="tucorreo@duoc.cl"
+            />
+            <p class="form-hint" data-error-email hidden>
+              Email inválido o dominio no permitido.
+            </p>
+            <div class="discount-notice" data-discount-notice hidden>
+              🎓 ¡Descuento del 20% de por vida por ser de la comunidad DUOC!
+            </div>
+          </div>
+
+          <div class="form-control">
+            <label for="register-birthdate">Fecha de nacimiento</label>
+            <input
+              type="date"
+              id="register-birthdate"
+              name="birthdate"
+              required
+            />
+            <p class="form-hint" data-error-birthdate hidden>
+              Debes ser mayor de 18 años.
+            </p>
+          </div>
+
+          <div class="form-control">
+            <label for="register-password">Contraseña</label>
+            <input
+              type="password"
+              id="register-password"
+              name="password"
+              autocomplete="new-password"
+              required
+              minlength="6"
+              placeholder="••••••"
+            />
+            <p class="form-hint" data-error-password hidden>
+              Mínimo 6 caracteres.
+            </p>
+          </div>
+
+          <div class="form-control">
+            <label for="register-referral-code"
+              >Código de referido (opcional)</label
+            >
             <input
               type="text"
-              id="register-apellidos"
-              name="apellidos"
-              required
-              placeholder="Pérez González"
+              id="register-referral-code"
+              name="referralCode"
+              placeholder="Ej: ABC123"
+              maxlength="10"
             />
-            <p class="form-hint" data-error-apellidos hidden>
-              Apellidos son requeridos.
+            <p class="form-hint" data-error-referral-code hidden>
+              El código debe tener entre 6 y 10 caracteres alfanuméricos.
+            </p>
+            <p class="form-hint success" data-success-referral-code hidden>
+              ✓ Código válido. ¡Ganarás puntos LevelUp al registrarte!
+            </p>
+            <p
+              class="form-hint"
+              data-format-referral-code
+              style="color: #666; font-size: 0.65rem"
+              hidden
+            >
+              Formato: 6-10 caracteres alfanuméricos (A-Z, 0-9)
             </p>
           </div>
-        </div>
 
-        <div class="form-control">
-          <label for="register-email">Correo electrónico</label>
-          <input
-            type="email"
-            id="register-email"
-            name="email"
-            autocomplete="email"
-            required
-            maxlength="100"
-            placeholder="tucorreo@duoc.cl"
-          />
-          <p class="form-hint" data-error-email hidden>
-            Email inválido o dominio no permitido.
-          </p>
-          <div class="discount-notice" data-discount-notice hidden>
-            🎓 ¡Descuento del 20% de por vida por ser de la comunidad DUOC!
+          <div class="form-actions">
+            <button type="submit" class="btn-primary" id="register-submit">
+              Crear cuenta
+            </button>
+            <p class="alt-text">
+              ¿Ya tienes cuenta?
+              <a href="#" class="alt-link" data-switch-to-login>Ingresar</a>
+            </p>
           </div>
-        </div>
-
-        <div class="form-control">
-          <label for="register-birthdate">Fecha de nacimiento</label>
-          <input
-            type="date"
-            id="register-birthdate"
-            name="birthdate"
-            required
-          />
-          <p class="form-hint" data-error-birthdate hidden>
-            Debes ser mayor de 18 años.
-          </p>
-        </div>
-
-        <div class="form-control">
-          <label for="register-password">Contraseña</label>
-          <input
-            type="password"
-            id="register-password"
-            name="password"
-            autocomplete="new-password"
-            required
-            minlength="6"
-            placeholder="••••••"
-          />
-          <p class="form-hint" data-error-password hidden>
-            Mínimo 6 caracteres.
-          </p>
-        </div>
-
-        <div class="form-control">
-          <label for="register-referral-code">Código de referido (opcional)</label>
-          <input
-            type="text"
-            id="register-referral-code"
-            name="referralCode"
-            placeholder="Ej: ABC123"
-            maxlength="10"
-          />
-          <p class="form-hint" data-error-referral-code hidden>
-            El código debe tener entre 6 y 10 caracteres alfanuméricos.
-          </p>
-          <p class="form-hint success" data-success-referral-code hidden>
-            ✓ Código válido. ¡Ganarás puntos LevelUp al registrarte!
-          </p>
-          <p class="form-hint" data-format-referral-code style="color: #666; font-size: 0.65rem;" hidden>
-            Formato: 6-10 caracteres alfanuméricos (A-Z, 0-9)
-          </p>
-        </div>
-
-        <div class="form-actions">
-          <button type="submit" class="btn-primary" id="register-submit">
-            Crear cuenta
-          </button>
-          <p class="alt-text">
-            ¿Ya tienes cuenta?
-            <a href="#" class="alt-link" data-switch-to-login>Ingresar</a>
-          </p>
-        </div>
-      </form>
-    </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>
