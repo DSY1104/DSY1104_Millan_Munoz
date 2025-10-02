@@ -1,169 +1,24 @@
-# ---- Project Git Ignore ------------------------------------
-# Adjust as needed. Keep this curated; remove entries you actually want tracked.
-
-# === OS / File System Noise ===
-.DS_Store
-.DS_Store?
-Thumbs.db
-ehthumbs.db
-Icon?
-._*
-.Spotlight-V100
-.Trashes
-.fseventsd
-.nfs*
-# Vim / Emacs / Editors
-*~
-*.swp
-*.swo
-*.tmp
-*.orig
-*.rej
-# Patch / merge artifacts
-*.bak
-*.backup
-*.patch
-*.diff
-*.merge_file_*
-
-# === Node / Frontend ===
-node_modules/
-jspm_packages/
-bower_components/
-# Build output
-build/
-dist/
-out/
-.next/
-.vercel/
-.vite/
-.cache/
-.cache-loader/
-.tmp/
-.temp/
-parcel-cache/
-
-# Coverage / Reports
-coverage/
-.nyc_output/
-reports/
-
-# Dependency locks (KEEP these normally; comment out if you want to ignore)
-# yarn.lock
-# package-lock.json
-# pnpm-lock.yaml
-
-# === Environment & Secrets ===
-.env
-.env.*
-!.env.example
-!.env.sample
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# === Logs & Diagnostics ===
-logs/
+# Logs
+logs
 *.log
-*.log.*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# === IDE / Editors ===
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
 .vscode/*
 !.vscode/extensions.json
-!.vscode/settings.example.json
-.idea/
-*.iml
-*.code-workspace
-.project
-.classpath
-.c9/
-.settings/
-.history/
-software.properties
-
-# === TypeScript / Transpilation Artifacts ===
-*.tsbuildinfo
-
-# === Assets Processing Caches ===
-.sass-cache/
-stylelintcache
-.eslintcache
-.postcss-cache/
-.pnp.*
-.pnpm-store/
-
-# === Testing ===
-.jest-cache/
-.jest/**
-jest-cache/
-jest-report/
-
-# === Archives / Packages ===
-*.tgz
-*.tar
-*.tar.gz
-*.zip
-*.7z
-
-# === Misc Generated ===
-*.pid
-*.seed
-*.pid.lock
-
-# === Mac Specific Resource Forks ===
-*.AppleDouble
-
-# === Optional: Design / Export Artifacts ===
-*.sketch
-*.fig
-*.psd
-*.ai
-*.xcf
-
-# === Images optimization caches ===
-.imagemin-cache/
-
-# === Python (if any tooling scripts appear) ===
-__pycache__/
-*.py[cod]
-*.pyo
-*.pyd
-.venv/
-venv/
-ENV/
-
-# === Rust / Go / Other (future-proof) ===
-/target/
-Cargo.lock
-bin/
-
-# === Temporary Data ===
-*.tmp.*
-*.temp.*
-.DS_Store*
-
-# === Security ===
-*.pem
-*.key
-*.crt
-*.pfx
-
-# === Git / Merge Tools ===
-*.orig
-*.BASE.*
-*.LOCAL.*
-*.REMOTE.*
-
-# === Ignore local tooling configs (uncomment to use) ===
-# .editorconfig
-# .prettierrc
-# .eslintrc
-
-# -----------------------------------------------------------
-# End of .gitignore
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
