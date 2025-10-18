@@ -1,0 +1,632 @@
+// Lógica para el botón global de limpiar filtros (siempre visible y azul)
+document.addEventListener("DOMContentLoaded", () => {
+  const clearAllBtn = document.getElementById("clear-all-filters");
+  if (clearAllBtn) {
+    clearAllBtn.addEventListener("click", () => {
+      setSelectedCategory(null);
+      setSelectedBrand(null);
+      setSelectedRating(null);
+      if (searchInput) searchInput.value = "";
+      if (sortPrice) sortPrice.value = "precio-asc";
+      if (sortRating) sortRating.value = "none";
+      resetPagination();
+      renderFiltered();
+    });
+  }
+});
+import {
+  includeCategoryFilter,
+  setupCategoryFilter,
+} from "../components/category-filter.js";
+import {
+  includeBrandFilter,
+  setupBrandFilter,
+} from "../components/brand-filter.js";
+import {
+  includeRatingFilter,
+  setupRatingFilter,
+} from "../components/rating-filter.js";
+// Obtener marcas únicas de products.json
+function getUniqueBrandsFromProducts(products) {
+  const set = new Set();
+  products.forEach((p) => {
+    if (p.marca && typeof p.marca === "string" && p.marca.trim() !== "")
+      set.add(p.marca.trim());
+  });
+  return Array.from(set).sort((a, b) => a.localeCompare(b, "es"));
+}
+// Obtener categorías desde categories.json y poblar el filtro con el nombre
+
+// Inicializar filtros después de cargar productos
+fetch("../../assets/data/products.json")
+  .then((res) => res.json())
+  .then((products) => {
+    allProducts = products.map((p, idx) => ({ ...p, _idx: idx }));
+    // Filtro de categoría
+    fetch("../../assets/data/categories.json")
+      .then((res) => res.json())
+      .then((categoriesData) => {
+        includeCategoryFilter("#category-filter-placeholder").then(() => {
+          setupCategoryFilter(
+            categoriesData,
+            (selectedCategoryId) => {
+              setSelectedCategory(selectedCategoryId);
+              renderFiltered();
+            },
+            () => {
+              setSelectedCategory(null);
+              renderFiltered();
+            }
+          );
+        });
+      });
+    // Filtro de marca
+    const brands = getUniqueBrandsFromProducts(allProducts);
+    includeBrandFilter("#brand-filter-placeholder").then(() => {
+      setupBrandFilter(
+        brands,
+        (selectedBrandName) => {
+          setSelectedBrand(selectedBrandName);
+          renderFiltered();
+        },
+        () => {
+          setSelectedBrand(null);
+          renderFiltered();
+        }
+      );
+    });
+    // Filtro de rating
+    includeRatingFilter("#rating-filter-placeholder").then(() => {
+      setupRatingFilter(
+        (selectedRating) => {
+          setSelectedRating(selectedRating);
+          renderFiltered();
+        },
+        () => {
+          setSelectedRating(null);
+          renderFiltered();
+        }
+      );
+    });
+    renderFiltered();
+  });
+import {
+  includeCategoriesTiles,
+  setupCategoriesTilesFilter,
+} from "../components/categories-tiles.js";
+// Obtener categorías desde el archivo JSON
+function getAvailableCategories() {
+  // Este fetch es síncrono para el setup, pero la data ya está cargada en allProducts
+  // Se asume que las categorías están en assets/data/categories.json
+  // Si no, puedes ajustar para usar allProducts.map(p => p.categoriaId)
+  return [
+    { id: "JM", nombre: "Juegos de Mesa" },
+    { id: "AC", nombre: "Accesorios" },
+    { id: "CO", nombre: "Consolas" },
+    { id: "CG", nombre: "PC Gamers" },
+    { id: "SG", nombre: "Sillas" },
+    { id: "MS", nombre: "Mouse" },
+    { id: "MP", nombre: "Mousepad" },
+    { id: "PP", nombre: "Poleras" },
+    { id: "PG", nombre: "Polerones" },
+    { id: "ST", nombre: "Servicio Técnico" },
+  ];
+}
+
+// Normaliza texto para búsqueda (quita acentos y pasa a minúsculas)
+function normalizeText(str) {
+  return str
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase();
+}
+
+// Debounce util
+function debounce(fn, delay) {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => fn(...args), delay);
+  };
+}
+
+let allProducts = [];
+let lastSortPrice = "precio-asc";
+let lastSortRating = "none";
+
+// Pagination variables
+let currentPage = 1;
+const PRODUCTS_PER_PAGE = 12;
+let totalPages = 1;
+let filteredProducts = [];
+
+
+const container = document.getElementById("product-list");
+const searchInput = document.getElementById("search-input");
+const sortPrice = document.getElementById("sort-price");
+const sortRating = document.getElementById("sort-rating");
+
+// --- Sincronización con querystring ---
+function updateQueryString() {
+  const params = new URLSearchParams();
+  if (getSelectedCategory()) params.set("cat", getSelectedCategory());
+  if (getSelectedBrand()) params.set("brand", getSelectedBrand());
+  if (getSelectedRating() !== null) params.set("rating", getSelectedRating());
+  if (searchInput && searchInput.value.trim() !== "") params.set("q", searchInput.value.trim());
+  if (sortPrice && sortPrice.value !== "none") params.set("sortPrice", sortPrice.value);
+  if (sortRating && sortRating.value !== "none") params.set("sortRating", sortRating.value);
+  if (currentPage > 1) params.set("page", currentPage);
+  const qs = params.toString();
+  const url = qs ? `${location.pathname}?${qs}` : location.pathname;
+  window.history.replaceState({}, "", url);
+}
+
+function restoreFromQueryString() {
+  const params = new URLSearchParams(window.location.search);
+  let changed = false;
+  // Categoría
+  if (params.has("cat")) {
+    setSelectedCategory(params.get("cat"));
+    const catBtn = document.querySelector(`#category-filter-placeholder .category-btn[data-category="${params.get("cat")}"]`);
+    if (catBtn) {
+      catBtn.click();
+      changed = true;
+    }
+  }
+  // Marca
+  if (params.has("brand")) {
+    setSelectedBrand(params.get("brand"));
+    const brandBtn = document.querySelector(`#brand-filter-placeholder .brand-btn[data-brand="${params.get("brand")}"]`);
+    if (brandBtn) {
+      brandBtn.click();
+      changed = true;
+    }
+  }
+  // Rating
+  if (params.has("rating")) {
+    setSelectedRating(Number(params.get("rating")));
+    const ratingBtn = document.querySelector(`#rating-filter-placeholder .rating-btn[data-rating="${params.get("rating")}"]`);
+    if (ratingBtn) {
+      ratingBtn.click();
+      changed = true;
+    }
+  }
+  // Búsqueda
+  if (params.has("q") && searchInput) {
+    searchInput.value = params.get("q");
+    changed = true;
+  }
+  // Orden precio
+  if (params.has("sortPrice") && sortPrice) {
+    sortPrice.value = params.get("sortPrice");
+    changed = true;
+  }
+  // Orden rating
+  if (params.has("sortRating") && sortRating) {
+    sortRating.value = params.get("sortRating");
+    changed = true;
+  }
+  // Page
+  if (params.has("page")) {
+    currentPage = parseInt(params.get("page")) || 1;
+    changed = true;
+  }
+  if (changed) renderFiltered();
+}
+
+// Hookear cambios de filtros para actualizar querystring
+function hookQuerySync() {
+  if (searchInput) searchInput.addEventListener("input", updateQueryString);
+  if (sortPrice) sortPrice.addEventListener("change", updateQueryString);
+  if (sortRating) sortRating.addEventListener("change", updateQueryString);
+}
+
+// Sobrescribir setters para actualizar querystring y resetear paginación
+const _setSelectedCategory = setSelectedCategory;
+setSelectedCategory = function(val) {
+  _setSelectedCategory(val);
+  resetPagination();
+  updateQueryString();
+};
+const _setSelectedBrand = setSelectedBrand;
+setSelectedBrand = function(val) {
+  _setSelectedBrand(val);
+  resetPagination();
+  updateQueryString();
+};
+const _setSelectedRating = setSelectedRating;
+setSelectedRating = function(val) {
+  _setSelectedRating(val);
+  resetPagination();
+  updateQueryString();
+};
+
+// Restaurar filtros desde querystring SOLO después de cargar productos y filtros
+function afterFiltersReady() {
+  restoreFromQueryString();
+  renderFiltered();
+  hookQuerySync();
+}
+
+import {
+  includeCategoryTiles,
+  setupCategoryTilesFilter,
+} from "../components/category-tiles.js";
+import {
+  includeBrandTiles,
+  setupBrandTilesFilter,
+} from "../components/brand-tiles.js";
+import {
+  includeRatingTiles,
+  setupRatingTilesFilter,
+} from "../components/rating-tiles.js";
+
+// Modular: categoría seleccionada y exponer getter/setter
+let selectedCategory = null;
+function getSelectedCategory() {
+  return selectedCategory;
+}
+function setSelectedCategory(val) {
+  selectedCategory = val;
+}
+
+// Modular: marca seleccionada y exponer getter/setter
+let selectedBrand = null;
+function getSelectedBrand() {
+  return selectedBrand;
+}
+function setSelectedBrand(val) {
+  selectedBrand = val;
+}
+
+// Obtener marcas únicas de los productos cargados
+function getAvailableBrands() {
+  const brands = new Set();
+  allProducts.forEach((p) => {
+    if (p.marca && typeof p.marca === "string" && p.marca.trim() !== "") {
+      brands.add(p.marca.trim());
+    }
+  });
+  return Array.from(brands).sort((a, b) => a.localeCompare(b, "es"));
+}
+
+// Modular: rating seleccionado y exponer getter/setter
+let selectedRating = null;
+function getSelectedRating() {
+  return selectedRating;
+}
+function setSelectedRating(val) {
+  selectedRating = val;
+}
+
+// Incluir sidebars modulares y setear lógica de filtros SOLO cuando estén en el DOM
+includeCategoriesTiles("#category-tiles-placeholder").then(() => {
+  setupCategoriesTilesFilter(
+    renderFiltered,
+    getSelectedCategory,
+    setSelectedCategory,
+    getAvailableCategories
+  );
+});
+includeBrandTiles("#brand-tiles-placeholder").then(() => {
+  setupBrandTilesFilter(
+    renderFiltered,
+    getSelectedBrand,
+    setSelectedBrand,
+    getAvailableBrands
+  );
+  includeRatingTiles("#rating-tiles-placeholder").then(() => {
+    setupRatingTilesFilter(
+      renderFiltered,
+      getSelectedRating,
+      setSelectedRating
+    );
+  });
+});
+
+import { renderProductCard } from "../components/product-card.js";
+
+fetch("../../assets/data/products.json")
+  .then((res) => res.json())
+  .then((products) => {
+    allProducts = products.map((p, idx) => ({ ...p, _idx: idx })); // _idx para sort estable
+    // Solo restaurar filtros desde querystring y renderizar (no renderFiltered antes)
+    afterFiltersReady();
+  });
+
+function renderFiltered() {
+  let filtered = allProducts;
+  const q = normalizeText(searchInput?.value || "");
+  if (q) {
+    filtered = filtered.filter(
+      (p) =>
+        normalizeText(p.nombre).includes(q) || normalizeText(p.code).includes(q)
+    );
+  }
+  // Filtro por categoría destacada
+  if (selectedCategory) {
+    filtered = filtered.filter((p) => {
+      return (
+        p.categoriaId === selectedCategory ||
+        (p.categoria &&
+          normalizeText(p.categoria).includes(normalizeText(selectedCategory)))
+      );
+    });
+  }
+  // Filtro por marca
+  if (selectedBrand) {
+    filtered = filtered.filter((p) => p.marca === selectedBrand);
+  }
+  // Filtro por rating: productos con rating >= N y < N+1 (ej: 3 estrellas muestra 3.0 a 3.9)
+  if (selectedRating !== null) {
+    filtered = filtered.filter((p) => {
+      if (typeof p.rating !== "number") return false;
+      return p.rating >= selectedRating && p.rating < selectedRating + 1;
+    });
+  }
+  // Ordenamiento: si precio está en 'none', solo rating; si no, primero rating, luego precio
+  const sortPriceVal = sortPrice?.value || lastSortPrice;
+  const sortRatingVal = sortRating?.value || lastSortRating;
+  if (sortPriceVal === "none") {
+    filtered = stableSort(filtered, getSortRatingFn(sortRatingVal));
+  } else {
+    filtered = stableSort(filtered, getSortRatingFn(sortRatingVal));
+    filtered = stableSort(filtered, getSortPriceFn(sortPriceVal));
+  }
+
+  // Store filtered products for pagination
+  filteredProducts = filtered;
+  
+  // Calculate pagination
+  totalPages = Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE);
+  
+  // Ensure current page is valid
+  if (currentPage > totalPages && totalPages > 0) {
+    currentPage = totalPages;
+  }
+  if (currentPage < 1) {
+    currentPage = 1;
+  }
+
+  // Update URL with current page
+  updateQueryString();
+
+  // Clear container
+  container.innerHTML = "";
+  
+  if (filteredProducts.length === 0) {
+    container.innerHTML = `
+      <div class="no-products-message fade-in" style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; min-height: 220px; text-align: center;">
+        <img src="../../assets/image/icon/login.svg" alt="Sin resultados" style="width: 80px; margin-bottom: 1em; opacity: 0.7;" />
+        <span class="no-products-title" style="color: var(--accent-blue); font-size: 1.5em;">No encontramos productos</span>
+        <span class="no-products-sub" style="color: #888; font-size: 1.1em;">Prueba ajustando los filtros, revisa la ortografía o explora otras categorías.<br>¡Siempre hay algo nuevo por descubrir!</span>
+      </div>
+    `;
+    renderPaginationControls();
+    return;
+  }
+
+  // Calculate products for current page
+  const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
+  const endIndex = startIndex + PRODUCTS_PER_PAGE;
+  const currentPageProducts = filteredProducts.slice(startIndex, endIndex);
+  
+  // Render products for current page
+  currentPageProducts.forEach((product) => renderProductCard(product, container));
+  
+  // Render pagination controls
+  renderPaginationControls();
+}
+
+// Pagination controls rendering
+function renderPaginationControls() {
+  // Remove existing pagination controls
+  const existingPagination = document.getElementById('pagination-controls');
+  if (existingPagination) {
+    existingPagination.remove();
+  }
+
+  // Don't show pagination if no products or only one page
+  if (filteredProducts.length === 0 || totalPages <= 1) {
+    return;
+  }
+
+  // Create pagination container
+  const paginationContainer = document.createElement('div');
+  paginationContainer.id = 'pagination-controls';
+  paginationContainer.className = 'pagination-controls';
+
+  // Create pagination info
+  const startItem = (currentPage - 1) * PRODUCTS_PER_PAGE + 1;
+  const endItem = Math.min(currentPage * PRODUCTS_PER_PAGE, filteredProducts.length);
+  
+  const paginationInfo = document.createElement('div');
+  paginationInfo.className = 'pagination-info';
+  paginationInfo.innerHTML = `
+    <span>Mostrando ${startItem}-${endItem} de ${filteredProducts.length} productos</span>
+  `;
+
+  // Create pagination buttons container
+  const buttonsContainer = document.createElement('div');
+  buttonsContainer.className = 'pagination-buttons';
+
+  // Previous button
+  const prevButton = document.createElement('button');
+  prevButton.innerHTML = '← Anterior';
+  prevButton.className = 'pagination-btn';
+  prevButton.disabled = currentPage === 1;
+  if (!prevButton.disabled) {
+    prevButton.onclick = () => {
+      currentPage--;
+      renderFiltered();
+      scrollToTop();
+      focusPaginationControls();
+    };
+  }
+  buttonsContainer.appendChild(prevButton);
+
+  // Page number buttons (show 5 pages max)
+  const maxVisiblePages = 5;
+  let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+  let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+  
+  // Adjust start page if we're near the end
+  if (endPage - startPage < maxVisiblePages - 1) {
+    startPage = Math.max(1, endPage - maxVisiblePages + 1);
+  }
+
+  // First page if not visible
+  if (startPage > 1) {
+    const firstPageBtn = createPageButton(1);
+    buttonsContainer.appendChild(firstPageBtn);
+    if (startPage > 2) {
+      const ellipsis = document.createElement('span');
+      ellipsis.className = 'pagination-ellipsis';
+      ellipsis.textContent = '...';
+      buttonsContainer.appendChild(ellipsis);
+    }
+  }
+
+  // Page buttons
+  for (let i = startPage; i <= endPage; i++) {
+    const pageBtn = createPageButton(i);
+    buttonsContainer.appendChild(pageBtn);
+  }
+
+  // Last page if not visible
+  if (endPage < totalPages) {
+    if (endPage < totalPages - 1) {
+      const ellipsis = document.createElement('span');
+      ellipsis.className = 'pagination-ellipsis';
+      ellipsis.textContent = '...';
+      buttonsContainer.appendChild(ellipsis);
+    }
+    const lastPageBtn = createPageButton(totalPages);
+    buttonsContainer.appendChild(lastPageBtn);
+  }
+
+  // Next button
+  const nextButton = document.createElement('button');
+  nextButton.innerHTML = 'Siguiente →';
+  nextButton.className = 'pagination-btn';
+  nextButton.disabled = currentPage === totalPages;
+  if (!nextButton.disabled) {
+    nextButton.onclick = () => {
+      currentPage++;
+      renderFiltered();
+      scrollToTop();
+      focusPaginationControls();
+    };
+  }
+  buttonsContainer.appendChild(nextButton);
+
+  // Alternative: "Ver más" button for mobile
+  const showMoreContainer = document.createElement('div');
+  showMoreContainer.className = 'show-more-container';
+  
+  if (currentPage < totalPages) {
+    const showMoreBtn = document.createElement('button');
+    showMoreBtn.innerHTML = 'Ver más productos';
+    showMoreBtn.className = 'show-more-btn';
+    showMoreBtn.onclick = () => {
+      currentPage++;
+      renderFiltered();
+      // Focus on the first new product
+      setTimeout(() => {
+        const newProductStart = document.querySelector(`#product-list .product-card:nth-child(${(currentPage - 1) * PRODUCTS_PER_PAGE + 1})`);
+        if (newProductStart) {
+          newProductStart.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          newProductStart.focus();
+        }
+      }, 100);
+    };
+    showMoreContainer.appendChild(showMoreBtn);
+  }
+
+  // Assemble pagination controls
+  paginationContainer.appendChild(paginationInfo);
+  paginationContainer.appendChild(buttonsContainer);
+  paginationContainer.appendChild(showMoreContainer);
+
+  // Insert after product list
+  const productSection = document.getElementById('productos');
+  productSection.appendChild(paginationContainer);
+}
+
+function createPageButton(pageNum) {
+  const button = document.createElement('button');
+  button.textContent = pageNum;
+  button.className = `pagination-btn page-btn ${pageNum === currentPage ? 'active' : ''}`;
+  if (pageNum !== currentPage) {
+    button.onclick = () => {
+      currentPage = pageNum;
+      renderFiltered();
+      scrollToTop();
+      focusPaginationControls();
+    };
+  }
+  return button;
+}
+
+// Helper functions for accessibility and UX
+function scrollToTop() {
+  const productSection = document.getElementById('productos');
+  if (productSection) {
+    productSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function focusPaginationControls() {
+  setTimeout(() => {
+    const paginationControls = document.getElementById('pagination-controls');
+    if (paginationControls) {
+      paginationControls.setAttribute('tabindex', '-1');
+      paginationControls.focus();
+      paginationControls.removeAttribute('tabindex');
+    }
+  }, 100);
+}
+
+// Reset pagination when filters change
+function resetPagination() {
+  currentPage = 1;
+}
+
+function getSortPriceFn(type) {
+  lastSortPrice = type;
+  if (type === "precio-asc")
+    return (a, b) => a.precioCLP - b.precioCLP || a._idx - b._idx;
+  if (type === "precio-desc")
+    return (a, b) => b.precioCLP - a.precioCLP || a._idx - b._idx;
+  return (a, b) => a._idx - b._idx;
+}
+
+function getSortRatingFn(type) {
+  lastSortRating = type;
+  if (type === "rating-asc")
+    return (a, b) => a.rating - b.rating || a._idx - b._idx;
+  if (type === "rating-desc")
+    return (a, b) => b.rating - a.rating || a._idx - b._idx;
+  return (a, b) => a._idx - b._idx;
+}
+
+// Sort estable
+function stableSort(arr, cmp) {
+  return arr.slice().sort((a, b) => cmp(a, b));
+}
+
+// Importación única
+
+const debouncedRender = debounce(() => {
+  resetPagination();
+  renderFiltered();
+}, 250);
+
+const handleSortChange = () => {
+  resetPagination();
+  renderFiltered();
+};
+
+if (searchInput) searchInput.addEventListener("input", debouncedRender);
+if (sortPrice) sortPrice.addEventListener("change", handleSortChange);
+if (sortRating) sortRating.addEventListener("change", handleSortChange);
