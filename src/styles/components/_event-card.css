@@ -1,0 +1,92 @@
+/* Estilos para tarjetas de eventos */
+.events-section {
+  margin: 2rem 0;
+  padding: 1rem 0;
+}
+.events-section .section-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #2b2b2b;
+}
+.events-list {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1.2rem;
+  justify-content: center;
+  overflow-x: auto;
+}
+.event-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  padding: 1rem 0.8rem;
+  min-width: 280px;
+  max-width: 320px;
+  flex: 1 1 calc(33.333% - 0.8rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  border: 1px solid #ececec;
+  transition: box-shadow 0.2s;
+  flex-shrink: 0;
+}
+.event-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.13);
+}
+.event-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a237e;
+  margin-bottom: 0.3rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.event-location,
+.event-region,
+.event-dates,
+.event-hours {
+  font-size: 0.9rem;
+  color: #444;
+  margin-bottom: 0.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.event-description {
+  font-size: 0.9rem;
+  color: #333;
+  margin-top: 0.3rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+  max-height: calc(1.4em * 3);
+}
+
+/* Estilos responsivos para las tarjetas de eventos */
+@media (max-width: 1024px) {
+  .events-list {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+  .event-card {
+    flex: 1 1 calc(50% - 0.6rem);
+    min-width: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .events-list {
+    flex-direction: column;
+    align-items: center;
+  }
+  .event-card {
+    flex: 1 1 100%;
+    max-width: 400px;
+    min-width: unset;
+  }
+}
