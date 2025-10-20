@@ -6,17 +6,25 @@ export default function ProductCard({
   nombre = "",
   marca = "",
   precioCLP = "",
+  categoriaId = "",
   rating = null,
   onAddToCart = () => {},
 }) {
   return (
     <div className="product-card">
-      <img src={imagen} alt={nombre} className="product-image" />
+      {categoriaId && (
+        <span className="product-category badge">{categoriaId}</span>
+      )}
+      <div className="product-image-wrapper">
+        <img src={imagen} alt={nombre} className="product-image" />
+      </div>
       <div className="product-info">
-        <h3 className="product-name">{nombre}</h3>
+        <div className="product-meta-row">
+          <h3 className="product-name">{nombre}</h3>
+          {rating !== null && <span className="product-rating">⭐ {rating}</span>}
+        </div>
         <p className="product-brand">{marca}</p>
         <p className="product-price">${precioCLP}</p>
-        {rating !== null && <p className="product-rating">⭐ {rating}</p>}
         <button className="add-to-cart" onClick={onAddToCart}>Agregar al carrito</button>
       </div>
     </div>
