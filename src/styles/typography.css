@@ -1,0 +1,100 @@
+@import "assets/css/variables/_typography.css";
+
+/* Aplicación de la jerarquía tipográfica */
+
+/* Encabezados - Orbitron */
+h1,
+.h1 {
+  font-family: var(--font-heading);
+  font-size: var(--size-h1);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+}
+
+h2,
+.h2 {
+  font-family: var(--font-heading);
+  font-size: var(--size-h2);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+}
+
+h3,
+.h3 {
+  font-family: var(--font-heading);
+  font-size: var(--size-h3);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+}
+
+h4,
+.h4 {
+  font-family: var(--font-heading);
+  font-size: var(--size-h4);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-normal);
+}
+
+h5,
+.h5 {
+  font-family: var(--font-heading);
+  font-size: var(--size-h5);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-normal);
+}
+
+h6,
+.h6 {
+  font-family: var(--font-heading);
+  font-size: var(--size-h6);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-normal);
+}
+
+/* Cuerpo de texto - Roboto */
+body {
+  font-family: var(--font-body);
+  font-size: var(--size-body);
+  font-weight: var(--weight-normal);
+  line-height: var(--leading-normal);
+}
+
+p,
+.body {
+  font-family: var(--font-body);
+  font-size: var(--size-body);
+  font-weight: var(--weight-normal);
+  line-height: var(--leading-normal);
+}
+
+/* Texto pequeño - Roboto */
+small,
+.small {
+  font-family: var(--font-body);
+  font-size: var(--size-small);
+  font-weight: var(--weight-normal);
+  line-height: var(--leading-normal);
+}
+
+/* Elementos adicionales */
+strong,
+b,
+.bold {
+  font-weight: var(--weight-bold);
+}
+
+em,
+i {
+  font-style: italic;
+}
+
+/* Clases utilitarias para pesos */
+.weight-normal {
+  font-weight: var(--weight-normal);
+}
+.weight-medium {
+  font-weight: var(--weight-medium);
+}
+.weight-bold {
+  font-weight: var(--weight-bold);
+}

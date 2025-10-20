@@ -1,6 +1,11 @@
 @import url("../variables/_colors.css");
 /* Header estilo igual a cart-header */
 
+.main-content {
+  padding: 20px;
+  min-height: calc(100vh - 80px); /* Ajusta según la altura del navbar */
+}
+
 .about-header {
   padding: 30px;
   background: transparent;

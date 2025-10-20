@@ -4,6 +4,12 @@ ESTILOS PARA PÁGINA DE BLOG
 ===========================================
 */
 /* Contenedor principal del blog */
+
+.main-content {
+  padding: 65px;
+  min-height: calc(100vh - 80px); /* Ajusta según la altura del navbar */
+}
+
 .blog-header {
   text-align: center;
   padding: 30px;

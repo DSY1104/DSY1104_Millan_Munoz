@@ -1,0 +1,60 @@
+:root {
+  /* 
+    Breakpoints requeridos
+    */
+  --bp-mobile: 480px;
+  --bp-tablet: 768px;
+  --bp-desktop: 769px;
+
+  /* 
+    Media queries prácticas 
+    */
+  --mobile: (max-width: 480px);
+  --tablet: (min-width: 481px) and (max-width: 768px);
+  --desktop: (min-width: 769px);
+
+
+    /*
+    Definiendo variables de colores para el tema de la pagina web.
+    Modularizado para facilitar cambios futuros.
+    */
+
+
+  --bg: #000000;
+  --text: #ffffff;
+  --text-2: #d3d3d3;
+  --accent-blue: #1e90ff;
+  --accent-blue-shade: #1a7fe0;
+  --accent-blue-tint: #359bff;
+  --accent-green: #39ff14;
+  --accent-green-shade: #32e012;
+  --accent-green-tint: #4dff2c;
+  --accent-green-contrast: #000;
+
+
+    /* Definición de fuentes locales - Variables */
+    /* Familias tipográficas con fallback sans-serif */
+    
+  --font-heading: "Orbitron", sans-serif;
+  --font-body: "Roboto", sans-serif;
+
+  /* Escala tipográfica */
+  --size-h1: 3rem;
+  --size-h2: 2.25rem;
+  --size-h3: 1.875rem;
+  --size-h4: 1.5rem;
+  --size-h5: 1.25rem;
+  --size-h6: 1.125rem;
+  --size-body: 1rem;
+  --size-small: 0.875rem;
+
+  /* Pesos de fuente (400/500/700) */
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-bold: 700;
+
+  /* Alturas de línea */
+  --leading-tight: 1.2;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+}
