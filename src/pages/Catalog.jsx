@@ -3,6 +3,7 @@ import ProductCard from "/src/components/products/ProductCard.jsx";
 import "/src/styles/pages/products.css";
 import CategoryHamburger from "/src/components/filters/CategoriesHamburger.jsx";
 import { getAllProducts } from "../services/catalogService";
+import { getAllCategories } from "../services/categoryService";
 
 const PRODUCTS_PER_PAGE = 12;
 
@@ -34,7 +35,7 @@ export default function CatalogPage() {
         setLoading(true);
         const [productsData, categoriesData] = await Promise.all([
           getAllProducts(),
-          fetch("/src/assets/data/categories.json").then((res) => res.json()),
+          getAllCategories(),
         ]);
         setProducts(productsData);
         setCategories(categoriesData);
