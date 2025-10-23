@@ -26,7 +26,8 @@ describe("Cart Page", () => {
   test("should render empty cart message when cart is empty", () => {
     renderWithProviders(<Cart />);
 
-    expect(screen.getByText(/carrito vacío/i)).toBeInTheDocument();
+  const emptyMessages = screen.getAllByText(/tu carrito está vacío/i);
+  expect(emptyMessages.length).toBeGreaterThanOrEqual(2);
   });
 
   test("should render cart items when cart has products", () => {
@@ -47,8 +48,10 @@ describe("Cart Page", () => {
 
     renderWithProviders(<Cart />);
 
-    expect(screen.getByText("Mouse Gaming")).toBeInTheDocument();
-    expect(screen.getByText("$25.000")).toBeInTheDocument();
+  expect(screen.getByText("Mouse Gaming")).toBeInTheDocument();
+  // Buscar cualquier elemento que contenga el precio $25.000
+  const priceElements = screen.getAllByText(/25\.000/);
+  expect(priceElements.length).toBeGreaterThan(0);
   });
 
   test("should display correct cart totals", () => {
@@ -68,6 +71,8 @@ describe("Cart Page", () => {
 
     renderWithProviders(<Cart />);
 
-    expect(screen.getByText(/50\.000/)).toBeInTheDocument();
+  // Buscar todos los elementos que contengan el total $50.000
+  const totalElements = screen.getAllByText(/50\.000/);
+  expect(totalElements.length).toBeGreaterThan(0);
   });
 });

@@ -26,18 +26,20 @@ describe("Navigation", () => {
   test("should render navigation links", () => {
     renderWithProviders(<Navigation />);
 
-    expect(screen.getByText("Inicio")).toBeInTheDocument();
+    expect(screen.getByText("HOME")).toBeInTheDocument();
     expect(screen.getByText("Productos")).toBeInTheDocument();
-    expect(screen.getByText("Blog")).toBeInTheDocument();
+    expect(screen.getByText("Blogs/Noticias")).toBeInTheDocument();
     expect(screen.getByText("Soporte")).toBeInTheDocument();
-    expect(screen.getByText("Nosotros")).toBeInTheDocument();
+    expect(screen.getByText("Acerca")).toBeInTheDocument();
   });
 
   test("should render cart link", () => {
     renderWithProviders(<Navigation />);
-
-    const cartLink = screen.getByLabelText(/carrito/i);
-    expect(cartLink).toBeInTheDocument();
+    // Buscar el link al carrito por aria-label exacto
+    const cartLinks = screen.getAllByLabelText(/ver carrito/i);
+    expect(cartLinks.length).toBeGreaterThan(0);
+    // Buscar el ícono del carrito
+    expect(screen.getAllByLabelText(/carrito/i).length).toBeGreaterThan(0);
   });
 
   test("should display cart item count badge when items in cart", () => {

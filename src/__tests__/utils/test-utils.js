@@ -149,3 +149,9 @@ export function suppressConsole() {
     console.warn = originalWarn;
   });
 }
+
+describe('test-utils', () => {
+  test('dummy test to satisfy Jest', () => {
+    expect(true).toBe(true);
+  });
+});

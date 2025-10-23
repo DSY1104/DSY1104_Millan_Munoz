@@ -48,3 +48,16 @@ global.IntersectionObserver = class IntersectionObserver {
   }
   unobserve() {}
 };
+
+// Mock fetch globally for all tests
+beforeAll(() => {
+  if (!global.fetch) {
+    global.fetch = jest.fn(() => Promise.resolve({ ok: true, json: () => Promise.resolve([]) }));
+  }
+});
+
+afterEach(() => {
+  if (global.fetch) {
+    global.fetch.mockClear();
+  }
+});

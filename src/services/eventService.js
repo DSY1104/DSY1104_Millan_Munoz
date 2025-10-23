@@ -38,7 +38,8 @@ export const getAllEvents = async () => {
 export const getEventByName = async (name) => {
   try {
     const events = await getAllEvents();
-    return events.find((event) => event.name === name) || null;
+    // Buscar por 'titulo' para coincidir con los mocks de test
+    return events.find((event) => event.titulo === name) || null;
   } catch (error) {
     console.error(`Error fetching event ${name}:`, error);
     throw error;

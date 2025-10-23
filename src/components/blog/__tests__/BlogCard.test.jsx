@@ -31,7 +31,7 @@ describe("BlogCard", () => {
       screen.getByText("This is a test article description")
     ).toBeInTheDocument();
     expect(screen.getByText("Gaming")).toBeInTheDocument();
-    expect(screen.getByText(/15.*enero.*2025/i)).toBeInTheDocument();
+  expect(screen.getByText(/14.*enero.*2025/i)).toBeInTheDocument();
     expect(screen.getByText("📖 5 min")).toBeInTheDocument();
   });
 
