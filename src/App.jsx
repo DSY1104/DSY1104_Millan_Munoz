@@ -17,6 +17,7 @@ import CatalogPage from "./pages/Catalog.jsx";
 import ProductDetailPage from "./pages/ProductDetail.jsx";
 import SupportPage from "./pages/Support.jsx";
 import NotFound from "./pages/NotFound.jsx";
+import UserProfile from "./pages/UserProfile.jsx";
 
 // Layout component
 function Layout() {
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
       {
         path: "products/:id",
         element: <ProductDetailPage />,
+      },
+      {
+        path: "profile",
+        element: <UserProfile />,
       },
       {
         path: "support",
