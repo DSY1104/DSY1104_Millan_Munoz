@@ -26,7 +26,7 @@ export default function Footer() {
               <li><NavLink to="/products?cat=CO" className="footer-link">Consolas</NavLink></li>
               <li><NavLink to="/products?cat=AC" className="footer-link">Accesorios</NavLink></li>
               <li><NavLink to="/products?cat=PP" className="footer-link">Ropa Gamer</NavLink></li>
-              <li><NavLink to="/products?cat=JO" className="footer-link">Juegos de Mesa</NavLink></li>
+              <li><NavLink to="/products?cat=JM" className="footer-link">Juegos de Mesa</NavLink></li>
             </ul>
           </nav>
         </div>
