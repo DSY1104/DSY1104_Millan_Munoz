@@ -211,7 +211,7 @@ ESTILOS PARA PÁGINA DE BLOG
     var(--accent-green-tint),
     var(--accent-green)
   );
-  color: var(--bg);
+  color: var(--accent-green-contrast, #000);
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 25px;

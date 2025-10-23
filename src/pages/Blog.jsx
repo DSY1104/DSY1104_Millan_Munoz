@@ -64,9 +64,6 @@ export default function BlogPage() {
     setSort(e.target.value);
     setTimeout(() => setLoading(false), 300);
   }
-  function handleArticleClick(slug) {
-    window.location.href = `posts/${slug}.html`;
-  }
 
   return (
     <div>
@@ -153,11 +150,7 @@ export default function BlogPage() {
                     </div>
                   ) : (
                     filteredArticles.map((article) => (
-                      <BlogCard
-                        key={article.id}
-                        article={article}
-                        onClick={handleArticleClick}
-                      />
+                      <BlogCard key={article.id} article={article} />
                     ))
                   )}
                 </div>

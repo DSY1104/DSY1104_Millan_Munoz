@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import "/src/styles/components/_navbar.css";
-
 
 // Simple cart count from localStorage, mirrors legacy logic
 function useCartCount() {
@@ -22,22 +22,11 @@ function useCartCount() {
   return count;
 }
 
-
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [userOpen, setUserOpen] = useState(false);
   const cartCount = useCartCount();
-
-
-  // Login state bridge to the existing cookie-based mock auth used by vanilla
-  const isLoggedIn = useMemo(() => {
-    try {
-      return window?.LevelUpLogin?.isLoggedIn?.() || false;
-    } catch {
-      return false;
-    }
-  }, [menuOpen, userOpen]);
-
+  const { isAuthenticated, user, openLoginModal, logout } = useAuth();
 
   useEffect(() => {
     const onResize = () => {
@@ -47,14 +36,10 @@ export default function Navigation() {
       }
     };
     window.addEventListener("resize", onResize);
-    const onLogout = () => setUserOpen(false);
-    window.addEventListener("userLoggedOut", onLogout);
     return () => {
       window.removeEventListener("resize", onResize);
-      window.removeEventListener("userLoggedOut", onLogout);
     };
   }, []);
-
 
   return (
     <nav className="navbar" role="navigation" aria-label="Navegación principal">
@@ -68,18 +53,21 @@ export default function Navigation() {
           />
         </NavLink>
 
-
         <button
           className="navbar-toggle"
           aria-label="Abrir menú"
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen((v) => !v)}
         >
-          <span></span><span></span><span></span>
+          <span></span>
+          <span></span>
+          <span></span>
         </button>
 
-
-        <ul className={`navbar-menu ${menuOpen ? "active" : ""}`} id="navbar-menu">
+        <ul
+          className={`navbar-menu ${menuOpen ? "active" : ""}`}
+          id="navbar-menu"
+        >
           <li>
             <NavLink to="/" end className="navbar-link">
               HOME
@@ -106,20 +94,27 @@ export default function Navigation() {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/cart" className="navbar-cart" aria-label="Ver carrito">
-              <span role="img" aria-label="carrito">🛒</span>
-              <span className="cart-badge" id="cart-count">{cartCount}</span>
+            <NavLink
+              to="/cart"
+              className="navbar-cart"
+              aria-label="Ver carrito"
+            >
+              <span role="img" aria-label="carrito">
+                🛒
+              </span>
+              <span className="cart-badge" id="cart-count">
+                {cartCount}
+              </span>
             </NavLink>
           </li>
 
-
           <li className="navbar-user">
-            {!isLoggedIn ? (
+            {!isAuthenticated ? (
               <button
                 className="navbar-login-btn"
                 id="login-btn"
                 aria-label="Iniciar sesión"
-                onClick={() => window?.LevelUpLogin?.open?.()}
+                onClick={openLoginModal}
               >
                 <img src="/assets/image/icon/login.svg" alt="Login" />
               </button>
@@ -131,16 +126,36 @@ export default function Navigation() {
                   aria-label="Menú de usuario"
                   onClick={() => setUserOpen((v) => !v)}
                 >
-                  <span role="img" aria-label="usuario">👤</span>
+                  <span role="img" aria-label="usuario">
+                    👤
+                  </span>
                 </button>
-                <div className={`navbar-user-menu ${userOpen ? "active" : ""}`} id="user-menu">
-                  <NavLink to="/profile" className="user-menu-link" onClick={() => setUserOpen(false)}>
+                <div
+                  className={`navbar-user-menu ${userOpen ? "active" : ""}`}
+                  id="user-menu"
+                >
+                  <NavLink
+                    to="/profile"
+                    className="user-menu-link"
+                    onClick={() => setUserOpen(false)}
+                  >
                     Mi Perfil
                   </NavLink>
-                  <NavLink to="/cart" className="user-menu-link" onClick={() => setUserOpen(false)}>
+                  <NavLink
+                    to="/cart"
+                    className="user-menu-link"
+                    onClick={() => setUserOpen(false)}
+                  >
                     Mi Carrito
                   </NavLink>
-                  <button className="user-menu-link user-logout" id="logout-btn" onClick={() => window?.LevelUpLogin?.logout?.()}>
+                  <button
+                    className="user-menu-link user-logout"
+                    id="logout-btn"
+                    onClick={() => {
+                      logout();
+                      setUserOpen(false);
+                    }}
+                  >
                     Cerrar Sesión
                   </button>
                 </div>
@@ -152,5 +167,3 @@ export default function Navigation() {
     </nav>
   );
 }
-
-

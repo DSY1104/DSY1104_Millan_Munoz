@@ -1,72 +1,70 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import "/src/styles/components/_landing-categories.css";
 
 const categories = [
   {
     id: "JM",
     name: "JUEGOS DE MESA",
     image: "/src/assets/images/categories/juegos-de-mesa.png",
-    href: "pages/products/catalog.html?cat=JM",
   },
   {
     id: "AC",
     name: "ACCESORIOS",
-    image: "https://assets.corsair.com/image/upload/f_auto/q_auto/v1716913780/akamai/hybris/homepage/refresh/category-tile-headsets.png",
-    href: "pages/products/catalog.html?cat=AC",
+    image:
+      "https://assets.corsair.com/image/upload/f_auto/q_auto/v1716913780/akamai/hybris/homepage/refresh/category-tile-headsets.png",
   },
   {
     id: "FA",
     name: "FUENTES DE ALIMENTACIÓN",
-    image: "https://assets.corsair.com/image/upload/f_auto/q_auto/v1716913783/akamai/hybris/homepage/refresh/category-tile-psu.png",
-    href: "pages/products/catalog.html?cat=FA",
+    image:
+      "https://assets.corsair.com/image/upload/f_auto/q_auto/v1716913783/akamai/hybris/homepage/refresh/category-tile-psu.png",
   },
   {
     id: "CG",
     name: "COMPUTADORES GAMER",
-    image: "https://assets.corsair.com/image/upload/f_auto/q_auto/v1717186447/akamai/hybris/homepage/refresh/alternates/category-tile-cases-alt1.png",
-    href: "pages/products/catalog.html?cat=CG",
+    image:
+      "https://assets.corsair.com/image/upload/f_auto/q_auto/v1717186447/akamai/hybris/homepage/refresh/alternates/category-tile-cases-alt1.png",
   },
   {
     id: "MS",
     name: "MOUSE",
-    image: "https://assets.corsair.com/image/upload/f_auto/q_auto/v1748382136/akamai/hybris/homepage/refresh/category-tile-Gaming-Mice.png",
-    href: "pages/products/catalog.html?cat=MS",
+    image:
+      "https://assets.corsair.com/image/upload/f_auto/q_auto/v1748382136/akamai/hybris/homepage/refresh/category-tile-Gaming-Mice.png",
   },
   {
     id: "MP",
     name: "MOUSEPAD",
     image: "/src/assets/images/categories/mousepad.png",
-    href: "pages/products/catalog.html?cat=MP",
   },
   {
     id: "SG",
     name: "SILLAS GAMER",
-    image: "https://assets.corsair.com/image/upload/f_auto/q_auto/v1721335978/akamai/hybris/homepage/refresh/category-tile-furniture.png",
-    href: "pages/products/catalog.html?cat=SG",
+    image:
+      "https://assets.corsair.com/image/upload/f_auto/q_auto/v1721335978/akamai/hybris/homepage/refresh/category-tile-furniture.png",
   },
   {
     id: "PP",
     name: "POLERAS",
     image: "/src/assets/images/categories/poleras.png",
-    href: "pages/products/catalog.html?cat=PP",
   },
   {
     id: "PG",
     name: "POLERONES",
     image: "/src/assets/images/categories/polerones.png",
-    href: "pages/products/catalog.html?cat=PG",
   },
 ];
 
-function CategoryTile({ name, image, href }) {
+function CategoryTile({ id, name, image }) {
   return (
-    <a
+    <Link
+      to={`/products?cat=${id}`}
       data-bannertype="Product Categories"
       data-bannername={name}
       style={{ "--background-image": `url(${image})` }}
       role="button"
       tabIndex={0}
       aria-label={`Visit ${name} - Opens in the current Tab`}
-      href={href}
       className="BentoBox_product-card__1IZaK NOPE"
     >
       <h2>{name}</h2>
@@ -77,7 +75,7 @@ function CategoryTile({ name, image, href }) {
           alt="right facing arrow"
         />
       </p>
-    </a>
+    </Link>
   );
 }
 

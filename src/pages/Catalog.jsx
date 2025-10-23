@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 import ProductCard from "/src/components/products/ProductCard.jsx";
 import "/src/styles/pages/products.css";
-import CategoryHamburger from "/src/components/filters/CategoriesHamburger.jsx";
+import FilterSidebar from "/src/components/filters/FilterSidebar.jsx";
 import { getAllProducts } from "../services/catalogService";
 import { getAllCategories } from "../services/categoryService";
 
@@ -17,6 +18,7 @@ function normalizeText(str) {
 }
 
 export default function CatalogPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [search, setSearch] = useState("");
@@ -28,6 +30,14 @@ export default function CatalogPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Handle category from query parameter
+  useEffect(() => {
+    const catParam = searchParams.get("cat");
+    if (catParam) {
+      setSelectedCategory(catParam);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -132,6 +142,8 @@ export default function CatalogPage() {
     setSortPrice("precio-asc");
     setSortRating("none");
     setCurrentPage(1);
+    // Clear query parameters
+    setSearchParams({});
   };
 
   useEffect(() => {
@@ -173,52 +185,17 @@ export default function CatalogPage() {
         {!loading && !error && (
           <div className="content-wrapper">
             <main className="catalog-main-layout">
-              <aside id="catalog-sidebar">
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    marginBottom: "1.2em",
-                  }}
-                >
-                  <h2
-                    className="filters-header"
-                    style={{
-                      color: "var(--accent-blue)",
-                      fontSize: "1.3em",
-                      fontFamily: "var(--font-body, Roboto, sans-serif)",
-                      fontWeight: 700,
-                      letterSpacing: "0.02em",
-                      margin: 0,
-                    }}
-                  >
-                    Filtros
-                  </h2>
-                  <button
-                    id="clear-all-filters"
-                    type="button"
-                    style={{
-                      marginLeft: "1em",
-                      padding: "0.3em 1em",
-                      fontSize: "0.95em",
-                      background: "var(--accent-blue)",
-                      color: "#fff",
-                      border: "none",
-                      borderRadius: 4,
-                      cursor: "pointer",
-                    }}
-                    onClick={handleClearFilters}
-                  >
-                    Limpiar Filtro
-                  </button>
-                </div>
-                <CategoryHamburger
-                  categories={categories}
-                  selected={selectedCategory}
-                  onSelect={setSelectedCategory}
-                />
-              </aside>
+              <FilterSidebar
+                categories={categories}
+                brands={uniqueBrands}
+                selectedCategory={selectedCategory}
+                selectedBrand={selectedBrand}
+                selectedRating={selectedRating}
+                onCategorySelect={setSelectedCategory}
+                onBrandSelect={setSelectedBrand}
+                onRatingSelect={setSelectedRating}
+                onClearFilters={handleClearFilters}
+              />
               <section id="productos" className="section">
                 <form
                   id="catalog-controls"

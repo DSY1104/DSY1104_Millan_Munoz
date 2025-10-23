@@ -2,8 +2,15 @@ import React, { useState } from "react";
 
 export default function CategoryHamburger({ categories, selected, onSelect }) {
   const [open, setOpen] = useState(false);
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Escape") {
+      setOpen(false);
+    }
+  };
+
   return (
-    <div className="hamburger-filter">
+    <>
       <button
         className="tiles-hamburger"
         aria-label="Mostrar/Ocultar categorías"
@@ -11,6 +18,7 @@ export default function CategoryHamburger({ categories, selected, onSelect }) {
         aria-controls="category-filter-collapsible"
         id="category-filter-hamburger"
         onClick={() => setOpen((v) => !v)}
+        onKeyDown={handleKeyDown}
       >
         <span className="hamburger-title">Categoría</span>
       </button>
@@ -23,16 +31,25 @@ export default function CategoryHamburger({ categories, selected, onSelect }) {
           {categories.map((cat) => (
             <button
               key={cat.id}
-              className={`tile-btn category-btn${selected === cat.id ? " selected" : ""}`}
+              className={`tile-btn category-btn${
+                selected === cat.id ? " selected" : ""
+              }`}
               data-category={cat.id}
+              tabIndex="0"
               aria-pressed={selected === cat.id}
               onClick={() => onSelect(cat.id)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onSelect(cat.id);
+                }
+              }}
             >
               {cat.nombre}
             </button>
           ))}
         </nav>
       </div>
-    </div>
+    </>
   );
 }

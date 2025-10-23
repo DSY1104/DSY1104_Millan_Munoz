@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "/src/styles/components/_hero.css";
 
 export default function Hero() {
@@ -34,10 +35,12 @@ export default function Hero() {
         <h1 className="hero-claim">
           Los mejores productos para el Gamer que llevas en ti.
         </h1>
-        <p className="hero-desc">PC´s, consolas y accesorios para todos los gustos.</p>
-        <a href="/pages/products/catalog.html" className="hero-cta">
+        <p className="hero-desc">
+          PC´s, consolas y accesorios para todos los gustos.
+        </p>
+        <Link to="/products" className="hero-cta">
           Llévame a los productos
-        </a>
+        </Link>
       </div>
     </section>
   );

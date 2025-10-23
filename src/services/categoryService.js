@@ -3,27 +3,31 @@
  * Handles all category-related API calls
  */
 
+// Category data - centralized source
+const CATEGORIES = [
+  { id: "JM", nombre: "Juegos de Mesa" },
+  { id: "AC", nombre: "Accesorios" },
+  { id: "CO", nombre: "Consolas" },
+  { id: "CG", nombre: "Computadores Gamers" },
+  { id: "SG", nombre: "Sillas Gamers" },
+  { id: "MS", nombre: "Mouse" },
+  { id: "MP", nombre: "Mousepad" },
+  { id: "PP", nombre: "Poleras Personalizadas" },
+  { id: "PG", nombre: "Polerones Gamers Personalizados" },
+  { id: "ST", nombre: "Servicio Técnico" },
+  { id: "FA", nombre: "Fuentes de Alimentación" },
+];
+
 /**
  * Fetch all categories
- * Simulates an API call by fetching the local JSON file
+ * Returns the categories array (simulates async API call)
  * @returns {Promise<Array>} - Array of category objects
  */
 export const getAllCategories = async () => {
   try {
-    // In a real scenario, this would be an API endpoint like '/api/categories'
-    // For now, we're simulating by fetching the local JSON file
-    const response = await fetch("/src/assets/data/categories.json");
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-
     // Simulate network delay
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    return data;
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    return [...CATEGORIES];
   } catch (error) {
     console.error("Error fetching categories:", error);
     throw error;

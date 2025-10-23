@@ -1,0 +1,251 @@
+/* Error Boundary Page Styles */
+.error-boundary-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #2c3e50 0%, #1a1a1a 100%);
+  padding: 20px;
+  position: relative;
+}
+
+.error-boundary-container {
+  max-width: 900px;
+  width: 100%;
+}
+
+.error-boundary-content {
+  background: rgba(26, 26, 26, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 60px 50px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Error Icon */
+.error-icon {
+  color: #e74c3c;
+  margin-bottom: 30px;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-10px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(10px);
+  }
+}
+
+.error-icon svg {
+  filter: drop-shadow(0 4px 8px rgba(231, 76, 60, 0.3));
+}
+
+/* Error Title */
+.error-boundary-title {
+  color: #fff;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 20px 0;
+  font-family: var(--font-primary);
+}
+
+.error-boundary-message {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.2rem;
+  margin: 0 0 30px 0;
+  line-height: 1.6;
+}
+
+/* Error Details (Development only) */
+.error-details {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 20px;
+  margin: 30px 0;
+  text-align: left;
+}
+
+.error-details summary {
+  color: #e74c3c;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 15px;
+  user-select: none;
+}
+
+.error-details summary:hover {
+  color: #ff6b6b;
+}
+
+.error-stack {
+  color: #ffcc00;
+  font-family: "Courier New", monospace;
+  font-size: 0.85rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+/* Error Info */
+.error-info {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 25px;
+  margin: 0 0 40px 0;
+  text-align: left;
+}
+
+.error-info-title {
+  color: var(--accent-blue);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 15px 0;
+}
+
+.error-info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.error-info-list li {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+  padding: 8px 0;
+  padding-left: 25px;
+  position: relative;
+}
+
+.error-info-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--accent-blue);
+  font-weight: 700;
+}
+
+/* Action Buttons */
+.error-boundary-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.error-boundary-actions .btn {
+  min-width: 150px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  font-weight: 600;
+}
+
+.error-boundary-actions .btn-primary {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: #fff;
+}
+
+.error-boundary-actions .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(231, 76, 60, 0.3);
+}
+
+.error-boundary-actions .btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.error-boundary-actions .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Error Help */
+.error-help {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 30px;
+  margin-top: 30px;
+}
+
+.error-help p {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  margin: 0 0 10px 0;
+  line-height: 1.6;
+}
+
+.error-timestamp {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.85rem;
+  font-family: monospace;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .error-boundary-content {
+    padding: 40px 30px;
+  }
+
+  .error-boundary-title {
+    font-size: 1.8rem;
+  }
+
+  .error-boundary-message {
+    font-size: 1rem;
+  }
+
+  .error-boundary-actions {
+    flex-direction: column;
+  }
+
+  .error-boundary-actions .btn {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .error-icon svg {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .error-boundary-content {
+    padding: 30px 20px;
+  }
+
+  .error-boundary-title {
+    font-size: 1.5rem;
+  }
+
+  .error-icon svg {
+    width: 60px;
+    height: 60px;
+  }
+
+  .error-info {
+    padding: 20px;
+  }
+}

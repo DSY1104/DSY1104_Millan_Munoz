@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getAllEvents } from "../../services/eventService";
+import "/src/styles/components/_event-card.css";
 
 export default function EventsSection() {
   const [events, setEvents] = useState([]);
@@ -130,6 +131,7 @@ export default function EventsSection() {
             zIndex: 9999,
             justifyContent: "center",
             alignItems: "center",
+            padding: "2vh",
           }}
           onClick={(e) => {
             if (e.target === e.currentTarget) setModalEvent(null);
@@ -142,12 +144,14 @@ export default function EventsSection() {
               borderRadius: 16,
               maxWidth: 700,
               width: "96vw",
+              maxHeight: "96vh",
               padding: "2rem 1.5rem",
               position: "relative",
               boxShadow: "0 8px 32px rgba(30,144,255,0.18)",
               display: "flex",
               flexDirection: "column",
               gap: "1.1rem",
+              overflowY: "auto",
             }}
           >
             <button
@@ -160,12 +164,18 @@ export default function EventsSection() {
                 color: "#fff",
                 fontSize: "1.5rem",
                 cursor: "pointer",
+                zIndex: 1,
               }}
               onClick={() => setModalEvent(null)}
             >
               &times;
             </button>
-            <h2 style={{ color: "var(--accent-blue,#39a7ff)" }}>
+            <h2
+              style={{
+                color: "var(--accent-blue,#39a7ff)",
+                paddingRight: "2rem",
+              }}
+            >
               {modalEvent.name}
             </h2>
             <p>{modalEvent.description}</p>
@@ -176,10 +186,18 @@ export default function EventsSection() {
                 gap: "0.5rem",
               }}
             >
-              <span>Lugar: {modalEvent.location}</span>
-              <span>Región: {modalEvent.region}</span>
-              <span>Fechas: {modalEvent.dates}</span>
-              <span>Horario: {modalEvent.hours}</span>
+              <span>
+                <strong>Lugar:</strong> {modalEvent.location}
+              </span>
+              <span>
+                <strong>Región:</strong> {modalEvent.region}
+              </span>
+              <span>
+                <strong>Fechas:</strong> {modalEvent.dates}
+              </span>
+              <span>
+                <strong>Horario:</strong> {modalEvent.hours}
+              </span>
             </div>
             <div style={{ marginTop: "1.2rem" }}>
               <label style={{ fontWeight: 600, color: "#fff" }}>

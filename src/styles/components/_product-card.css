@@ -1,76 +1,92 @@
-/* Tarjeta de producto modular */
+/* ===== PRODUCT CARD COMPONENT ===== */
+
+/* Card Container */
 .product-card {
-  border: 2px solid transparent;
-  background: var(--bg-lighter, #23272f);
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  padding: 1.2rem;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 0.8rem;
-  height: 450px;
   width: 320px;
   max-width: 100%;
+  height: 450px;
+  padding: 1.2rem;
+  background: var(--bg-lighter, #23272f);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   overflow: hidden;
-  transition: box-shadow 0.2s, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-  position: relative;
   cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Animation on load */
   opacity: 0;
   transform: translateY(30px);
   animation: fadeInCard 0.7s ease forwards;
 }
-.product-card:hover {
-  box-shadow: 0 0px 50px rgba(57, 255, 20, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1);
-  transform: translateY(-14px) scale(1.07) rotate(-2deg);
-  border: 2px solid var(--accent-green-shade, #00bfff);
-  z-index: 3;
-}
+
 @keyframes fadeInCard {
   to {
     opacity: 1;
     transform: none;
   }
 }
+
+/* Card Hover & Focus States */
+.product-card:hover {
+  transform: translateY(-14px) scale(1.07) rotate(-2deg);
+  box-shadow: 0 0 50px rgba(57, 255, 20, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-color: var(--accent-green-shade, #00bfff);
+  z-index: 3;
+}
+
 .product-card:focus {
   outline: 2px solid var(--accent-blue, #1e90ff);
 }
+
+/* Category Badge */
+.product-category.badge {
+  position: absolute;
+  top: 0.7rem;
+  left: 0.7rem;
+  z-index: 2;
+  padding: 0.2em 0.7em;
+  background: var(--accent-blue, #1e90ff);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Image Section */
 .product-image-wrapper {
   width: 100%;
   aspect-ratio: 1.2/1;
-  position: relative;
+  margin-bottom: 0.5rem;
+  background: #fff;
   border-radius: 8px;
   overflow: hidden;
-  background: #fff;
-  margin-bottom: 0.5rem;
+  position: relative;
 }
+
 .product-image {
   width: 100%;
   height: 100%;
   object-fit: contain;
   display: block;
 }
-.product-category.badge {
-  position: absolute;
-  top: 0.7rem;
-  left: 0.7rem;
-  background: var(--accent-blue, #1e90ff);
-  color: #fff;
-  font-size: 0.8rem;
-  padding: 0.2em 0.7em;
-  border-radius: 6px;
-  font-weight: 600;
-  z-index: 2;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-}
+
+/* Product Info Section */
 .product-info {
-  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+  width: 100%;
   flex: 1 1 auto;
   min-height: 0;
 }
+
 .product-meta-row {
   display: flex;
   flex-direction: row;
@@ -79,64 +95,66 @@
   width: 100%;
   margin-bottom: 0.3rem;
 }
+
+/* Product Details */
 .product-name {
-  font-size: 1.1rem;
-  font-family: var(--font-heading, "Orbitron", sans-serif);
-  color: var(--text, #fff);
   margin: 0;
+  color: var(--text, #fff);
+  font-family: var(--font-heading, "Orbitron", sans-serif);
+  font-size: 1.1rem;
 }
+
 .product-brand {
-  font-size: 0.85rem;
+  margin: -0.3rem 0 0.2rem 0;
   color: var(--text-2, #b0b0b0);
-  margin-bottom: 0.2rem;
-  margin-top: -0.3rem;
+  font-size: 0.85rem;
   font-weight: 500;
   letter-spacing: 0.01em;
 }
+
 .product-rating {
+  margin: 0 0 0 0.5rem;
   color: #ffd700;
   font-size: 1rem;
-  margin: 0 0 0 0.5rem;
   white-space: nowrap;
 }
+
 .product-price {
-  font-size: 1.1rem;
-  color: var(--accent-blue, #1e90ff);
-  font-weight: 700;
   margin: 0;
+  color: var(--accent-blue, #1e90ff);
+  font-size: 1.1rem;
+  font-weight: 700;
 }
+
+/* Add to Cart Button */
 .add-to-cart {
-  font-weight: 500;
-  text-transform: uppercase;
-  background: var(--accent-green, #1e90ff);
-  color: var(--accent-green-contrast);
-  border: none;
-  border-radius: 6px;
-  padding: 0.5em 1.2em;
-  font-size: 1rem;
-  font-family: inherit;
-  cursor: pointer;
-  margin-top: auto;
   align-self: center;
   width: 90%;
   max-width: 220px;
-  box-sizing: border-box;
+  margin-top: auto;
+  padding: 0.5em 1.2em;
+  background: var(--accent-green, #1e90ff);
+  color: var(--accent-green-contrast, #fff);
+  border: none;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  cursor: pointer;
   transition: background 0.2s;
 }
+
 .add-to-cart:hover:not(:disabled),
 .add-to-cart:focus:not(:disabled) {
   background: var(--accent-green-shade, #0066cc);
 }
-.add-to-cart:disabled {
-  background: #aaa;
-  cursor: not-allowed;
-  color: #fff;
-  border: 1.5px solid #b22222;
-  opacity: 0.85;
-}
+
+.add-to-cart:disabled,
 .add-to-cart.disabled {
   background: #b22222;
   color: #fff;
   border: 1.5px solid #b22222;
   opacity: 0.85;
+  cursor: not-allowed;
 }

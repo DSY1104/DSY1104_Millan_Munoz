@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 
 const categoryNames = {
   gaming: "Gaming",
@@ -14,71 +15,56 @@ function formatDate(dateString) {
   return date.toLocaleDateString("es-ES", options);
 }
 
-export default function BlogCard({ article, onClick }) {
+export default function BlogCard({ article }) {
   const formattedDate = formatDate(article.date);
   const featuredClass = article.featured ? "featured" : "";
 
   return (
-    <article
-      className={`article-card ${featuredClass}`}
-      data-article-id={article.id}
-      tabIndex={0}
-      role="button"
-      aria-label={`Leer artículo: ${article.title}`}
-      onClick={() => onClick(article.slug)}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          onClick(article.slug);
-        }
-      }}
-    >
-      <div className="article-image">
-        <img
-          src={article.image}
-          alt={`Imagen del artículo: ${article.title}`}
-          loading="lazy"
-        />
-      </div>
-      <div className="article-content">
-        <div className="article-meta">
-          <span
-            className="article-category"
-            aria-label={`Categoría: ${
-              categoryNames[article.category] || article.category
-            }`}
-          >
-            {categoryNames[article.category] || article.category}
-          </span>
-          <time
-            className="article-date"
-            dateTime={article.date}
-            aria-label={`Fecha de publicación: ${formattedDate}`}
-          >
-            {formattedDate}
-          </time>
+    <Link to={`/blog/${article.slug}`} className="article-card-link">
+      <article
+        className={`article-card ${featuredClass}`}
+        data-article-id={article.id}
+      >
+        <div className="article-image">
+          <img
+            src={article.image}
+            alt={`Imagen del artículo: ${article.title}`}
+            loading="lazy"
+          />
         </div>
-        <h2 className="article-title">{article.title}</h2>
-        <p className="article-description">{article.description}</p>
-        <div className="article-footer">
-          <button
-            className="read-more-btn"
-            aria-label={`Leer más sobre: ${article.title}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              onClick(article.slug);
-            }}
-          >
-            Leer más
-          </button>
-          <span
-            className="article-reading-time"
-            aria-label={`Tiempo de lectura: ${article.readingTime}`}
-          >
-            📖 {article.readingTime}
-          </span>
+        <div className="article-content">
+          <div className="article-meta">
+            <span
+              className="article-category"
+              aria-label={`Categoría: ${
+                categoryNames[article.category] || article.category
+              }`}
+            >
+              {categoryNames[article.category] || article.category}
+            </span>
+            <time
+              className="article-date"
+              dateTime={article.date}
+              aria-label={`Fecha de publicación: ${formattedDate}`}
+            >
+              {formattedDate}
+            </time>
+          </div>
+          <h2 className="article-title">{article.title}</h2>
+          <p className="article-description">{article.description}</p>
+          <div className="article-footer">
+            <span className="read-more-btn" aria-hidden="true">
+              Leer más
+            </span>
+            <span
+              className="article-reading-time"
+              aria-label={`Tiempo de lectura: ${article.readingTime}`}
+            >
+              📖 {article.readingTime}
+            </span>
+          </div>
         </div>
-      </div>
-    </article>
+      </article>
+    </Link>
   );
 }
