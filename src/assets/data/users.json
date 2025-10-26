@@ -48,17 +48,21 @@
     "coupons": [
       {
         "id": "COUP-001",
-        "name": "Bronze",
-        "value": 1000,
         "code": "BRONZE-ALX-001",
+        "description": "Cupón Bronze - $1.000 de descuento",
+        "type": "fixed",
+        "value": 1000,
+        "minPurchase": 0,
         "expiresAt": "2025-12-31",
         "isUsed": false
       },
       {
         "id": "COUP-002",
-        "name": "Silver",
-        "value": 2000,
         "code": "SILVER-ALX-002",
+        "description": "Cupón Silver - $2.000 de descuento",
+        "type": "fixed",
+        "value": 2000,
+        "minPurchase": 0,
         "expiresAt": "2025-11-30",
         "isUsed": true
       }
@@ -113,25 +117,31 @@
     "coupons": [
       {
         "id": "COUP-003",
-        "name": "Gold",
-        "value": 5000,
         "code": "GOLD-MRG-003",
+        "description": "Cupón Gold - $5.000 de descuento",
+        "type": "fixed",
+        "value": 5000,
+        "minPurchase": 0,
         "expiresAt": "2025-12-15",
         "isUsed": false
       },
       {
         "id": "COUP-004",
-        "name": "Platinum",
-        "value": 10000,
         "code": "PLAT-MRG-004",
+        "description": "Cupón Platinum - $10.000 de descuento",
+        "type": "fixed",
+        "value": 10000,
+        "minPurchase": 0,
         "expiresAt": "2026-01-31",
         "isUsed": false
       },
       {
         "id": "COUP-005",
-        "name": "Bronze",
-        "value": 1000,
         "code": "BRONZE-MRG-005",
+        "description": "Cupón Bronze - $1.000 de descuento",
+        "type": "fixed",
+        "value": 1000,
+        "minPurchase": 0,
         "expiresAt": "2025-10-28",
         "isUsed": true
       }
@@ -186,17 +196,21 @@
     "coupons": [
       {
         "id": "COUP-006",
-        "name": "Bronze",
-        "value": 1000,
         "code": "BRONZE-CRS-006",
+        "description": "Cupón Bronze - $1.000 de descuento",
+        "type": "fixed",
+        "value": 1000,
+        "minPurchase": 0,
         "expiresAt": "2025-11-20",
         "isUsed": false
       },
       {
         "id": "COUP-007",
-        "name": "Silver",
-        "value": 2000,
         "code": "SILVER-CRS-007",
+        "description": "Cupón Silver - $2.000 de descuento",
+        "type": "fixed",
+        "value": 2000,
+        "minPurchase": 0,
         "expiresAt": "2025-12-10",
         "isUsed": false
       }
@@ -251,9 +265,11 @@
     "coupons": [
       {
         "id": "COUP-008",
-        "name": "Bronze",
-        "value": 1000,
         "code": "BRONZE-PDR-008",
+        "description": "Cupón Bronze - $1.000 de descuento",
+        "type": "fixed",
+        "value": 1000,
+        "minPurchase": 0,
         "expiresAt": "2025-11-15",
         "isUsed": false
       }

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CategoryHamburger from "./CategoriesHamburger.jsx";
 import BrandHamburger from "./BrandHamburger.jsx";
 import RatingHamburger from "./RatingHamburger.jsx";
+import PriceRangeHamburger from "./PriceRangeHamburger.jsx";
 import "/src/styles/components/filter-sidebar.css";
 
 export default function FilterSidebar({
@@ -10,21 +11,26 @@ export default function FilterSidebar({
   selectedCategory,
   selectedBrand,
   selectedRating,
+  minPrice,
+  maxPrice,
   onCategorySelect,
   onBrandSelect,
   onRatingSelect,
+  onPriceRangeApply,
   onClearFilters,
 }) {
   // Lift state up: control which hamburger is open from parent
   const [openCategory, setOpenCategory] = useState(false);
   const [openBrand, setOpenBrand] = useState(false);
   const [openRating, setOpenRating] = useState(false);
+  const [openPriceRange, setOpenPriceRange] = useState(false);
 
   // Helper to collapse all hamburgers
   const collapseAll = () => {
     setOpenCategory(false);
     setOpenBrand(false);
     setOpenRating(false);
+    setOpenPriceRange(false);
   };
 
   // Wrap selection handlers to collapse after selection
@@ -40,6 +46,11 @@ export default function FilterSidebar({
 
   const handleRatingSelect = (rating) => {
     onRatingSelect(rating);
+    collapseAll();
+  };
+
+  const handlePriceRangeApply = (priceRange) => {
+    onPriceRangeApply(priceRange);
     collapseAll();
   };
 
@@ -84,6 +95,14 @@ export default function FilterSidebar({
         onSelect={handleRatingSelect}
         isOpen={openRating}
         onToggle={setOpenRating}
+      />
+
+      <PriceRangeHamburger
+        minPrice={minPrice}
+        maxPrice={maxPrice}
+        onApply={handlePriceRangeApply}
+        isOpen={openPriceRange}
+        onToggle={setOpenPriceRange}
       />
     </aside>
   );

@@ -69,13 +69,26 @@ export function CartProvider({ children }) {
 
     setCart((prevCart) => {
       const existingIndex = prevCart.items.findIndex((i) => i.id === item.id);
+      const stock = item.stock || Infinity; // Use Infinity if no stock limit
 
       if (existingIndex !== -1) {
+        // Item exists, check if we can add more
+        const currentQty = prevCart.items[existingIndex].qty;
+        const qtyToAdd = item.qty || 1;
+        const newQty = currentQty + qtyToAdd;
+
+        if (newQty > stock) {
+          console.warn(`Cannot add more items. Stock limit: ${stock}`);
+          alert(`No hay suficiente stock. Disponible: ${stock} unidades`);
+          return prevCart; // Don't update if exceeds stock
+        }
+
         // Item exists, update quantity immutably
         const newItems = [...prevCart.items];
         newItems[existingIndex] = {
           ...newItems[existingIndex],
-          qty: newItems[existingIndex].qty + (item.qty || 1),
+          qty: newQty,
+          stock: stock, // Update stock information
         };
         console.log(
           "Updated existing item, new qty:",
@@ -83,13 +96,22 @@ export function CartProvider({ children }) {
         );
         return { ...prevCart, items: newItems };
       } else {
-        // Add new item
+        // Add new item - check if initial quantity is valid
+        const qtyToAdd = item.qty || 1;
+
+        if (qtyToAdd > stock) {
+          console.warn(`Cannot add ${qtyToAdd} items. Stock limit: ${stock}`);
+          alert(`No hay suficiente stock. Disponible: ${stock} unidades`);
+          return prevCart;
+        }
+
         const newItem = {
           id: item.id,
           name: item.name,
           price: item.price,
-          qty: item.qty || 1,
+          qty: qtyToAdd,
           image: item.image,
+          stock: stock,
           metadata: item.metadata || {},
         };
         console.log("Adding new item:", newItem);
@@ -104,12 +126,20 @@ export function CartProvider({ children }) {
 
       if (itemIndex === -1) return prevCart;
 
+      const item = prevCart.items[itemIndex];
+      const stock = item.stock || Infinity;
+
       if (qty <= 0) {
         // Remove item immutably
         return {
           ...prevCart,
           items: prevCart.items.filter((i) => i.id !== id),
         };
+      } else if (qty > stock) {
+        // Don't allow exceeding stock
+        console.warn(`Cannot update quantity to ${qty}. Stock limit: ${stock}`);
+        alert(`No hay suficiente stock. Disponible: ${stock} unidades`);
+        return prevCart;
       } else {
         // Update quantity immutably
         const newItems = [...prevCart.items];
@@ -133,13 +163,36 @@ export function CartProvider({ children }) {
     setCart({ items: [] });
   };
 
+  const applyCoupon = (coupon) => {
+    setCart((prevCart) => ({
+      ...prevCart,
+      appliedCoupon: coupon,
+    }));
+  };
+
+  const removeCoupon = () => {
+    setCart((prevCart) => ({
+      ...prevCart,
+      appliedCoupon: null,
+    }));
+  };
+
   const getTotals = () => {
     const count = cart.items.reduce((sum, item) => sum + item.qty, 0);
     const subtotal = cart.items.reduce(
       (sum, item) => sum + item.price * item.qty,
       0
     );
-    const discount = cart.appliedCoupon?.value || 0;
+
+    let discount = 0;
+    if (cart.appliedCoupon) {
+      if (cart.appliedCoupon.type === "percentage") {
+        discount = Math.round(subtotal * (cart.appliedCoupon.value / 100));
+      } else if (cart.appliedCoupon.type === "fixed") {
+        discount = cart.appliedCoupon.value;
+      }
+    }
+
     const total = Math.max(0, subtotal - discount);
 
     return {
@@ -158,6 +211,8 @@ export function CartProvider({ children }) {
     updateQuantity,
     removeFromCart,
     clearCart,
+    applyCoupon,
+    removeCoupon,
     getTotals,
   };
 

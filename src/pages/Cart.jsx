@@ -4,12 +4,21 @@ import { useForm } from "react-hook-form";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { useUser } from "../hooks/useUser";
+import couponsData from "../assets/data/coupons.json";
+import { saveCurrentUser } from "../services/userService";
 import "/src/styles/pages/cart.css";
 
 export default function Cart() {
   const navigate = useNavigate();
-  const { items, updateQuantity, removeFromCart, clearCart, getTotals } =
-    useCart();
+  const {
+    items,
+    updateQuantity,
+    removeFromCart,
+    clearCart,
+    getTotals,
+    applyCoupon,
+    removeCoupon,
+  } = useCart();
   const { authUser, isAuthenticated } = useAuth(); // Only auth data (JWT, loginTime)
   const { user, loading } = useUser(); // Full user profile data
 
@@ -24,6 +33,8 @@ export default function Cart() {
   const [shippingText, setShippingText] = useState("");
   const [deliveryText, setDeliveryText] = useState("");
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
+  const [couponCode, setCouponCode] = useState("");
+  const [couponError, setCouponError] = useState("");
 
   const {
     register,
@@ -207,6 +218,84 @@ export default function Cart() {
     navigate("/products");
   };
 
+  const handleApplyCoupon = () => {
+    setCouponError("");
+
+    if (!couponCode.trim()) {
+      setCouponError("Por favor ingresa un código de cupón");
+      return;
+    }
+
+    let coupon = null;
+    let isUserCoupon = false;
+
+    // First, check general coupons
+    coupon = couponsData.find(
+      (c) =>
+        c.code.toLowerCase() === couponCode.trim().toLowerCase() && !c.isUsed
+    );
+
+    // If not found in general coupons, check user coupons
+    if (!coupon && user?.coupons) {
+      coupon = user.coupons.find(
+        (c) =>
+          c.code.toLowerCase() === couponCode.trim().toLowerCase() && !c.isUsed
+      );
+      isUserCoupon = !!coupon;
+    }
+
+    if (!coupon) {
+      setCouponError("Código de cupón inválido o ya usado");
+      return;
+    }
+
+    // Check if coupon is expired
+    const expirationDate = new Date(coupon.expiresAt);
+    const today = new Date();
+    if (expirationDate < today) {
+      setCouponError("Este cupón ha expirado");
+      return;
+    }
+
+    // Check minimum purchase requirement
+    if (totals.subtotal < coupon.minPurchase) {
+      setCouponError(
+        `Este cupón requiere una compra mínima de $${coupon.minPurchase.toLocaleString(
+          "es-CL"
+        )}`
+      );
+      return;
+    }
+
+    // If it's a user coupon, mark it as used in localStorage
+    if (isUserCoupon && user) {
+      const updatedUser = {
+        ...user,
+        coupons: user.coupons.map((c) =>
+          c.code === coupon.code ? { ...c, isUsed: true } : c
+        ),
+      };
+      saveCurrentUser(updatedUser);
+      // Dispatch event to update UserContext
+      document.dispatchEvent(
+        new CustomEvent("userLoggedIn", {
+          detail: updatedUser,
+        })
+      );
+    }
+
+    // Apply coupon
+    applyCoupon(coupon);
+    setCouponCode("");
+    setCouponError("");
+  };
+
+  const handleRemoveCoupon = () => {
+    removeCoupon();
+    setCouponCode("");
+    setCouponError("");
+  };
+
   // Calculate points (1 point per $1000 CLP spent)
   const pointsEarned = Math.floor(totals.subtotal / 1000);
 
@@ -305,8 +394,66 @@ export default function Cart() {
 
                     <div className="shipping-info">
                       <div className="shipping-address">{shippingText}</div>
-                      <div className="delivery-estimate">{deliveryText}</div>
+                      <div
+                        className="delivery-estimate"
+                        style={{ color: "#000", fontSize: "0.85rem" }}
+                      >
+                        {deliveryText}
+                      </div>
                     </div>
+
+                    {/* Coupon Section */}
+                    {step === 1 && (
+                      <div className="coupon-section">
+                        <h4 className="coupon-title">¿Tienes un cupón?</h4>
+                        {totals.appliedCoupon ? (
+                          <div className="applied-coupon">
+                            <div className="coupon-info">
+                              <div className="coupon-code-badge">
+                                🎟️ {totals.appliedCoupon.code}
+                              </div>
+                              <p className="coupon-description">
+                                {totals.appliedCoupon.description}
+                              </p>
+                            </div>
+                            <button
+                              className="btn-remove-coupon"
+                              onClick={handleRemoveCoupon}
+                              title="Eliminar cupón"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="coupon-input-group">
+                            <input
+                              type="text"
+                              className="coupon-input"
+                              placeholder="Ingresa tu código"
+                              value={couponCode}
+                              onChange={(e) => {
+                                setCouponCode(e.target.value.toUpperCase());
+                                setCouponError("");
+                              }}
+                              onKeyPress={(e) => {
+                                if (e.key === "Enter") {
+                                  handleApplyCoupon();
+                                }
+                              }}
+                            />
+                            <button
+                              className="btn-apply-coupon"
+                              onClick={handleApplyCoupon}
+                            >
+                              Aplicar
+                            </button>
+                          </div>
+                        )}
+                        {couponError && (
+                          <p className="coupon-error">{couponError}</p>
+                        )}
+                      </div>
+                    )}
 
                     <div className="summary-line">
                       <span>
@@ -395,10 +542,19 @@ function CartItem({ item, onUpdateQuantity, onRemove }) {
   const handleQuantityChange = (newQty) => {
     const qty = parseInt(newQty);
     if (isNaN(qty) || qty < 1) return;
+
+    const stock = item.stock || Infinity;
+    if (qty > stock) {
+      alert(`No hay suficiente stock. Disponible: ${stock} unidades`);
+      return;
+    }
+
     onUpdateQuantity(item.id, qty);
   };
 
   const itemTotal = item.price * item.qty;
+  const stock = item.stock || Infinity;
+  const isAtMaxStock = item.qty >= stock;
 
   return (
     <div className="cart-item">
@@ -421,6 +577,11 @@ function CartItem({ item, onUpdateQuantity, onRemove }) {
         <p className="cart-item-price">
           ${item.price.toLocaleString("es-CL")} c/u
         </p>
+        {stock !== Infinity && (
+          <p className="cart-item-stock">
+            Stock disponible: <strong>{stock}</strong>
+          </p>
+        )}
       </div>
 
       <div className="cart-item-quantity">
@@ -430,6 +591,7 @@ function CartItem({ item, onUpdateQuantity, onRemove }) {
             className="qty-btn"
             onClick={() => handleQuantityChange(item.qty - 1)}
             aria-label="Disminuir cantidad"
+            disabled={item.qty <= 1}
           >
             -
           </button>
@@ -437,6 +599,7 @@ function CartItem({ item, onUpdateQuantity, onRemove }) {
             id={`qty-${item.id}`}
             type="number"
             min="1"
+            max={stock}
             value={item.qty}
             onChange={(e) => handleQuantityChange(e.target.value)}
             className="qty-input"
@@ -445,10 +608,15 @@ function CartItem({ item, onUpdateQuantity, onRemove }) {
             className="qty-btn"
             onClick={() => handleQuantityChange(item.qty + 1)}
             aria-label="Aumentar cantidad"
+            disabled={isAtMaxStock}
+            title={isAtMaxStock ? `Stock máximo: ${stock}` : ""}
           >
             +
           </button>
         </div>
+        {isAtMaxStock && stock !== Infinity && (
+          <p className="stock-warning">Stock máximo alcanzado</p>
+        )}
       </div>
 
       <div className="cart-item-total">
@@ -578,7 +746,7 @@ function CheckoutForm({
                 {...register("phone", {
                   required: "El teléfono es obligatorio",
                   pattern: {
-                    value: /^(\+?56)?(\s?)(0?9)(\s?)[9876543]\d{7}$/,
+                    value: /^(\+?56)?(\s?)(0?9)(\s?)\d{4}(\s?)\d{4}$/,
                     message: "Teléfono inválido (formato chileno)",
                   },
                 })}

@@ -28,6 +28,8 @@ export default function CatalogPage() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedBrand, setSelectedBrand] = useState(null);
   const [selectedRating, setSelectedRating] = useState(null);
+  const [minPrice, setMinPrice] = useState(null);
+  const [maxPrice, setMaxPrice] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -104,6 +106,12 @@ export default function CatalogPage() {
           p.rating < selectedRating + 1
       );
     }
+    if (minPrice !== null) {
+      filtered = filtered.filter((p) => p.precioCLP >= minPrice);
+    }
+    if (maxPrice !== null) {
+      filtered = filtered.filter((p) => p.precioCLP <= maxPrice);
+    }
     if (sortPrice !== "none") {
       filtered = filtered.slice().sort((a, b) => {
         if (sortPrice === "precio-asc") return a.precioCLP - b.precioCLP;
@@ -127,6 +135,8 @@ export default function CatalogPage() {
     selectedCategory,
     selectedBrand,
     selectedRating,
+    minPrice,
+    maxPrice,
   ]);
 
   const totalPages = Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE);
@@ -139,12 +149,19 @@ export default function CatalogPage() {
     setSelectedCategory(null);
     setSelectedBrand(null);
     setSelectedRating(null);
+    setMinPrice(null);
+    setMaxPrice(null);
     setSearch("");
     setSortPrice("precio-asc");
     setSortRating("none");
     setCurrentPage(1);
     // Clear query parameters
     setSearchParams({});
+  };
+
+  const handlePriceRangeApply = ({ min, max }) => {
+    setMinPrice(min);
+    setMaxPrice(max);
   };
 
   useEffect(() => {
@@ -156,6 +173,8 @@ export default function CatalogPage() {
     selectedCategory,
     selectedBrand,
     selectedRating,
+    minPrice,
+    maxPrice,
   ]);
 
   return (
@@ -192,9 +211,12 @@ export default function CatalogPage() {
                 selectedCategory={selectedCategory}
                 selectedBrand={selectedBrand}
                 selectedRating={selectedRating}
+                minPrice={minPrice}
+                maxPrice={maxPrice}
                 onCategorySelect={setSelectedCategory}
                 onBrandSelect={setSelectedBrand}
                 onRatingSelect={setSelectedRating}
+                onPriceRangeApply={handlePriceRangeApply}
                 onClearFilters={handleClearFilters}
               />
               <section id="productos" className="section">

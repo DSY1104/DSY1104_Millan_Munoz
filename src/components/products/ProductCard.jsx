@@ -48,6 +48,7 @@ export default function ProductCard({
       name: nombre,
       price: precioCLP,
       qty: 1,
+      stock: stock,
       image: imagen,
       metadata: {
         marca: marca,

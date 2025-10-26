@@ -240,6 +240,7 @@ export default function ProductDetailPage() {
       name: product.nombre,
       price: product.precioCLP,
       qty: quantity,
+      stock: product.stock,
       image: product.imagen,
       metadata: {
         marca: product.marca,
