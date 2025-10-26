@@ -746,7 +746,7 @@ function CheckoutForm({
                 {...register("phone", {
                   required: "El teléfono es obligatorio",
                   pattern: {
-                    value: /^(\+?56)?(\s?)(0?9)(\s?)\d{4}(\s?)\d{4}$/,
+                    value: /^(\+?56)?[\s]?(0?9)[\s]?\d{4}[\s]?\d{4}$/,
                     message: "Teléfono inválido (formato chileno)",
                   },
                 })}
