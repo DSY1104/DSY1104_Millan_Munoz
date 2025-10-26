@@ -1,0 +1,214 @@
+{
+  "title": "Review: PlayStation 5 Pro - La consola definitiva para gamers exigentes",
+  "subtitle": "Sony eleva el listón con su nueva consola de gama alta. Después de semanas de pruebas intensivas, te contamos si la PS5 Pro vale realmente la pena.",
+  "author": {
+    "name": "Diego Ramírez",
+    "role": "Editor en Jefe",
+    "avatar": "DR"
+  },
+  "date": "2024-09-10",
+  "category": "reviews",
+  "readingTime": "8 min",
+  "heroImage": "/src/assets/images/blog/ps5.webp",
+  "heroCaption": "La PlayStation 5 Pro representa el pináculo del gaming en consola, pero ¿justifica su precio premium?",
+  "content": [
+    {
+      "type": "paragraph",
+      "text": "Tres años después del lanzamiento de la PlayStation 5, Sony presenta su versión Pro. Con un precio de $699 USD, esta iteración mejorada promete cerrar la brecha entre consolas y PC gaming de gama alta. Después de semanas exhaustivas de pruebas, aquí está nuestro veredicto completo."
+    },
+    {
+      "type": "rating",
+      "score": "9.2",
+      "maxScore": "10",
+      "title": "Excelente",
+      "description": "Una consola excepcional que cumple (casi) todas sus promesas, justificada solo para entusiastas y usuarios de pantallas 4K/120Hz."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Especificaciones Técnicas"
+    },
+    {
+      "type": "specs",
+      "title": "PlayStation 5 Pro vs PS5 Standard",
+      "headers": ["Especificación", "PS5 Pro", "PS5 Standard"],
+      "rows": [
+        ["CPU", "AMD Zen 2, 8 cores @ 3.85GHz", "AMD Zen 2, 8 cores @ 3.5GHz"],
+        ["GPU", "AMD RDNA 3, 60 CUs @ 2.35GHz", "AMD RDNA 2, 36 CUs @ 2.23GHz"],
+        ["Potencia GPU", "16.7 TFLOPS", "10.28 TFLOPS"],
+        ["RAM", "18GB GDDR6 @ 448GB/s", "16GB GDDR6 @ 448GB/s"],
+        ["Almacenamiento", "2TB NVMe SSD Gen4", "825GB/1TB NVMe SSD"],
+        [
+          "Ray Tracing",
+          "RT Cores Gen 3 dedicados",
+          "RT acelerado por hardware"
+        ],
+        ["Upscaling", "PSSR (AI-powered)", "Temporal injection"],
+        ["Precio", "$699 USD", "$499 USD"]
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Rendimiento en Juegos: Las Cifras"
+    },
+    {
+      "type": "paragraph",
+      "text": "Probamos 15 títulos AAA diferentes en ambas consolas para comparar rendimiento real:"
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "text": "Spider-Man 2"
+    },
+    {
+      "type": "list",
+      "items": [
+        "**PS5 Standard:** 1440p-1800p @ 60fps (Quality), 1080p @ 120fps (Performance)",
+        "**PS5 Pro:** Native 4K @ 60fps (Quality), 1440p @ 120fps (Performance RT)",
+        "**Mejora:** Ray-traced reflections en modo Performance, carga de assets 40% más rápida"
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "text": "Final Fantasy XVI"
+    },
+    {
+      "type": "list",
+      "items": [
+        "**PS5 Standard:** 1080p @ 60fps con drops a 45fps en combates intensos",
+        "**PS5 Pro:** 1440p locked @ 60fps, nuevo modo 4K @ 40fps con RT",
+        "**Mejora:** Frame pacing dramáticamente mejorado, experiencia mucho más fluida"
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "text": "Cyberpunk 2077 (con Path Tracing update)"
+    },
+    {
+      "type": "list",
+      "items": [
+        "**PS5 Standard:** No soporta Path Tracing",
+        "**PS5 Pro:** 1440p @ 30fps con Path Tracing completo",
+        "**Mejora:** Salto generacional en iluminación, comparación 1:1 con PC medio-alto"
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "PSSR: El Arma Secreta de Sony"
+    },
+    {
+      "type": "paragraph",
+      "text": "PlayStation Spectral Super Resolution es la respuesta de Sony a DLSS y FSR. Usa machine learning para upscalear imagen de resoluciones más bajas a 4K con resultados impresionantes:"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Calidad superior a FSR 2.0 en la mayoría de escenarios",
+        "Cercano a DLSS Quality en títulos optimizados",
+        "Reduce ghosting y artifacts de temporal aliasing",
+        "Performance cost de solo 1-2ms en 4K"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Sin embargo, PSSR no es perfecto. En juegos con motion blur agresivo (como Horizon Forbidden West), puede generar artifacts temporales. Sony está trabajando en parches para optimizar caso por caso."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Lo Bueno"
+    },
+    {
+      "type": "list",
+      "items": [
+        "✓ Rendimiento sustancialmente mejorado en todos los juegos probados",
+        "✓ PSSR funciona extraordinariamente bien cuando está bien implementado",
+        "✓ Ray Tracing en modo Performance es game-changer",
+        "✓ 2TB de storage de fábrica es muy bienvenido",
+        "✓ Más silenciosa que PS5 base bajo carga",
+        "✓ Retrocompatibilidad perfecta con juegos PS4/PS5",
+        "✓ Wi-Fi 7 y Bluetooth 5.2 para mejor conectividad",
+        "✓ Soporte VRR mejorado (40-120Hz vs 48-120Hz)"
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Lo Malo"
+    },
+    {
+      "type": "list",
+      "items": [
+        "✗ Precio de $699 es difícil de justificar vs PS5 Slim a $449",
+        "✗ No incluye lector de discos (se vende por separado a $79)",
+        "✗ No incluye soporte vertical (otro $29)",
+        "✗ PSSR necesita optimización por título, no es plug-and-play",
+        "✗ Diseño idéntico a PS5 Slim, nada distintivo estéticamente",
+        "✗ Requiere TV/Monitor 4K 120Hz para aprovechar completamente",
+        "✗ Catálogo de juegos con parche Pro es limitado al lanzamiento (~50 títulos)"
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "¿Vale la Pena el Upgrade?"
+    },
+    {
+      "type": "paragraph",
+      "text": "La respuesta depende totalmente de tu situación:"
+    },
+    {
+      "type": "paragraph",
+      "text": "**Definitivamente SÍ si:**"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Juegas en TV/monitor 4K de 120Hz",
+        "No tienes PS5 y vas a comprar una de todas formas",
+        "Eres early adopter y quieres lo mejor",
+        "El ray tracing y visual fidelity son importantes para ti",
+        "Tienes presupuesto para el salto de precio"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "**Probablemente NO si:**"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Tienes PS5 base que funciona bien",
+        "Juegas principalmente en 1080p",
+        "Prefieres framerate sobre fidelidad visual",
+        "El presupuesto es ajustado",
+        "Esperas salto generacional dramático"
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Veredicto Final"
+    },
+    {
+      "type": "paragraph",
+      "text": "La PlayStation 5 Pro es objetivamente la mejor consola en el mercado ahora mismo. El rendimiento mejorado es real y medible, PSSR es tecnología impresionante, y la experiencia gaming es notablemente superior a PS5 base."
+    },
+    {
+      "type": "paragraph",
+      "text": "Sin embargo, es un producto de nicho. No es un salto generacional como PS4 a PS5. Es refinamiento, optimización y squeeze de poder adicional de hardware similar. Para el gamer casual, PS5 Slim sigue siendo excelente recomendación."
+    },
+    {
+      "type": "paragraph",
+      "text": "Para entusiastas, creadores de contenido, o cualquiera que valore tener el mejor rendimiento posible en consola, la PS5 Pro justifica su precio premium. Solo asegúrate de tener el display adecuado para aprovecharla."
+    },
+    {
+      "type": "paragraph",
+      "text": "**Nuestra recomendación:** Si no tienes PS5, vale la pena el extra. Si ya tienes una, espera a ver más juegos con soporte Pro antes de decidir."
+    }
+  ]
+}

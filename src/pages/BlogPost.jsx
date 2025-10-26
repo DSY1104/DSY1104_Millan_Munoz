@@ -1,7 +1,6 @@
-import { useParams, Link, Navigate } from "react-router";
+import { useParams, Link, Navigate, useLoaderData } from "react-router";
 import { useEffect, useState } from "react";
 import { getArticleBySlug } from "../services/blogService";
-import { getPostContent } from "../assets/data/blogPostsContent";
 import "../styles/pages/blog-post.css";
 
 export default function BlogPost() {
@@ -9,8 +8,8 @@ export default function BlogPost() {
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Get full content from CMS-like content database
-  const content = getPostContent(slug);
+  // Get full content from loader (JSON file)
+  const content = useLoaderData();
 
   useEffect(() => {
     const fetchArticle = async () => {

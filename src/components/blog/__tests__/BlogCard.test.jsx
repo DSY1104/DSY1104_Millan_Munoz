@@ -31,7 +31,7 @@ describe("BlogCard", () => {
       screen.getByText("This is a test article description")
     ).toBeInTheDocument();
     expect(screen.getByText("Gaming")).toBeInTheDocument();
-  expect(screen.getByText(/14.*enero.*2025/i)).toBeInTheDocument();
+    expect(screen.getByText(/14.*enero.*2025/i)).toBeInTheDocument();
     expect(screen.getByText("📖 5 min")).toBeInTheDocument();
   });
 
@@ -57,14 +57,18 @@ describe("BlogCard", () => {
       <BlogCard article={featuredArticle} />
     );
 
-    const articleCard = container.querySelector(".article-card.featured");
+    const articleCard = container.querySelector(
+      ".blog__article-card--featured"
+    );
     expect(articleCard).toBeInTheDocument();
   });
 
   test("should not apply featured class when article is not featured", () => {
     const { container } = renderWithRouter(<BlogCard article={mockArticle} />);
 
-    const articleCard = container.querySelector(".article-card.featured");
+    const articleCard = container.querySelector(
+      ".blog__article-card--featured"
+    );
     expect(articleCard).not.toBeInTheDocument();
   });
 

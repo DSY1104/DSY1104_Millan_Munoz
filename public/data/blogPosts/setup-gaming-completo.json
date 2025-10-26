@@ -1,0 +1,177 @@
+{
+  "title": "Guía completa para configurar tu setup gaming perfecto",
+  "subtitle": "Aprende a crear el setup gaming ideal con nuestra guía completa. Ergonomía, componentes, iluminación y organización para maximizar tu experiencia de juego.",
+  "author": {
+    "name": "Ana Rodríguez",
+    "role": "Especialista en Gaming",
+    "avatar": "AR"
+  },
+  "date": "2024-09-08",
+  "category": "guias",
+  "readingTime": "8 min",
+  "heroImage": "/src/assets/images/blog/pc.webp",
+  "heroCaption": "Un setup bien organizado mejora tanto tu rendimiento como tu disfrute del gaming",
+  "content": [
+    {
+      "type": "paragraph",
+      "text": "Crear el setup gaming perfecto va mucho más allá de tener el PC más potente. Se trata de diseñar un espacio que sea cómodo, funcional y que te inspire a jugar mejor. En esta guía completa, te mostramos cómo crear un setup que te acompañará durante años."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "1. La Base: El Escritorio"
+    },
+    {
+      "type": "paragraph",
+      "text": "El escritorio es literalmente la base de tu setup. Necesitas suficiente espacio para tu monitor (o monitores), teclado, mouse y otros accesorios. Las medidas recomendadas son:"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Ancho mínimo: 120cm (ideal: 140-160cm)",
+        "Profundidad mínima: 60cm (ideal: 70-80cm)",
+        "Altura: 72-76cm (o ajustable)",
+        "Capacidad de carga: mínimo 50kg"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Los escritorios gaming específicos suelen incluir gestión de cables, superficies resistentes a derrames y bordes ergonómicos. Si tienes presupuesto limitado, un escritorio IKEA Linnmon con patas Adils es una excelente opción inicial."
+    },
+    {
+      "type": "tips",
+      "title": "💡 Pro Tips para tu escritorio",
+      "items": [
+        "Usa una alfombrilla de escritorio grande (900x400mm mínimo)",
+        "Instala organizadores de cables bajo el escritorio",
+        "Considera un escritorio con altura ajustable para alternar entre sentado y de pie",
+        "Deja al menos 10cm de espacio entre el monitor y la pared para ventilación"
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "2. La Silla Gaming: No Escatimes Aquí"
+    },
+    {
+      "type": "paragraph",
+      "text": "Pasarás horas en esta silla, así que la ergonomía es crucial. Las sillas gaming están diseñadas para sesiones largas, pero no todas son iguales. Busca estas características:"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Soporte lumbar ajustable (no solo un cojín decorativo)",
+        "Reposabrazos 4D (ajustables en altura, anchura, profundidad y ángulo)",
+        "Respaldo reclinable con bloqueo (hasta 135° mínimo)",
+        "Base de metal con ruedas para alfombra o piso duro según necesites",
+        "Espuma de densidad media-alta que no se aplaste rápidamente",
+        "Certificación BIFMA o similar para garantizar seguridad"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Las marcas premium como SecretLab, Herman Miller x Logitech o Noblechairs ofrecen la mejor calidad, pero hay excelentes opciones en rango medio como CORSAIR T3 RUSH o Cooler Master Caliber."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "3. Periféricos: Mouse, Teclado y Auriculares"
+    },
+    {
+      "type": "paragraph",
+      "text": "Estos son tus puntos de contacto directo con el juego. La calidad aquí impacta directamente tu rendimiento:"
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "text": "Mouse Gaming"
+    },
+    {
+      "type": "paragraph",
+      "text": "El peso, forma y sensor del mouse son preferencias personales. Prueba diferentes opciones si puedes. Busca sensores ópticos de alta precisión (PixArt 3370 o superior, Razer Focus+, Logitech HERO, etc.). DPI ajustables hasta 16000+ aunque raramente usarás más de 3200."
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "text": "Teclado Mecánico"
+    },
+    {
+      "type": "paragraph",
+      "text": "Los switches determinan la sensación: Cherry MX Red/Silver para gaming competitivo (lineales, rápidos), Cherry MX Brown para uso mixto (táctiles), Cherry MX Blue para typing (clicky, ruidosos). Las alternativas como Gateron, Kailh o switches propietarios también son excelentes."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "4. Iluminación: Funcional y Estética"
+    },
+    {
+      "type": "paragraph",
+      "text": "La iluminación correcta reduce la fatiga visual y crea ambiente. Combina:"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Luz ambiental suave (LED strips detrás del monitor o escritorio)",
+        "Lámpara de escritorio ajustable para iluminación focal",
+        "Bias lighting en el monitor (reduce contraste con la pared)",
+        "RGB sincronizado en periféricos (opcional, pero divertido)"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Usa bombillas LED de temperatura color cálida (2700-3000K) para reducir fatiga visual, o inteligentes que ajusten temperatura según hora del día."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "5. Gestión de Cables"
+    },
+    {
+      "type": "paragraph",
+      "text": "Los cables desordenados arruinan la estética y dificultan la limpieza. Soluciones efectivas:"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Canaletas adhesivas bajo el escritorio",
+        "Velcro strips para agrupar cables",
+        "Regleta con interruptor debajo del escritorio",
+        "Sleeves para cables del mismo recorrido",
+        "Clips adhesivos para rutas específicas"
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "6. Monitores: Configuración Dual o Ultrawide"
+    },
+    {
+      "type": "paragraph",
+      "text": "Para gaming competitivo: Monitor principal de 24-27\" con 144Hz+ y 1ms de respuesta. Para productividad paralela: Monitor secundario de 24\" en orientación vertical. Para inmersión: Ultrawide 34\" 21:9 o gaming en 4K 32\" si tu GPU lo soporta."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Checklist Final del Setup Perfecto"
+    },
+    {
+      "type": "list",
+      "items": [
+        "✓ Escritorio espacioso y estable",
+        "✓ Silla ergonómica con soporte lumbar",
+        "✓ Monitor(es) a la altura de los ojos",
+        "✓ Teclado y mouse de calidad gaming",
+        "✓ Auriculares cómodos con buen micrófono",
+        "✓ Iluminación ambiental adecuada",
+        "✓ Cables organizados y ocultos",
+        "✓ Espacio para bebidas (lejos de electrónicos)",
+        "✓ Decoración personalizada (posters, figuras, plantas)",
+        "✓ Limpieza regular y mantenimiento"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Recuerda que el setup perfecto es el que funciona para TI. No necesitas gastar miles de dólares de golpe. Construye gradualmente, priorizando ergonomía y funcionalidad sobre estética pura. Tu espalda, muñecas y ojos te lo agradecerán."
+    }
+  ]
+}

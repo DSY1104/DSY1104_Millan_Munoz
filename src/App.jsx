@@ -21,6 +21,7 @@ import NotFound from "./pages/NotFound.jsx";
 import UserProfile from "./pages/UserProfile.jsx";
 import PurchaseSuccess from "./pages/PurchaseSuccess.jsx";
 import { userProfileLoader } from "./loaders/userLoader";
+import { blogPostLoader } from "./loaders/blogPostLoader";
 
 // Layout component
 function Layout() {
@@ -54,6 +55,7 @@ const router = createBrowserRouter([
       {
         path: "blog/:slug",
         element: <BlogPost />,
+        loader: blogPostLoader,
       },
       {
         path: "about",

@@ -8,6 +8,7 @@ import ProductCard from "../../components/products/ProductCard";
 import Cart from "../../pages/Cart";
 import { AuthProvider } from "../../context/AuthContext";
 import { CartProvider } from "../../context/CartContext";
+import { UserProvider } from "../../context/UserContext";
 
 describe("Cart Integration Tests", () => {
   beforeEach(() => {
@@ -30,7 +31,9 @@ describe("Cart Integration Tests", () => {
     return render(
       <BrowserRouter>
         <AuthProvider>
-          <CartProvider>{components}</CartProvider>
+          <UserProvider>
+            <CartProvider>{components}</CartProvider>
+          </UserProvider>
         </AuthProvider>
       </BrowserRouter>
     );
@@ -42,7 +45,7 @@ describe("Cart Integration Tests", () => {
     const { rerender } = renderWithProviders(<ProductCard {...mockProduct} />);
 
     // Add product to cart
-    const addButton = screen.getByText("Agregar al carrito");
+    const addButton = screen.getByText("comprar");
     fireEvent.click(addButton);
 
     // Wait for feedback
@@ -55,9 +58,11 @@ describe("Cart Integration Tests", () => {
     rerender(
       <BrowserRouter>
         <AuthProvider>
-          <CartProvider>
-            <Cart />
-          </CartProvider>
+          <UserProvider>
+            <CartProvider>
+              <Cart />
+            </CartProvider>
+          </UserProvider>
         </AuthProvider>
       </BrowserRouter>
     );
@@ -74,7 +79,7 @@ describe("Cart Integration Tests", () => {
     renderWithProviders(<ProductCard {...mockProduct} />);
 
     // Add product to cart
-    const addButton = screen.getByText("Agregar al carrito");
+    const addButton = screen.getByText("comprar");
     fireEvent.click(addButton);
 
     // Check localStorage
@@ -88,7 +93,7 @@ describe("Cart Integration Tests", () => {
 
     renderWithProviders(<ProductCard {...mockProduct} />);
 
-    const addButton = screen.getByText("Agregar al carrito");
+    const addButton = screen.getByText("comprar");
 
     // Add product twice
     fireEvent.click(addButton);

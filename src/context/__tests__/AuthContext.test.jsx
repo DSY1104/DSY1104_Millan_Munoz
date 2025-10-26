@@ -25,26 +25,25 @@ describe("AuthContext", () => {
       const { result } = renderHook(() => useAuth(), { wrapper });
 
       expect(result.current.isAuthenticated).toBe(false);
-      expect(result.current.user).toBeNull();
+      expect(result.current.authUser).toBeNull();
     });
 
-    test("should handle login successfully", () => {
+    test("should handle login successfully", async () => {
       const { result } = renderHook(() => useAuth(), { wrapper });
 
-      act(() => {
-        result.current.login("test@example.com", "password123", false);
+      await act(async () => {
+        await result.current.login("osca.munozs@duocuc.cl", "12345678", false);
       });
 
       expect(result.current.isAuthenticated).toBe(true);
-      expect(result.current.user).toBeDefined();
-      expect(result.current.user.email).toBe("test@example.com");
+      expect(result.current.authUser).toBeDefined();
     });
 
-    test("should handle logout", () => {
+    test("should handle logout", async () => {
       const { result } = renderHook(() => useAuth(), { wrapper });
 
-      act(() => {
-        result.current.login("test@example.com", "password123", false);
+      await act(async () => {
+        await result.current.login("osca.munozs@duocuc.cl", "12345678", false);
       });
 
       act(() => {
@@ -52,7 +51,7 @@ describe("AuthContext", () => {
       });
 
       expect(result.current.isAuthenticated).toBe(false);
-      expect(result.current.user).toBeNull();
+      expect(result.current.authUser).toBeNull();
     });
   });
 

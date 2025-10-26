@@ -26,7 +26,7 @@ describe("Navigation", () => {
   test("should render navigation links", () => {
     renderWithProviders(<Navigation />);
 
-    expect(screen.getByText("HOME")).toBeInTheDocument();
+    expect(screen.getByText("Inicio")).toBeInTheDocument();
     expect(screen.getByText("Productos")).toBeInTheDocument();
     expect(screen.getByText("Blogs/Noticias")).toBeInTheDocument();
     expect(screen.getByText("Soporte")).toBeInTheDocument();

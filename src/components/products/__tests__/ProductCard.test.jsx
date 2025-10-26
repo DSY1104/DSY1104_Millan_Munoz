@@ -45,7 +45,7 @@ describe("ProductCard", () => {
     expect(screen.getByText("Mouse Gaming RGB")).toBeInTheDocument();
     expect(screen.getByText("Logitech")).toBeInTheDocument();
     expect(screen.getByText("$25.000")).toBeInTheDocument();
-    expect(screen.getByText("⭐ 4.5")).toBeInTheDocument();
+    // Rating is not displayed in ProductCard anymore
     expect(screen.getByText("C001")).toBeInTheDocument();
   });
 
@@ -55,7 +55,7 @@ describe("ProductCard", () => {
     const img = screen.getByAltText("Mouse Gaming RGB");
     expect(img).toBeInTheDocument();
     expect(img).toHaveAttribute("src", "/test-image.webp");
-    expect(img).toHaveClass("product-image");
+    expect(img).toHaveClass("product-card__image");
   });
 
   test("should navigate to product detail when card is clicked", () => {
@@ -70,7 +70,7 @@ describe("ProductCard", () => {
   test("should add product to cart when button is clicked", () => {
     renderWithProviders(<ProductCard {...mockProduct} />);
 
-    const addButton = screen.getByText("Agregar al carrito");
+    const addButton = screen.getByText("comprar");
     fireEvent.click(addButton);
 
     // Check if button shows feedback
@@ -80,7 +80,7 @@ describe("ProductCard", () => {
   test("should not navigate when clicking add to cart button", () => {
     renderWithProviders(<ProductCard {...mockProduct} />);
 
-    const addButton = screen.getByText("Agregar al carrito");
+    const addButton = screen.getByText("comprar");
     fireEvent.click(addButton);
 
     expect(mockNavigate).not.toHaveBeenCalled();
@@ -99,7 +99,7 @@ describe("ProductCard", () => {
     jest.useFakeTimers();
     renderWithProviders(<ProductCard {...mockProduct} />);
 
-    const addButton = screen.getByText("Agregar al carrito");
+    const addButton = screen.getByText("comprar");
     fireEvent.click(addButton);
 
     expect(addButton).toBeDisabled();
@@ -109,7 +109,7 @@ describe("ProductCard", () => {
     jest.advanceTimersByTime(1200);
 
     await waitFor(() => {
-      expect(addButton.textContent).toBe("Agregar al carrito");
+      expect(addButton.textContent).toBe("comprar");
       expect(addButton).not.toBeDisabled();
     });
 
@@ -146,7 +146,7 @@ describe("ProductCard", () => {
   test("should prevent double-click on add to cart button", () => {
     renderWithProviders(<ProductCard {...mockProduct} />);
 
-    const addButton = screen.getByText("Agregar al carrito");
+    const addButton = screen.getByText("comprar");
 
     // First click
     fireEvent.click(addButton);
