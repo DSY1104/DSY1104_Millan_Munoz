@@ -30,7 +30,7 @@ export default function BlogPost() {
   // Show loading state
   if (loading) {
     return (
-      <div className="blog-post-page">
+      <div className="blog-post">
         <div style={{ textAlign: "center", padding: "3rem", color: "#aaa" }}>
           Cargando artículo...
         </div>
@@ -64,7 +64,7 @@ export default function BlogPost() {
 
       case "tips":
         return (
-          <div key={index} className="tips-box">
+          <div key={index} className="blog-post__tips-box">
             <h4>{block.title}</h4>
             <ul>
               {block.items.map((item, i) => (
@@ -76,7 +76,7 @@ export default function BlogPost() {
 
       case "comparison":
         return (
-          <div key={index} className="comparison-table">
+          <div key={index} className="blog-post__comparison-table">
             <h4>{block.title}</h4>
             <table>
               <thead>
@@ -101,7 +101,7 @@ export default function BlogPost() {
 
       case "specs":
         return (
-          <div key={index} className="specs-table">
+          <div key={index} className="blog-post__specs-table">
             <h4>{block.title}</h4>
             <table>
               <thead>
@@ -126,7 +126,7 @@ export default function BlogPost() {
 
       case "alert":
         return (
-          <div key={index} className="alert-box">
+          <div key={index} className="blog-post__alert-box">
             <h4>{block.title}</h4>
             <p>{block.text}</p>
           </div>
@@ -134,12 +134,16 @@ export default function BlogPost() {
 
       case "rating":
         return (
-          <div key={index} className="rating-box">
-            <div className="rating-score">
-              <span className="score">{block.score}</span>
-              <span className="max-score">/{block.maxScore}</span>
+          <div key={index} className="blog-post__rating-box">
+            <div className="blog-post__rating-score">
+              <span className="blog-post__rating-score-value">
+                {block.score}
+              </span>
+              <span className="blog-post__rating-score-max">
+                /{block.maxScore}
+              </span>
             </div>
-            <div className="rating-info">
+            <div className="blog-post__rating-info">
               <h4>{block.title}</h4>
               <p>{block.description}</p>
             </div>
@@ -148,13 +152,13 @@ export default function BlogPost() {
 
       case "stats":
         return (
-          <div key={index} className="stats-grid">
+          <div key={index} className="blog-post__stats-grid">
             <h4>{block.title}</h4>
-            <div className="stats-container">
+            <div className="blog-post__stats-container">
               {block.items.map((stat, i) => (
-                <div key={i} className="stat-card">
-                  <div className="stat-number">{stat.number}</div>
-                  <div className="stat-label">{stat.label}</div>
+                <div key={i} className="blog-post__stat-card">
+                  <div className="blog-post__stat-number">{stat.number}</div>
+                  <div className="blog-post__stat-label">{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -175,37 +179,47 @@ export default function BlogPost() {
   };
 
   return (
-    <div className="blog-post-page">
+    <div className="blog-post">
       {/* Breadcrumbs */}
-      <nav className="breadcrumbs">
+      <nav className="blog-post__breadcrumbs">
         <Link to="/">Inicio</Link>
-        <span className="separator">/</span>
+        <span className="blog-post__breadcrumbs-separator">/</span>
         <Link to="/blog">Blog</Link>
-        <span className="separator">/</span>
-        <span className="current">{article.title}</span>
+        <span className="blog-post__breadcrumbs-separator">/</span>
+        <span className="blog-post__breadcrumbs-current">{article.title}</span>
       </nav>
 
       {/* Hero Section */}
-      <header className="post-hero">
-        <div className="hero-content">
-          <div className="post-meta">
-            <span className="category">{categoryLabels[article.category]}</span>
-            <span className="reading-time">
+      <header className="blog-post__hero">
+        <div className="blog-post__hero-content">
+          <div className="blog-post__meta">
+            <span className="blog-post__category">
+              {categoryLabels[article.category]}
+            </span>
+            <span className="blog-post__reading-time">
               {article.readingTime} de lectura
             </span>
           </div>
 
           <h1>{content.title}</h1>
 
-          {content.subtitle && <p className="subtitle">{content.subtitle}</p>}
+          {content.subtitle && (
+            <p className="blog-post__subtitle">{content.subtitle}</p>
+          )}
 
-          <div className="author-info">
-            <div className="author-avatar">{content.author.avatar}</div>
-            <div className="author-details">
-              <span className="author-name">{content.author.name}</span>
-              <span className="author-role">{content.author.role}</span>
+          <div className="blog-post__author-info">
+            <div className="blog-post__author-avatar">
+              {content.author.avatar}
             </div>
-            <time className="post-date">
+            <div className="blog-post__author-details">
+              <span className="blog-post__author-name">
+                {content.author.name}
+              </span>
+              <span className="blog-post__author-role">
+                {content.author.role}
+              </span>
+            </div>
+            <time className="blog-post__date">
               {new Date(content.date).toLocaleDateString("es-ES", {
                 year: "numeric",
                 month: "long",
@@ -215,7 +229,7 @@ export default function BlogPost() {
           </div>
         </div>
 
-        <figure className="hero-image">
+        <figure className="blog-post__hero-image">
           <img src={content.heroImage} alt={content.title} />
           {content.heroCaption && (
             <figcaption>{content.heroCaption}</figcaption>
@@ -224,36 +238,36 @@ export default function BlogPost() {
       </header>
 
       {/* Article Content */}
-      <article className="post-content">
-        <div className="content-wrapper">
+      <article className="blog-post__content">
+        <div className="blog-post__content-wrapper">
           {content.content.map((block, index) => renderContent(block, index))}
         </div>
       </article>
 
       {/* Share Section */}
-      <section className="post-share">
+      <section className="blog-post__share">
         <h3>Compartir este artículo</h3>
-        <div className="share-buttons">
+        <div className="blog-post__share-buttons">
           <button
-            className="share-btn facebook"
+            className="blog-post__share-btn blog-post__share-btn--facebook"
             aria-label="Compartir en Facebook"
           >
             <i className="fab fa-facebook-f"></i> Facebook
           </button>
           <button
-            className="share-btn twitter"
+            className="blog-post__share-btn blog-post__share-btn--twitter"
             aria-label="Compartir en Twitter"
           >
             <i className="fab fa-twitter"></i> Twitter
           </button>
           <button
-            className="share-btn linkedin"
+            className="blog-post__share-btn blog-post__share-btn--linkedin"
             aria-label="Compartir en LinkedIn"
           >
             <i className="fab fa-linkedin-in"></i> LinkedIn
           </button>
           <button
-            className="share-btn whatsapp"
+            className="blog-post__share-btn blog-post__share-btn--whatsapp"
             aria-label="Compartir en WhatsApp"
           >
             <i className="fab fa-whatsapp"></i> WhatsApp
@@ -262,8 +276,8 @@ export default function BlogPost() {
       </section>
 
       {/* Back to Blog */}
-      <div className="back-to-blog">
-        <Link to="/blog" className="btn-back">
+      <div className="blog-post__back">
+        <Link to="/blog" className="blog-post__back-btn">
           ← Volver al Blog
         </Link>
       </div>

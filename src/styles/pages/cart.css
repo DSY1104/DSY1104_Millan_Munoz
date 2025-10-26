@@ -65,6 +65,14 @@
   padding: 30px;
 }
 
+/* When cart is empty, use flexbox instead of grid */
+.cart-content.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
 .cart-items-section {
   min-height: 400px;
 }
@@ -221,7 +229,7 @@
   font-weight: var(--weight-bold);
   margin-top: 15px;
   padding-top: 20px;
-  border-top: 2px solid rgba(255, 255, 255, 0.2);
+  /* border-top: 2px solid rgba(255, 255, 255, 0.2); */
 }
 
 .total-amount {
@@ -461,6 +469,8 @@
   background: rgba(255, 255, 255, 0.03);
   border-radius: 12px;
   border: 2px dashed rgba(255, 255, 255, 0.1);
+  width: 100%;
+  max-width: 600px;
 }
 
 .empty-cart-icon {
@@ -804,5 +814,12 @@
 
   .checkout-title {
     font-size: 1.3rem;
+  }
+}
+
+#region {
+  option {
+    color: #fff;
+    background: #1a1a1a;
   }
 }

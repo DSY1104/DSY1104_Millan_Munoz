@@ -27,7 +27,7 @@
 }
 #guides .width-restrict {
   margin: 0 auto;
-  max-width: 1920px;
+  max-width: 1366px;
 }
 #guides .button-container button:hover,
 #guides .button-container button:focus-visible {
@@ -167,7 +167,7 @@
 
 @media (min-width: 767px) {
   #guides {
-    padding: 4rem 2rem;
+    padding: 4rem 0;
   }
   #guides .article-group {
     height: 450px;

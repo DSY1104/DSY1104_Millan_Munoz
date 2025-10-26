@@ -17,25 +17,25 @@ function formatDate(dateString) {
 
 export default function BlogCard({ article }) {
   const formattedDate = formatDate(article.date);
-  const featuredClass = article.featured ? "featured" : "";
+  const featuredClass = article.featured ? "blog__article-card--featured" : "";
 
   return (
-    <Link to={`/blog/${article.slug}`} className="article-card-link">
+    <Link to={`/blog/${article.slug}`} className="blog__article-card-link">
       <article
-        className={`article-card ${featuredClass}`}
+        className={`blog__article-card ${featuredClass}`}
         data-article-id={article.id}
       >
-        <div className="article-image">
+        <div className="blog__article-image">
           <img
             src={article.image}
             alt={`Imagen del artículo: ${article.title}`}
             loading="lazy"
           />
         </div>
-        <div className="article-content">
-          <div className="article-meta">
+        <div className="blog__article-content">
+          <div className="blog__article-meta">
             <span
-              className="article-category"
+              className="blog__article-category"
               aria-label={`Categoría: ${
                 categoryNames[article.category] || article.category
               }`}
@@ -43,21 +43,21 @@ export default function BlogCard({ article }) {
               {categoryNames[article.category] || article.category}
             </span>
             <time
-              className="article-date"
+              className="blog__article-date"
               dateTime={article.date}
               aria-label={`Fecha de publicación: ${formattedDate}`}
             >
               {formattedDate}
             </time>
           </div>
-          <h2 className="article-title">{article.title}</h2>
-          <p className="article-description">{article.description}</p>
-          <div className="article-footer">
-            <span className="read-more-btn" aria-hidden="true">
+          <h2 className="blog__article-title">{article.title}</h2>
+          <p className="blog__article-description">{article.description}</p>
+          <div className="blog__article-footer">
+            <span className="blog__read-more-btn" aria-hidden="true">
               Leer más
             </span>
             <span
-              className="article-reading-time"
+              className="blog__article-reading-time"
               aria-label={`Tiempo de lectura: ${article.readingTime}`}
             >
               📖 {article.readingTime}

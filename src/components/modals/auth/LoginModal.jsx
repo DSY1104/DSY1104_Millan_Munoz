@@ -70,7 +70,7 @@ export default function LoginModal() {
     return emailRegex.test(email);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validation
@@ -85,16 +85,24 @@ export default function LoginModal() {
       return;
     }
 
-    // Call login function
-    const result = login(formData.email, formData.password, formData.remember);
+    // Call login function (now async)
+    const result = await login(
+      formData.email,
+      formData.password,
+      formData.remember
+    );
 
     if (result.success) {
       // Reset form
       setFormData({ email: "", password: "", remember: false });
       setErrors({ email: false, password: false });
     } else {
-      // Handle login error
+      // Handle login error - show error message to user
       console.error("Login failed:", result.error);
+      alert(
+        result.error ||
+          "Error al iniciar sesión. Por favor, verifica tus credenciales."
+      );
     }
   };
 

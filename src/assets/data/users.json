@@ -1,0 +1,264 @@
+[
+  {
+    "id": 1,
+    "username": "omunoz",
+    "email": "osca.munozs@duocuc.cl",
+    "password": "12345678",
+    "personal": {
+      "firstName": "Oscar",
+      "lastName": "Munoz",
+      "phone": "+56 9 1234 5678",
+      "birthdate": "1993-04-27",
+      "bio": "Apasionado gamer desde la infancia. Me encantan los RPGs y los juegos de estrategia. Siempre buscando nuevas aventuras virtuales y compartiendo experiencias con la comunidad gaming.",
+      "avatar": null,
+      "memberSince": "2022"
+    },
+    "address": {
+      "addressLine1": "Av. Providencia 1234",
+      "addressLine2": "Departamento 56",
+      "city": "Santiago",
+      "region": "Región Metropolitana",
+      "postalCode": "7500000",
+      "country": "chile",
+      "deliveryNotes": "Portero disponible de 9:00 a 18:00. Favor tocar timbre del departamento."
+    },
+    "preferences": {
+      "favoriteCategories": ["JM", "CG", "AC"],
+      "preferredPlatform": "pc",
+      "gamingHours": "16-30",
+      "notifyOffers": true,
+      "notifyNewProducts": true,
+      "notifyRestocks": false,
+      "notifyNewsletter": true
+    },
+    "gaming": {
+      "gamerTag": "OMunoz93",
+      "favoriteGenre": "rpg",
+      "skillLevel": "advanced",
+      "streamingPlatforms": ["twitch", "youtube"],
+      "favoriteGames": "The Witcher 3, Civilization VI, Stardew Valley, League of Legends, Minecraft"
+    },
+    "stats": {
+      "level": "Gold",
+      "points": 7500,
+      "purchases": 24,
+      "reviews": 12,
+      "favorites": 8
+    },
+    "coupons": [
+      {
+        "id": "COUP-001",
+        "name": "Bronze",
+        "value": 1000,
+        "code": "BRONZE-ALX-001",
+        "expiresAt": "2025-12-31",
+        "isUsed": false
+      },
+      {
+        "id": "COUP-002",
+        "name": "Silver",
+        "value": 2000,
+        "code": "SILVER-ALX-002",
+        "expiresAt": "2025-11-30",
+        "isUsed": true
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "username": "amillan",
+    "email": "ang.millan@duocuc.cl",
+    "password": "demo123",
+    "personal": {
+      "firstName": "Angelo",
+      "lastName": "Millan",
+      "phone": "+56 9 8765 4321",
+      "birthdate": "1998-07-22",
+      "bio": "Streamer profesional y competidora de eSports. Especializada en FPS y Battle Royale. Siempre en busca de mejorar mis habilidades y compartir tips con la comunidad.",
+      "avatar": null,
+      "memberSince": "2021"
+    },
+    "address": {
+      "addressLine1": "Calle Los Aromos 567",
+      "addressLine2": "",
+      "city": "Valparaíso",
+      "region": "Región Metropolitana",
+      "postalCode": "2340000",
+      "country": "chile",
+      "deliveryNotes": "Casa color azul con portón negro. Dejar en recepción si no hay nadie."
+    },
+    "preferences": {
+      "favoriteCategories": ["CO", "CG", "MO", "AU"],
+      "preferredPlatform": "console",
+      "gamingHours": "31-50",
+      "notifyOffers": true,
+      "notifyNewProducts": true,
+      "notifyRestocks": true,
+      "notifyNewsletter": true
+    },
+    "gaming": {
+      "gamerTag": "AMillanGG",
+      "favoriteGenre": "fps",
+      "skillLevel": "pro",
+      "streamingPlatforms": ["twitch", "youtube", "kick"],
+      "favoriteGames": "Valorant, CS:GO, Apex Legends, Call of Duty Warzone, Overwatch 2"
+    },
+    "stats": {
+      "level": "Platinum",
+      "points": 15420,
+      "purchases": 42,
+      "reviews": 28,
+      "favorites": 15
+    },
+    "coupons": [
+      {
+        "id": "COUP-003",
+        "name": "Gold",
+        "value": 5000,
+        "code": "GOLD-MRG-003",
+        "expiresAt": "2025-12-15",
+        "isUsed": false
+      },
+      {
+        "id": "COUP-004",
+        "name": "Platinum",
+        "value": 10000,
+        "code": "PLAT-MRG-004",
+        "expiresAt": "2026-01-31",
+        "isUsed": false
+      },
+      {
+        "id": "COUP-005",
+        "name": "Bronze",
+        "value": 1000,
+        "code": "BRONZE-MRG-005",
+        "expiresAt": "2025-10-28",
+        "isUsed": true
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "username": "obadilla",
+    "email": "obadilla@duoc.cl",
+    "password": "demo123",
+    "personal": {
+      "firstName": "Oscar",
+      "lastName": "Badilla",
+      "phone": "+56 9 5555 1234",
+      "birthdate": "2000-11-08",
+      "bio": "Coleccionista de juegos retro y amante de los juegos indie. Disfruto explorando joyas ocultas del gaming y compartiendo recomendaciones. Fan de los juegos de plataformas y metroidvanias.",
+      "avatar": null,
+      "memberSince": "2023"
+    },
+    "address": {
+      "addressLine1": "Pasaje La Esperanza 890",
+      "addressLine2": "Casa 12",
+      "city": "Concepción",
+      "region": "Región Metropolitana",
+      "postalCode": "4030000",
+      "country": "chile",
+      "deliveryNotes": "Llamar al timbre dos veces. Horario preferido: después de las 15:00."
+    },
+    "preferences": {
+      "favoriteCategories": ["JM", "AC"],
+      "preferredPlatform": "both",
+      "gamingHours": "8-15",
+      "notifyOffers": false,
+      "notifyNewProducts": true,
+      "notifyRestocks": true,
+      "notifyNewsletter": false
+    },
+    "gaming": {
+      "gamerTag": "RetroCarlos",
+      "favoriteGenre": "aventura",
+      "skillLevel": "intermediate",
+      "streamingPlatforms": ["youtube"],
+      "favoriteGames": "Hollow Knight, Celeste, Ori and the Blind Forest, Hades, Dead Cells"
+    },
+    "stats": {
+      "level": "Silver",
+      "points": 3200,
+      "purchases": 15,
+      "reviews": 7,
+      "favorites": 22
+    },
+    "coupons": [
+      {
+        "id": "COUP-006",
+        "name": "Bronze",
+        "value": 1000,
+        "code": "BRONZE-CRS-006",
+        "expiresAt": "2025-11-20",
+        "isUsed": false
+      },
+      {
+        "id": "COUP-007",
+        "name": "Silver",
+        "value": 2000,
+        "code": "SILVER-CRS-007",
+        "expiresAt": "2025-12-10",
+        "isUsed": false
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "username": "estudiante duoc",
+    "email": "pedro.duoc@duoc.cl",
+    "password": "demo123",
+    "personal": {
+      "firstName": "Pedro",
+      "lastName": "Martínez",
+      "phone": "+56 9 7777 8888",
+      "birthdate": "2001-04-12",
+      "bio": "Estudiante de Ingeniería en Informática en DUOC UC. Apasionado por el desarrollo de software y los videojuegos. Me encanta aprender nuevas tecnologías.",
+      "avatar": null,
+      "memberSince": "2024"
+    },
+    "address": {
+      "addressLine1": "Av. Libertador Bernardo O'Higgins 3150",
+      "addressLine2": "",
+      "city": "Estación Central",
+      "region": "Región Metropolitana",
+      "postalCode": "9160000",
+      "country": "chile",
+      "deliveryNotes": "Dejar en conserjería del edificio."
+    },
+    "preferences": {
+      "favoriteCategories": ["CG", "CO", "AC"],
+      "preferredPlatform": "pc",
+      "gamingHours": "8-15",
+      "notifyOffers": true,
+      "notifyNewProducts": true,
+      "notifyRestocks": true,
+      "notifyNewsletter": true
+    },
+    "gaming": {
+      "gamerTag": "DuocGamer",
+      "favoriteGenre": "fps",
+      "skillLevel": "intermediate",
+      "streamingPlatforms": ["twitch"],
+      "favoriteGames": "CS:GO, League of Legends, Valorant, Minecraft, Among Us"
+    },
+    "stats": {
+      "level": "Bronze",
+      "points": 850,
+      "purchases": 5,
+      "reviews": 3,
+      "favorites": 12
+    },
+    "coupons": [
+      {
+        "id": "COUP-008",
+        "name": "Bronze",
+        "value": 1000,
+        "code": "BRONZE-PDR-008",
+        "expiresAt": "2025-11-15",
+        "isUsed": false
+      }
+    ],
+    "hasLifetimeDiscount": true,
+    "discountPercentage": 20
+  }
+]

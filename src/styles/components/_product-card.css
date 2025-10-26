@@ -1,15 +1,14 @@
-/* ===== PRODUCT CARD COMPONENT ===== */
+/* ===== PRODUCT CARD COMPONENT (BEM) ===== */
 
-/* Card Container */
+/* Block: product-card */
 .product-card {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 0.8rem;
-  width: 320px;
+  width: 100%;
   max-width: 100%;
-  height: 450px;
   padding: 1.2rem;
   background: var(--bg-lighter, #23272f);
   border: 2px solid transparent;
@@ -22,17 +21,17 @@
   /* Animation on load */
   opacity: 0;
   transform: translateY(30px);
-  animation: fadeInCard 0.7s ease forwards;
+  animation: product-card-fade-in 0.7s ease forwards;
 }
 
-@keyframes fadeInCard {
+@keyframes product-card-fade-in {
   to {
     opacity: 1;
     transform: none;
   }
 }
 
-/* Card Hover & Focus States */
+/* Block Modifier: hover state */
 .product-card:hover {
   transform: translateY(-14px) scale(1.07) rotate(-2deg);
   box-shadow: 0 0 50px rgba(57, 255, 20, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -40,12 +39,13 @@
   z-index: 3;
 }
 
+/* Block Modifier: focus state */
 .product-card:focus {
   outline: 2px solid var(--accent-blue, #1e90ff);
 }
 
-/* Category Badge */
-.product-category.badge {
+/* Element: category badge */
+.product-card__category {
   position: absolute;
   top: 0.7rem;
   left: 0.7rem;
@@ -59,26 +59,27 @@
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Image Section */
-.product-image-wrapper {
+/* Element: image wrapper */
+.product-card__image-wrapper {
   width: 100%;
   aspect-ratio: 1.2/1;
   margin-bottom: 0.5rem;
-  background: #fff;
+  background: #ffffff;
   border-radius: 8px;
   overflow: hidden;
   position: relative;
 }
 
-.product-image {
+/* Element: image */
+.product-card__image {
   width: 100%;
   height: 100%;
   object-fit: contain;
   display: block;
 }
 
-/* Product Info Section */
-.product-info {
+/* Element: info section */
+.product-card__info {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
@@ -87,7 +88,8 @@
   min-height: 0;
 }
 
-.product-meta-row {
+/* Element: meta row */
+.product-card__meta-row {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -96,15 +98,22 @@
   margin-bottom: 0.3rem;
 }
 
-/* Product Details */
-.product-name {
+/* Element: product name */
+.product-card__name {
   margin: 0;
   color: var(--text, #fff);
   font-family: var(--font-heading, "Orbitron", sans-serif);
   font-size: 1.1rem;
+
+  /* Single line with ellipsis */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
 }
 
-.product-brand {
+/* Element: brand */
+.product-card__brand {
   margin: -0.3rem 0 0.2rem 0;
   color: var(--text-2, #b0b0b0);
   font-size: 0.85rem;
@@ -112,22 +121,24 @@
   letter-spacing: 0.01em;
 }
 
-.product-rating {
+/* Element: rating */
+.product-card__rating {
   margin: 0 0 0 0.5rem;
   color: #ffd700;
   font-size: 1rem;
   white-space: nowrap;
 }
 
-.product-price {
+/* Element: price */
+.product-card__price {
   margin: 0;
   color: var(--accent-blue, #1e90ff);
   font-size: 1.1rem;
   font-weight: 700;
 }
 
-/* Add to Cart Button */
-.add-to-cart {
+/* Element: add to cart button */
+.product-card__button {
   align-self: center;
   width: 90%;
   max-width: 220px;
@@ -145,13 +156,15 @@
   transition: background 0.2s;
 }
 
-.add-to-cart:hover:not(:disabled),
-.add-to-cart:focus:not(:disabled) {
+/* Element Modifier: button hover/focus states */
+.product-card__button:hover:not(:disabled),
+.product-card__button:focus:not(:disabled) {
   background: var(--accent-green-shade, #0066cc);
 }
 
-.add-to-cart:disabled,
-.add-to-cart.disabled {
+/* Element Modifier: button disabled state */
+.product-card__button:disabled,
+.product-card__button--disabled {
   background: #b22222;
   color: #fff;
   border: 1.5px solid #b22222;

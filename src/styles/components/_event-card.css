@@ -90,3 +90,121 @@
     min-width: unset;
   }
 }
+
+/* Events List Index - Landing Page Events */
+.events-list-index {
+  display: flex;
+  gap: 1.2rem;
+  align-items: stretch;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+  max-width: 1366px;
+  margin: 0 auto;
+}
+
+.event-blog-card {
+  background: var(--bg-lighter, #23272f);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  flex: 1;
+  min-width: 280px;
+  max-width: 380px;
+}
+
+.event-blog-card:hover {
+  border-color: var(--accent-green, #39ff14);
+  box-shadow: 0 8px 24px rgba(57, 255, 20, 0.15);
+  transform: translateY(-4px);
+}
+
+.event-blog-card .event-title {
+  color: var(--text, #fff);
+  font-family: var(--font-heading, "Orbitron", sans-serif);
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.event-blog-card .event-description {
+  color: var(--text-2, #b0b0b0);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1.2rem;
+  flex: 1;
+}
+
+.event-more-btn {
+  background: var(--accent-green, #39ff14);
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5em 1.2em;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.event-more-btn:hover {
+  background: var(--accent-green-shade, #32e012);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(57, 255, 20, 0.3);
+}
+
+/* Desktop - Horizontal Layout */
+@media (min-width: 769px) {
+  .events-list-index {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 0.5rem 0;
+  }
+
+  .event-blog-card {
+    flex: 1 1 calc(33.333% - 1rem);
+    min-width: 300px;
+    max-width: 400px;
+  }
+}
+
+/* Tablet - Two columns or wrap */
+@media (min-width: 481px) and (max-width: 768px) {
+  .events-list-index {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .event-blog-card {
+    flex: 1 1 calc(50% - 0.6rem);
+    min-width: 280px;
+    max-width: 100%;
+  }
+}
+
+/* Mobile - Vertical Stack */
+@media (max-width: 480px) {
+  .events-list-index {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .event-blog-card {
+    width: 100%;
+    max-width: 100%;
+    min-width: unset;
+  }
+
+  .event-blog-card .event-title {
+    font-size: 1.2rem;
+  }
+
+  .event-blog-card .event-description {
+    font-size: 0.9rem;
+  }
+}

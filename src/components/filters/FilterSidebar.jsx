@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import CategoryHamburger from "./CategoriesHamburger.jsx";
 import BrandHamburger from "./BrandHamburger.jsx";
 import RatingHamburger from "./RatingHamburger.jsx";
+import "/src/styles/components/filter-sidebar.css";
 
 export default function FilterSidebar({
   categories = [],
@@ -14,8 +15,36 @@ export default function FilterSidebar({
   onRatingSelect,
   onClearFilters,
 }) {
+  // Lift state up: control which hamburger is open from parent
+  const [openCategory, setOpenCategory] = useState(false);
+  const [openBrand, setOpenBrand] = useState(false);
+  const [openRating, setOpenRating] = useState(false);
+
+  // Helper to collapse all hamburgers
+  const collapseAll = () => {
+    setOpenCategory(false);
+    setOpenBrand(false);
+    setOpenRating(false);
+  };
+
+  // Wrap selection handlers to collapse after selection
+  const handleCategorySelect = (categoryId) => {
+    onCategorySelect(categoryId);
+    collapseAll();
+  };
+
+  const handleBrandSelect = (brand) => {
+    onBrandSelect(brand);
+    collapseAll();
+  };
+
+  const handleRatingSelect = (rating) => {
+    onRatingSelect(rating);
+    collapseAll();
+  };
+
   return (
-    <aside id="catalog-sidebar">
+    <aside className="filter-sidebar">
       <div
         style={{
           display: "flex",
@@ -24,32 +53,10 @@ export default function FilterSidebar({
           marginBottom: "1.2em",
         }}
       >
-        <h2
-          className="filters-header"
-          style={{
-            color: "var(--accent-blue)",
-            fontSize: "1.3em",
-            fontFamily: "var(--font-body, Roboto, sans-serif)",
-            fontWeight: 700,
-            letterSpacing: "0.02em",
-            margin: 0,
-          }}
-        >
-          Filtros
-        </h2>
+        <h2 className="filter-sidebar__header">Filtros</h2>
         <button
-          id="clear-all-filters"
+          className="filter-sidebar__clear-all"
           type="button"
-          style={{
-            marginLeft: "1em",
-            padding: "0.3em 1em",
-            fontSize: "0.95em",
-            background: "var(--accent-blue)",
-            color: "#fff",
-            border: "none",
-            borderRadius: 4,
-            cursor: "pointer",
-          }}
           onClick={onClearFilters}
         >
           Limpiar Filtro
@@ -59,16 +66,25 @@ export default function FilterSidebar({
       <CategoryHamburger
         categories={categories}
         selected={selectedCategory}
-        onSelect={onCategorySelect}
+        onSelect={handleCategorySelect}
+        isOpen={openCategory}
+        onToggle={setOpenCategory}
       />
 
       <BrandHamburger
         brands={brands}
         selected={selectedBrand}
-        onSelect={onBrandSelect}
+        onSelect={handleBrandSelect}
+        isOpen={openBrand}
+        onToggle={setOpenBrand}
       />
 
-      <RatingHamburger selected={selectedRating} onSelect={onRatingSelect} />
+      <RatingHamburger
+        selected={selectedRating}
+        onSelect={handleRatingSelect}
+        isOpen={openRating}
+        onToggle={setOpenRating}
+      />
     </aside>
   );
 }

@@ -66,11 +66,13 @@ export default function BlogPage() {
   }
 
   return (
-    <div>
-      <main className="main-content">
-        <header className="blog-header">
-          <h1 style={{ color: "#fff" }}>Blog LevelUp</h1>
-          <p style={{ color: "#fff" }}>
+    <>
+      <main className="blog">
+        <header className="blog__header">
+          <h1 className="blog__header-title" style={{ color: "#fff" }}>
+            Blog LevelUp
+          </h1>
+          <p className="blog__header-subtitle" style={{ color: "#fff" }}>
             Descubre las últimas noticias, reviews y tendencias del mundo gaming
           </p>
         </header>
@@ -91,20 +93,23 @@ export default function BlogPage() {
 
         {!loading && !error && (
           <div className="content-wrapper">
-            <main className="blog-main">
+            <main className="blog__main">
               {/* Filtros y ordenamiento */}
               <section
-                className="blog-controls"
+                className="blog__controls"
                 aria-label="Controles de filtrado y ordenamiento"
               >
-                <div className="controls-container">
-                  <div className="filter-section">
-                    <label htmlFor="category-filter" className="filter-label">
+                <div className="blog__controls-container">
+                  <div className="blog__filter-section">
+                    <label
+                      htmlFor="category-filter"
+                      className="blog__filter-label"
+                    >
                       Filtrar por categoría:
                     </label>
                     <select
                       id="category-filter"
-                      className="filter-select"
+                      className="blog__filter-select"
                       aria-label="Filtrar artículos por categoría"
                       value={category}
                       onChange={handleCategoryChange}
@@ -117,13 +122,13 @@ export default function BlogPage() {
                       <option value="eventos">Eventos</option>
                     </select>
                   </div>
-                  <div className="sort-section">
-                    <label htmlFor="sort-select" className="sort-label">
+                  <div className="blog__sort-section">
+                    <label htmlFor="sort-select" className="blog__sort-label">
                       Ordenar por:
                     </label>
                     <select
                       id="sort-select"
-                      className="sort-select"
+                      className="blog__sort-select"
                       aria-label="Ordenar artículos"
                       value={sort}
                       onChange={handleSortChange}
@@ -137,11 +142,14 @@ export default function BlogPage() {
                 </div>
               </section>
               {/* Grid de artículos */}
-              <section className="blog-grid" aria-label="Artículos del blog">
-                <div className="articles-container" id="articles-container">
+              <section className="blog__grid" aria-label="Artículos del blog">
+                <div
+                  className="blog__articles-container"
+                  id="articles-container"
+                >
                   {filteredArticles.length === 0 ? (
                     <div
-                      className="empty-state active"
+                      className="blog__empty-state blog__empty-state--active"
                       id="empty-state"
                       aria-hidden="false"
                     >
@@ -158,7 +166,7 @@ export default function BlogPage() {
               {/* Loading indicator */}
               {loading && (
                 <div
-                  className="loading-indicator active"
+                  className="blog__loading-indicator blog__loading-indicator--active"
                   id="loading-indicator"
                   aria-hidden="false"
                 >
@@ -169,6 +177,6 @@ export default function BlogPage() {
           </div>
         )}
       </main>
-    </div>
+    </>
   );
 }

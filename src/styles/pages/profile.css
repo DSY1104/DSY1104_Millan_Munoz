@@ -36,6 +36,7 @@
 }
 
 .profile-avatar {
+  align-self: flex-start;
   position: relative;
   width: 100px;
   height: 100px;
@@ -304,6 +305,7 @@
 /* Form Styles */
 .profile-form {
   max-width: 600px;
+  margin: 0 auto;
 }
 
 .form-group {
@@ -322,6 +324,23 @@
   color: var(--text);
   font-weight: var(--weight-medium);
   font-size: var(--size-body);
+}
+
+.preference {
+  display: flex !important;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: var(--size-body);
+  color: var(--text);
+  transition: color 0.3s ease;
+
+  input {
+    flex-shrink: 1;
+    max-width: 48px;
+  }
 }
 
 .form-group input,
@@ -369,7 +388,7 @@
 }
 
 .checkbox-label {
-  display: flex;
+  display: flex !important;
   align-items: center;
   gap: 10px;
   cursor: pointer;
@@ -1131,19 +1150,19 @@
   .coupon-stats {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .coupons-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .tiers-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .coupon-filter-tabs {
     flex-wrap: wrap;
   }
-  
+
   .filter-tab {
     font-size: 0.8rem;
     padding: 10px 12px;
@@ -1154,20 +1173,32 @@
   .coupon-stats {
     grid-template-columns: 1fr;
   }
-  
+
   .coupon-card {
     padding: 15px;
   }
-  
+
   .coupon-amount {
     font-size: 2rem;
   }
-  
+
   .tier-coupon-value {
     font-size: 1.5rem;
   }
-  
+
   .preview-value {
     font-size: 2rem;
   }
+}
+
+.lu-modal__content {
+  position: relative;
+  top: 25%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.lu-modal {
+  padding: 1rem;
 }

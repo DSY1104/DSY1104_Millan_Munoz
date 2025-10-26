@@ -2,6 +2,7 @@ import React from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
+import { UserProvider } from "./context/UserContext";
 import Navbar from "./components/common/Navigation.jsx";
 import Footer from "./components/common/Footer.jsx";
 import ScrollToTop from "./components/common/ScrollToTop.jsx";
@@ -18,6 +19,8 @@ import ProductDetailPage from "./pages/ProductDetail.jsx";
 import SupportPage from "./pages/Support.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import UserProfile from "./pages/UserProfile.jsx";
+import PurchaseSuccess from "./pages/PurchaseSuccess.jsx";
+import { userProfileLoader } from "./loaders/userLoader";
 
 // Layout component
 function Layout() {
@@ -61,6 +64,10 @@ const router = createBrowserRouter([
         element: <Cart />,
       },
       {
+        path: "purchase-success",
+        element: <PurchaseSuccess />,
+      },
+      {
         path: "products",
         element: <CatalogPage />,
       },
@@ -71,6 +78,7 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <UserProfile />,
+        loader: userProfileLoader,
       },
       {
         path: "support",
@@ -87,9 +95,11 @@ const router = createBrowserRouter([
 export default function App() {
   return (
     <AuthProvider>
-      <CartProvider>
-        <RouterProvider router={router} />
-      </CartProvider>
+      <UserProvider>
+        <CartProvider>
+          <RouterProvider router={router} />
+        </CartProvider>
+      </UserProvider>
     </AuthProvider>
   );
 }

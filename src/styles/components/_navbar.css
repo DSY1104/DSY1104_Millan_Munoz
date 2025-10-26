@@ -19,7 +19,7 @@ Navbar principal
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 3rem;
   position: relative;
 }
 
@@ -27,11 +27,18 @@ Navbar principal
 Logo 
 */
 .navbar-brand {
+  width: fit-content;
+  background-color: #000 !important;
   font-family: var(--font-heading, "Orbitron", sans-serif);
   font-size: var(--text-xl, 1.25rem);
   font-weight: var(--weight-bold, 700);
   color: var(--text, #ffffff);
   text-decoration: none;
+
+  img {
+    width: auto;
+    height: 69px;
+  }
 }
 
 /* 
@@ -146,10 +153,33 @@ Carrito
   font-weight: var(--weight-bold, 700);
 }
 
+#navbar-menu-mobile {
+  display: none;
+}
+
 /* 
 ===== RESPONSIVE ===== 
 */
 @media (max-width: 768px) {
+  #navbar-menu-mobile {
+    display: flex;
+    align-items: center;
+    padding-left: 2rem;
+
+    li:first-of-type {
+      a.navbar-cart {
+        padding: 0.25rem;
+        height: 30px;
+        width: 30px;
+      }
+    }
+  }
+
+  .user-desktop,
+  .cart-desktop {
+    display: none !important;
+  }
+
   .navbar-container {
     display: flex;
     flex-direction: row;
@@ -158,9 +188,11 @@ Carrito
     padding-right: 0.5rem;
     padding-left: 0.5rem;
     min-height: 56px;
+    margin: 0;
+    width: 100%;
+    padding: 0 3rem;
   }
   .navbar-brand {
-    flex: 1 1 auto;
     min-width: 0;
     padding-right: 1rem;
     font-size: 1.1rem;
@@ -254,7 +286,7 @@ Carrito
 /* User Menu Styles */
 .navbar-user {
   position: relative;
-  right: -1rem;
+  /* right: -1rem; */
 }
 
 .navbar-user-btn {
@@ -362,25 +394,72 @@ Carrito
 
 /* Mobile adjustments for user menu */
 @media (max-width: 768px) {
+  /* Hide desktop user menu in mobile */
+  .user-desktop {
+    display: none !important;
+  }
+
+  /* Keep navbar-user visible in mobile header */
+  .navbar-user {
+    position: relative;
+  }
+
+  /* User menu dropdown in mobile - initially hidden */
   .navbar-user-menu {
-    position: static;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background-color: var(--bg, #000000);
+    padding: 0;
+    border-top: 1px solid var(--text-2, #333);
+    border-bottom: 1px solid var(--text-2, #333);
+    border-radius: 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    min-width: auto;
+    z-index: 998;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out,
+      visibility 0.3s ease-in-out;
+  }
+
+  .navbar-user-menu.active {
+    max-height: 300px;
     opacity: 1;
     visibility: visible;
-    transform: none;
-    box-shadow: none;
-    border: none;
-    border-top: 1px solid var(--text-2, #333);
-    border-radius: 0;
-    background: transparent;
-    min-width: auto;
-    padding: 0;
-    margin-top: 0.5rem;
   }
 
   .user-menu-link {
-    padding: 1rem;
+    display: block;
+    padding: 1.2rem;
+    border-radius: 0;
     border-bottom: 1px solid var(--text-2, #333);
+    margin: 0;
     text-align: center;
+    transition: background-color 0.2s ease;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease,
+      background-color 0.2s ease;
+  }
+
+  .navbar-user-menu.active .user-menu-link {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Staggered animation for menu items */
+  .navbar-user-menu.active .user-menu-link:nth-child(1) {
+    transition-delay: 0.1s;
+  }
+  .navbar-user-menu.active .user-menu-link:nth-child(2) {
+    transition-delay: 0.15s;
+  }
+  .navbar-user-menu.active .user-menu-link:nth-child(3) {
+    transition-delay: 0.2s;
   }
 
   .user-menu-link:last-child {
@@ -390,5 +469,6 @@ Carrito
   .user-logout {
     border-top: 1px solid var(--text-2, #333);
     margin-top: 0;
+    padding-top: 1.2rem;
   }
 }

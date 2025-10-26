@@ -1,14 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-
-const defaultProfile = {
-  addressLine1: "Av. Providencia 1234",
-  addressLine2: "Departamento 56",
-  city: "Santiago",
-  region: "metropolitan",
-  postalCode: "7500000",
-  country: "chile",
-  deliveryNotes: "Portero disponible de 9:00 a 18:00. Favor tocar timbre del departamento.",
-};
+import React, { useState, useRef, useEffect } from "react";
+import { useUser } from "../../hooks/useUser";
 
 const regions = [
   { value: "metropolitan", label: "Región Metropolitana" },
@@ -36,46 +27,46 @@ const countries = [
   { value: "otro", label: "Otro" },
 ];
 
-function loadUserProfile() {
-  try {
-    const stored = localStorage.getItem("userProfile");
-    return stored ? { ...defaultProfile, ...JSON.parse(stored) } : defaultProfile;
-  } catch {
-    return defaultProfile;
-  }
-}
-
-function saveUserProfile(profile) {
-  localStorage.setItem("userProfile", JSON.stringify(profile));
-}
-
 export default function ProfileAddressTab() {
-  const [profile, setProfile] = useState(defaultProfile);
+  const { user, updateAddress } = useUser();
+  const [profile, setProfile] = useState(user?.address || {});
   const [successMsg, setSuccessMsg] = useState("");
   const timeoutRef = useRef();
 
+  // Update form when user data changes
   useEffect(() => {
-    setProfile(loadUserProfile());
-    return () => clearTimeout(timeoutRef.current);
-  }, []);
+    if (user?.address) {
+      setProfile(user.address);
+    }
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProfile((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    saveUserProfile(profile);
-    setSuccessMsg("Dirección guardada correctamente");
-    clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => setSuccessMsg(""), 3000);
+    try {
+      await updateAddress(profile);
+      setSuccessMsg("Dirección guardada correctamente");
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => setSuccessMsg(""), 3000);
+    } catch (error) {
+      setSuccessMsg("Error al guardar la dirección");
+      console.error(error);
+    }
   };
 
   return (
     <section className="tab-content active" id="address-tab">
       <h2>Dirección</h2>
-      <form className="profile-form" id="address-form" onSubmit={handleSubmit} autoComplete="off">
+      <form
+        className="profile-form"
+        id="address-form"
+        onSubmit={handleSubmit}
+        autoComplete="off"
+      >
         <div className="form-group">
           <label htmlFor="address-line1">Dirección</label>
           <input
@@ -118,7 +109,9 @@ export default function ProfileAddressTab() {
             required
           >
             {regions.map((r) => (
-              <option key={r.value} value={r.value}>{r.label}</option>
+              <option key={r.value} value={r.value}>
+                {r.label}
+              </option>
             ))}
           </select>
         </div>
@@ -142,7 +135,9 @@ export default function ProfileAddressTab() {
             required
           >
             {countries.map((c) => (
-              <option key={c.value} value={c.value}>{c.label}</option>
+              <option key={c.value} value={c.value}>
+                {c.label}
+              </option>
             ))}
           </select>
         </div>
@@ -156,7 +151,9 @@ export default function ProfileAddressTab() {
             rows={2}
           />
         </div>
-        <button type="submit" className="btn btn-primary">Guardar Cambios</button>
+        <button type="submit" className="btn btn-primary">
+          Guardar Cambios
+        </button>
         {successMsg && <div className="success-message">{successMsg}</div>}
       </form>
     </section>

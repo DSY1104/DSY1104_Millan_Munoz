@@ -1,38 +1,43 @@
 /* 
 ===========================================
-ESTILOS PARA PÁGINA DE BLOG
+ESTILOS PARA PÁGINA DE BLOG (BEM)
+Block: blog
 ===========================================
 */
-/* Contenedor principal del blog */
 
-.main-content {
-  padding-top: 200px;
-  min-height: calc(100vh - 80px); /* Ajusta según la altura del navbar */
+/* Block: blog */
+.blog {
+  padding: 4rem 1rem 0;
+  min-height: calc(100vh - 80px);
+  max-width: 1366px;
+  margin: 0 auto;
 }
 
-.blog-header {
+/* Element: header */
+.blog__header {
   text-align: center;
   padding: 30px;
   background: transparent;
   color: var(--bg);
   margin-bottom: 2rem;
+  max-width: 1366px;
 }
 
-.blog-header h1 {
+.blog__header-title {
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.blog-header p {
+.blog__header-subtitle {
   font-size: 1.2rem;
   opacity: 0.9;
   margin: 0 auto;
 }
 
-/* Controles de filtrado y ordenamiento */
-.blog-controls {
+/* Element: controls */
+.blog__controls {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 12px;
   padding: 1.5rem;
@@ -41,7 +46,7 @@ ESTILOS PARA PÁGINA DE BLOG
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.controls-container {
+.blog__controls-container {
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
@@ -49,16 +54,16 @@ ESTILOS PARA PÁGINA DE BLOG
   justify-content: center;
 }
 
-.filter-section,
-.sort-section {
+.blog__filter-section,
+.blog__sort-section {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   min-width: 200px;
 }
 
-.filter-label,
-.sort-label {
+.blog__filter-label,
+.blog__sort-label {
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--text-2);
@@ -66,8 +71,8 @@ ESTILOS PARA PÁGINA DE BLOG
   letter-spacing: 0.5px;
 }
 
-.filter-select,
-.sort-select {
+.blog__filter-select,
+.blog__sort-select {
   padding: 0.75rem 1rem;
   background: var(--bg);
   border: 2px solid var(--accent-blue);
@@ -78,29 +83,29 @@ ESTILOS PARA PÁGINA DE BLOG
   transition: all 0.3s ease;
 }
 
-.filter-select:hover,
-.sort-select:hover,
-.filter-select:focus,
-.sort-select:focus {
+.blog__filter-select:hover,
+.blog__sort-select:hover,
+.blog__filter-select:focus,
+.blog__sort-select:focus {
   border-color: var(--accent-green);
   box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
   outline: none;
 }
 
-/* Grid de artículos */
-.blog-grid {
+/* Element: grid */
+.blog__grid {
   margin-bottom: 3rem;
 }
 
-.articles-container {
+.blog__articles-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 2rem;
   padding: 1rem 0;
 }
 
-/* Tarjetas de artículos */
-.article-card {
+/* Element: article card */
+.blog__article-card {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 15px;
   overflow: hidden;
@@ -111,43 +116,43 @@ ESTILOS PARA PÁGINA DE BLOG
   backdrop-filter: blur(10px);
 }
 
-.article-card:hover {
+.blog__article-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 0px 50px rgba(57, 255, 20, 0.15),
     0 8px 25px rgba(57, 255, 20, 0.15);
   border-color: var(--accent-green-tint);
 }
 
-.article-card:focus {
+.blog__article-card:focus {
   outline: 3px solid var(--accent-green);
   outline-offset: 2px;
 }
 
-/* Imagen del artículo */
-.article-image {
+/* Element: article image */
+.blog__article-image {
   width: 100%;
   height: 200px;
   overflow: hidden;
   position: relative;
 }
 
-.article-image img {
+.blog__article-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease;
 }
 
-.article-card:hover .article-image img {
+.blog__article-card:hover .blog__article-image img {
   transform: scale(1.05);
 }
 
-/* Contenido del artículo */
-.article-content {
+/* Element: article content */
+.blog__article-content {
   padding: 1.5rem;
 }
 
-.article-meta {
+.blog__article-meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -156,8 +161,9 @@ ESTILOS PARA PÁGINA DE BLOG
   gap: 0.5rem;
 }
 
-.article-category {
+.blog__article-category {
   background: var(--accent-green-shade);
+  background-color: color-mix(in srgb, var(--accent-green-tint) 10%, #fff 90%);
   color: var(--bg);
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
@@ -167,13 +173,13 @@ ESTILOS PARA PÁGINA DE BLOG
   letter-spacing: 0.5px;
 }
 
-.article-date {
+.blog__article-date {
   color: var(--text-2);
   font-size: 0.9rem;
   font-weight: 500;
 }
 
-.article-title {
+.blog__article-title {
   font-size: 1.3rem;
   font-weight: 700;
   color: var(--text);
@@ -186,7 +192,7 @@ ESTILOS PARA PÁGINA DE BLOG
   overflow: hidden;
 }
 
-.article-description {
+.blog__article-description {
   color: var(--text-2);
   line-height: 1.6;
   margin-bottom: 1rem;
@@ -197,7 +203,7 @@ ESTILOS PARA PÁGINA DE BLOG
   overflow: hidden;
 }
 
-.article-footer {
+.blog__article-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -205,7 +211,7 @@ ESTILOS PARA PÁGINA DE BLOG
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.read-more-btn {
+.blog__read-more-btn {
   background: linear-gradient(
     135deg,
     var(--accent-green-tint),
@@ -221,60 +227,60 @@ ESTILOS PARA PÁGINA DE BLOG
   text-transform: uppercase;
   font-size: 0.85rem;
   letter-spacing: 0.5px;
+  text-decoration: none;
 }
 
-.read-more-btn:hover {
+.blog__read-more-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 5px 15px rgba(30, 144, 255, 0.4);
 }
 
-.read-more-btn:focus {
+.blog__read-more-btn:focus {
   outline: 2px solid var(--accent-green);
   outline-offset: 2px;
 }
 
-.article-reading-time {
+.blog__article-reading-time {
   color: var(--text-2);
   font-size: 0.8rem;
 }
 
-/* Estados de carga y vacío */
-.loading-indicator,
-.empty-state {
+/* Element: loading and empty states */
+.blog__loading-indicator,
+.blog__empty-state {
   text-align: center;
   padding: 3rem 1rem;
   color: var(--text-2);
 }
 
-.loading-indicator {
+.blog__loading-indicator {
   display: none;
 }
 
-.loading-indicator.active {
+.blog__loading-indicator--active {
   display: block;
 }
 
-.empty-state {
+.blog__empty-state {
   display: none;
 }
 
-.empty-state.active {
+.blog__empty-state--active {
   display: block;
 }
 
-.empty-state h3 {
+.blog__empty-state h3 {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
   color: var(--text);
 }
 
-/* Indicador de artículo destacado */
-.article-card.featured {
-  /* border: 2px solid var(--accent-green); */
+/* Element Modifier: featured article */
+.blog__article-card--featured {
   position: relative;
 }
 
-.article-card.featured::before {
+.blog__article-card--featured::before {
   content: "DESTACADO";
   position: absolute;
   top: 1rem;
@@ -291,7 +297,7 @@ ESTILOS PARA PÁGINA DE BLOG
 }
 
 /* Animaciones de entrada */
-@keyframes fadeInUp {
+@keyframes blog-fade-in-up {
   from {
     opacity: 0;
     transform: translateY(30px);
@@ -302,61 +308,61 @@ ESTILOS PARA PÁGINA DE BLOG
   }
 }
 
-.article-card {
-  animation: fadeInUp 0.6s ease-out;
+.blog__article-card {
+  animation: blog-fade-in-up 0.6s ease-out;
 }
 
-.article-card:nth-child(1) {
+.blog__article-card:nth-child(1) {
   animation-delay: 0.1s;
 }
-.article-card:nth-child(2) {
+.blog__article-card:nth-child(2) {
   animation-delay: 0.2s;
 }
-.article-card:nth-child(3) {
+.blog__article-card:nth-child(3) {
   animation-delay: 0.3s;
 }
-.article-card:nth-child(4) {
+.blog__article-card:nth-child(4) {
   animation-delay: 0.4s;
 }
-.article-card:nth-child(5) {
+.blog__article-card:nth-child(5) {
   animation-delay: 0.5s;
 }
-.article-card:nth-child(6) {
+.blog__article-card:nth-child(6) {
   animation-delay: 0.6s;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .blog-header h1 {
+  .blog__header-title {
     font-size: 2rem;
   }
 
-  .blog-header p {
+  .blog__header-subtitle {
     font-size: 1rem;
   }
 
-  .controls-container {
+  .blog__controls-container {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .filter-section,
-  .sort-section {
+  .blog__filter-section,
+  .blog__sort-section {
     min-width: auto;
   }
 
-  .articles-container {
+  .blog__articles-container {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
 
-  .article-meta {
+  .blog__article-meta {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.75rem;
   }
 
-  .article-footer {
+  .blog__article-footer {
     flex-direction: column;
     gap: 1rem;
     text-align: center;
@@ -364,19 +370,19 @@ ESTILOS PARA PÁGINA DE BLOG
 }
 
 @media (max-width: 480px) {
-  .blog-header {
+  .blog__header {
     padding: 1.5rem 1rem;
   }
 
-  .blog-controls {
+  .blog__controls {
     padding: 1rem;
   }
 
-  .article-content {
+  .blog__article-content {
     padding: 1rem;
   }
 
-  .articles-container {
+  .blog__articles-container {
     grid-template-columns: 1fr;
     padding: 0;
   }
@@ -384,36 +390,36 @@ ESTILOS PARA PÁGINA DE BLOG
 
 /* Accesibilidad mejorada */
 @media (prefers-reduced-motion: reduce) {
-  .article-card,
-  .article-image img,
-  .read-more-btn {
+  .blog__article-card,
+  .blog__article-image img,
+  .blog__read-more-btn {
     transition: none;
   }
 
-  .article-card {
+  .blog__article-card {
     animation: none;
   }
 }
 
 /* Alto contraste */
 @media (prefers-contrast: high) {
-  .article-card {
+  .blog__article-card {
     border: 2px solid var(--text);
   }
 
-  .article-category {
+  .blog__article-category {
     background: var(--text);
     color: var(--bg);
   }
 
-  .read-more-btn {
+  .blog__read-more-btn {
     background: var(--text);
     color: var(--bg);
   }
 }
 
-/* Breadcrumb para artículos */
-.breadcrumb {
+/* Element: breadcrumb */
+.blog__breadcrumb {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 10px;
   padding: 1rem 1.5rem;
@@ -424,39 +430,43 @@ ESTILOS PARA PÁGINA DE BLOG
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.breadcrumb a {
+.blog__breadcrumb a {
   color: var(--accent-blue);
   text-decoration: none;
   transition: color 0.3s ease;
   font-weight: 500;
 }
 
-.breadcrumb a:hover {
+.blog__breadcrumb a:hover {
   color: var(--accent-green);
 }
 
-.breadcrumb-separator {
+.blog__breadcrumb-separator {
   margin: 0 0.75rem;
   color: var(--text-2);
   font-weight: 600;
 }
 
-.breadcrumb > span:last-child {
+.blog__breadcrumb > span:last-child {
   color: var(--text);
   font-weight: 600;
 }
 
 /* Modo oscuro forzado */
 @media (prefers-color-scheme: dark) {
-  .blog-controls {
+  .blog__controls {
     background: rgba(0, 0, 0, 0.3);
   }
 
-  .article-card {
+  .blog__article-card {
     background: rgba(0, 0, 0, 0.3);
   }
 
-  .breadcrumb {
+  .blog__breadcrumb {
     background: rgba(0, 0, 0, 0.3);
   }
+}
+
+.blog__article-card-link {
+  text-decoration: none !important;
 }

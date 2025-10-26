@@ -2,12 +2,22 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
+import { useUser } from "../hooks/useUser";
 import "/src/styles/pages/cart.css";
 
 export default function Cart() {
   const navigate = useNavigate();
   const { items, updateQuantity, removeFromCart, clearCart, getTotals } =
     useCart();
+  const { authUser, isAuthenticated } = useAuth(); // Only auth data (JWT, loginTime)
+  const { user, loading } = useUser(); // Full user profile data
+
+  // Debug logging
+  useEffect(() => {
+    console.log("[Cart] Auth state:", { authUser, isAuthenticated });
+    console.log("[Cart] User data:", { user, loading });
+  }, [authUser, isAuthenticated, user, loading]);
 
   const [step, setStep] = useState(1); // 1 = cart items, 2 = checkout form
   const [showCouponModal, setShowCouponModal] = useState(false);
@@ -24,27 +34,43 @@ export default function Cart() {
 
   const totals = getTotals();
 
+  // Calculate DUOC discount if user is authenticated and has lifetime discount
+  const duocDiscount =
+    isAuthenticated && authUser?.hasLifetimeDiscount
+      ? Math.round(totals.subtotal * 0.2)
+      : 0;
+
+  const finalTotal = totals.total - duocDiscount;
+
   // Load shipping info and delivery date
   useEffect(() => {
-    // Get user profile for shipping address
-    const profile = JSON.parse(localStorage.getItem("userProfile")) || {};
-    const region = profile.region || "-";
-    const city = profile.city || "-";
-    let address = profile.addressLine1 || "-";
-    if (profile.addressLine2) address += ", " + profile.addressLine2;
-    setShippingText(`Enviar a: ${address}, ${city}, ${region}`);
+    // Get user profile for shipping address from UserContext
+    if (user) {
+      const region = user.address.region || "-";
+      const city = user.address.city || "-";
+      let address = user.address.addressLine1 || "-";
+      if (user.address.addressLine2)
+        address += ", " + user.address.addressLine2;
+      setShippingText(`Enviar a: ${address}, ${city}, ${region}`);
 
-    // Pre-fill form with user profile data if available
-    if (step === 2 && profile) {
-      setValue("fullName", profile.name || "");
-      setValue("email", profile.email || "");
-      setValue("phone", profile.phone || "");
-      setValue("rut", profile.rut || "");
-      setValue("addressLine1", profile.addressLine1 || "");
-      setValue("addressLine2", profile.addressLine2 || "");
-      setValue("city", profile.city || "");
-      setValue("region", profile.region || "");
-      setValue("postalCode", profile.postalCode || "");
+      // Pre-fill form with user profile data when in checkout step
+      if (step === 2) {
+        setValue(
+          "fullName",
+          `${user.personal.firstName} ${user.personal.lastName}` || ""
+        );
+        setValue("email", user.email || "");
+        setValue("phone", user.personal.phone || "");
+        setValue("rut", user.rut || "");
+        setValue("addressLine1", user.address.addressLine1 || "");
+        setValue("addressLine2", user.address.addressLine2 || "");
+        setValue("city", user.address.city || "");
+        setValue("region", user.address.region || "");
+        setValue("postalCode", user.address.postalCode || "");
+      }
+    } else {
+      // If no user, set default shipping text
+      setShippingText("");
     }
 
     // Calculate estimated delivery date (today + 7 days)
@@ -70,7 +96,7 @@ export default function Cart() {
     );
     const fechaEntrega = `${entrega.getDate()} de ${meses[entrega.getMonth()]}`;
     setDeliveryText(`Si compras hoy, recibes antes del ${fechaEntrega}`);
-  }, [step, setValue]);
+  }, [user, step, setValue]);
 
   const handleCheckout = () => {
     if (items.length === 0) {
@@ -87,23 +113,90 @@ export default function Cart() {
       return;
     }
 
-    // TODO: Process payment
-    console.log("Payment data:", {
-      ...data,
-      paymentMethod: selectedPaymentMethod,
+    // Generate order number
+    const orderNumber = `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+    // Get current date
+    const orderDate = new Date().toLocaleDateString("es-CL", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
-    alert(
-      `Pago procesado exitosamente con ${selectedPaymentMethod}\n\nDatos de envío:\n${
-        data.fullName
-      }\n${data.addressLine1}, ${
-        data.city
-      }\n\nTotal: $${totals.total.toLocaleString("es-CL")}`
-    );
+
+    // Calculate delivery date (7 days from now)
+    const meses = [
+      "enero",
+      "febrero",
+      "marzo",
+      "abril",
+      "mayo",
+      "junio",
+      "julio",
+      "agosto",
+      "septiembre",
+      "octubre",
+      "noviembre",
+      "diciembre",
+    ];
+    const deliveryDateObj = new Date();
+    deliveryDateObj.setDate(deliveryDateObj.getDate() + 7);
+    const deliveryDate = `${deliveryDateObj.getDate()} de ${
+      meses[deliveryDateObj.getMonth()]
+    }`;
+
+    // Get payment method name
+    const paymentMethods = {
+      "credit-card": "Tarjeta de Crédito",
+      "debit-card": "Tarjeta de Débito",
+      transfer: "Transferencia Bancaria",
+      paypal: "PayPal",
+    };
+
+    // Calculate points (1 point per $1000 CLP spent)
+    const pointsEarned = Math.floor(totals.subtotal / 1000);
+
+    // Prepare order data
+    const orderData = {
+      orderNumber,
+      orderDate,
+      deliveryDate,
+      paymentMethod:
+        paymentMethods[selectedPaymentMethod] || selectedPaymentMethod,
+      shipping: {
+        fullName: data.fullName,
+        email: data.email,
+        phone: data.phone,
+        rut: data.rut,
+        addressLine1: data.addressLine1,
+        addressLine2: data.addressLine2 || "",
+        city: data.city,
+        region: data.region,
+        postalCode: data.postalCode || "",
+      },
+      items: items.map((item) => ({
+        id: item.id,
+        name: item.name,
+        image: item.image,
+        price: item.price,
+        qty: item.qty,
+      })),
+      pricing: {
+        subtotal: totals.subtotal,
+        discount: totals.discount,
+        duocDiscount: duocDiscount,
+        total: finalTotal,
+      },
+      pointsEarned,
+    };
 
     // Clear cart after successful payment
     clearCart();
     setStep(1);
-    navigate("/");
+
+    // Navigate to success page with order data
+    navigate("/purchase-success", { state: { orderData } });
   };
 
   const handleBackToCart = () => {
@@ -134,125 +227,161 @@ export default function Cart() {
           </section>
 
           {/* Cart Content */}
-          <div className="cart-content">
-            {/* Cart Items or Checkout Form */}
-            <section className="cart-items-section">
-              {step === 1 ? (
-                // Step 1: Cart Items
-                items.length === 0 ? (
-                  <div className="empty-cart">
-                    <div className="empty-cart-icon">🛒</div>
-                    <h2>Tu carrito está vacío</h2>
-                    <p>¡Agrega productos para comenzar tu compra!</p>
-                    <button
-                      className="btn btn-primary"
-                      onClick={handleContinueShopping}
-                      style={{ marginTop: "1.5rem" }}
-                    >
-                      Ver Productos
-                    </button>
-                  </div>
-                ) : (
-                  <>
-                    <div className="cart-items">
-                      {items.map((item) => (
-                        <CartItem
-                          key={item.id}
-                          item={item}
-                          onUpdateQuantity={updateQuantity}
-                          onRemove={removeFromCart}
-                        />
-                      ))}
+          <div
+            className={`cart-content ${
+              step === 1 && items.length === 0 ? "empty" : ""
+            }`}
+          >
+            {/* Empty Cart State */}
+            {step === 1 && items.length === 0 ? (
+              <div className="empty-cart">
+                <div className="empty-cart-icon">🛒</div>
+                <h2>Tu carrito está vacío</h2>
+                <p>¡Agrega productos para comenzar tu compra!</p>
+                <button
+                  className="btn btn-primary"
+                  onClick={handleContinueShopping}
+                  style={{ marginTop: "1.5rem" }}
+                >
+                  Ver Productos
+                </button>
+              </div>
+            ) : (
+              <>
+                {/* Cart Items or Checkout Form */}
+                <section className="cart-items-section">
+                  {step === 1 ? (
+                    // Step 1: Cart Items
+                    <>
+                      <div className="cart-items">
+                        {items.map((item) => (
+                          <CartItem
+                            key={item.id}
+                            item={item}
+                            onUpdateQuantity={updateQuantity}
+                            onRemove={removeFromCart}
+                          />
+                        ))}
+                      </div>
+                      <div className="cart-actions">
+                        <button
+                          className="btn btn-secondary"
+                          onClick={handleContinueShopping}
+                        >
+                          Seguir Comprando
+                        </button>
+                        <button
+                          className="btn btn-danger empty-cart-btn"
+                          onClick={() => {
+                            if (
+                              window.confirm(
+                                "¿Estás seguro de que quieres vaciar el carrito?"
+                              )
+                            ) {
+                              clearCart();
+                            }
+                          }}
+                        >
+                          Vaciar carrito
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    // Step 2: Checkout Form
+                    <CheckoutForm
+                      register={register}
+                      errors={errors}
+                      selectedPaymentMethod={selectedPaymentMethod}
+                      setSelectedPaymentMethod={setSelectedPaymentMethod}
+                      onBack={handleBackToCart}
+                    />
+                  )}
+                </section>
+
+                {/* Cart Summary */}
+                <aside className="cart-summary">
+                  <div className="summary-card">
+                    <h3>Resumen del Pedido</h3>
+
+                    <div className="shipping-info">
+                      <div className="shipping-address">{shippingText}</div>
+                      <div className="delivery-estimate">{deliveryText}</div>
                     </div>
-                    <div className="cart-actions">
-                      <button
-                        className="btn btn-secondary"
-                        onClick={handleContinueShopping}
-                      >
-                        Seguir Comprando
-                      </button>
-                      <button
-                        className="btn btn-danger empty-cart-btn"
-                        onClick={() => {
-                          if (
-                            window.confirm(
-                              "¿Estás seguro de que quieres vaciar el carrito?"
-                            )
-                          ) {
-                            clearCart();
-                          }
-                        }}
-                      >
-                        Vaciar carrito
-                      </button>
+
+                    <div className="summary-line">
+                      <span>
+                        Subtotal ({totals.count}{" "}
+                        {totals.count === 1 ? "producto" : "productos"})
+                      </span>
+                      <span>${totals.subtotal.toLocaleString("es-CL")}</span>
                     </div>
-                  </>
-                )
-              ) : (
-                // Step 2: Checkout Form
-                <CheckoutForm
-                  register={register}
-                  errors={errors}
-                  selectedPaymentMethod={selectedPaymentMethod}
-                  setSelectedPaymentMethod={setSelectedPaymentMethod}
-                  onBack={handleBackToCart}
-                />
-              )}
-            </section>
 
-            {/* Cart Summary */}
-            {items.length > 0 && (
-              <aside className="cart-summary">
-                <div className="summary-card">
-                  <h3>Resumen del Pedido</h3>
+                    {/* Coupon discount */}
+                    {totals.discount > 0 && (
+                      <div className="summary-line discount-line">
+                        <span>Descuento cupón</span>
+                        <span className="discount-amount">
+                          -${totals.discount.toLocaleString("es-CL")}
+                        </span>
+                      </div>
+                    )}
 
-                  <div className="shipping-info">
-                    <div className="shipping-address">{shippingText}</div>
-                    <div className="delivery-estimate">{deliveryText}</div>
-                  </div>
+                    {/* DUOC Lifetime Discount */}
+                    {duocDiscount > 0 && (
+                      <div className="summary-line discount-line">
+                        <span>🎓 Descuento DUOC (20%)</span>
+                        <span className="discount-amount">
+                          -${duocDiscount.toLocaleString("es-CL")}
+                        </span>
+                      </div>
+                    )}
 
-                  <div className="summary-line">
-                    <span>
-                      Subtotal ({totals.count}{" "}
-                      {totals.count === 1 ? "producto" : "productos"})
-                    </span>
-                    <span>${totals.subtotal.toLocaleString("es-CL")}</span>
-                  </div>
-
-                  {/* Coupon Section - TODO: Implement later */}
-                  {totals.discount > 0 && (
-                    <div className="summary-line discount-line">
-                      <span>Descuento</span>
-                      <span className="discount-amount">
-                        -${totals.discount.toLocaleString("es-CL")}
+                    <div className="summary-line total-line">
+                      <span>Total</span>
+                      <span className="total-amount">
+                        ${finalTotal.toLocaleString("es-CL")}
                       </span>
                     </div>
-                  )}
 
-                  <div className="summary-line total-line">
-                    <span>Total</span>
-                    <span className="total-amount">
-                      ${totals.total.toLocaleString("es-CL")}
-                    </span>
+                    <div className="points-info">
+                      <p>
+                        🌟 Ganarás <strong>{pointsEarned} puntos</strong> con
+                        esta compra
+                      </p>
+                      {duocDiscount > 0 && (
+                        <p style={{ color: "#10b981", marginTop: "0.5rem" }}>
+                          🎓 Ahorraste ${duocDiscount.toLocaleString("es-CL")}{" "}
+                          con tu descuento DUOC
+                        </p>
+                      )}
+                      {isAuthenticated && !authUser?.hasLifetimeDiscount && (
+                        <p
+                          style={{
+                            color: "#6b7280",
+                            fontSize: "0.875rem",
+                            marginTop: "0.5rem",
+                          }}
+                        >
+                          💡 ¿Eres de DUOC? Registra tu correo @duoc.cl o
+                          @profesor.duoc.cl para obtener 20% de descuento de por
+                          vida
+                        </p>
+                      )}
+                    </div>
+
+                    <button
+                      className="btn btn-primary checkout-btn"
+                      onClick={
+                        step === 1
+                          ? handleCheckout
+                          : handleSubmit(handlePayment)
+                      }
+                    >
+                      {step === 1 ? "Proceder al Pago" : "Realizar Pago"}
+                    </button>
                   </div>
-
-                  <div className="points-info">
-                    <p>
-                      🌟 Ganarás <strong>{pointsEarned} puntos</strong> con esta
-                      compra
-                    </p>
-                  </div>
-
-                  <button
-                    className="btn btn-primary checkout-btn"
-                    onClick={
-                      step === 1 ? handleCheckout : handleSubmit(handlePayment)
-                    }
-                  >
-                    {step === 1 ? "Proceder al Pago" : "Realizar Pago"}
-                  </button>
-                </div>
-              </aside>
+                </aside>
+              </>
             )}
           </div>
         </div>

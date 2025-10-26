@@ -206,7 +206,7 @@ export default function RegisterModal() {
     setReferralCodeStatus((prev) => ({ ...prev, showFormat: false }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validation
@@ -278,8 +278,8 @@ export default function RegisterModal() {
       registeredAt: new Date().toISOString(),
     };
 
-    // Call register function
-    const result = register(registrationData);
+    // Call register function (now async)
+    const result = await register(registrationData);
 
     if (result.success) {
       // Reset form
@@ -297,6 +297,9 @@ export default function RegisterModal() {
       setReferralCodeStatus({ valid: false, message: "", showFormat: false });
     } else {
       console.error("Registration failed:", result.error);
+      alert(
+        result.error || "Error en el registro. Por favor, intenta nuevamente."
+      );
     }
   };
 

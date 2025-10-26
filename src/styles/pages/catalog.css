@@ -1,17 +1,12 @@
-/* Unificar ancho de los botones dentro del menú de categorías */
-.categories-list .tile-btn {
-  width: 100%;
-  box-sizing: border-box;
+/* ===========================
+   CATALOG PAGE STYLES
+   BEM: catalog__
+   =========================== */
+
+.catalog__main-content {
+  padding: 4rem 0;
 }
-/* Centrar el texto de los botones hamburguesa en todas las vistas */
-.tiles-hamburger .hamburger-title {
-  width: 100%;
-  display: block;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-}
-.product-grid > .no-products-message {
+.catalog__product-grid > .catalog__no-products-message {
   grid-column: 1 / -1;
   background: none;
   box-shadow: none;
@@ -41,12 +36,13 @@
 }
 
 .catalog-subtitle {
+  text-wrap: balance;
   color: rgba(255, 255, 255, 0.9);
   margin: 0;
   font-size: 1.2rem;
 }
 /* Fade-in para mensaje de no productos */
-.fade-in {
+.catalog__fade-in {
   opacity: 0;
   animation: fadeInAnim 0.7s ease-in forwards;
 }
@@ -59,7 +55,7 @@
   }
 }
 /* Centrado del mensaje de no productos */
-.no-products-message {
+.catalog__no-products-message {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -68,7 +64,7 @@
   text-align: center;
   padding: 2em 0;
 }
-.no-products-title {
+.catalog__no-products-title {
   color: #ff4444;
   font-family: var(--font-heading, "Orbitron", sans-serif);
   font-size: var(--size-h2, 2.25rem);
@@ -77,326 +73,14 @@
   line-height: var(--leading-tight, 1.2);
   letter-spacing: 0.01em;
 }
-.no-products-sub {
+.catalog__no-products-sub {
   color: #ff4444;
   font-family: "Orbitron", sans-serif;
   font-size: 1.1em;
   display: block;
   margin-top: 0.7em;
 }
-/* Contenedor colapsable del filtro de categoría */
-#category-filter-collapsible {
-  border: none;
-  background: var(--bg-light, #1a1a1a);
-  border-radius: 10px;
-  margin-top: 0.5em;
-  padding: 0.5em 0.5em 0.5em 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  color: var(--text, #fff);
-  display: none;
-  max-width: 100%;
-  min-width: 0;
-  word-break: break-word;
-  box-sizing: border-box;
-}
-#category-filter-collapsible.open {
-  display: block;
-}
-/* === Filtro de Rating (Hamburguesa) === */
-#rating-filter-hamburger {
-  display: flex;
-  align-items: center;
-  gap: 0.7em;
-  background: var(--bg, #000);
-  color: var(--text, #fff);
-  border: 1.5px solid var(--accent-blue);
-  border-radius: 8px;
-  padding: 0.6em 1.1em;
-  cursor: pointer;
-  transition: border 0.2s, box-shadow 0.2s, background 0.2s;
-  font-family: var(--font-body, "Roboto", sans-serif);
-  font-size: 1.1em;
-  box-shadow: 0 1px 4px rgba(30, 144, 255, 0.08);
-  margin-top: 1em;
-}
-#rating-filter-hamburger:focus {
-  outline: 2px solid var(--accent-green);
-  border-color: var(--accent-green);
-}
-#rating-filter-hamburger[aria-expanded="true"] {
-  background: var(--accent-blue);
-  color: #fff;
-}
-#rating-filter-hamburger .hamburger-bar {
-  display: block;
-  width: 22px;
-  height: 3px;
-  background: var(--accent-blue);
-  border-radius: 2px;
-  margin: 2px 0;
-  transition: background 0.2s;
-}
-#rating-filter-hamburger .hamburger-title {
-  margin: 0 auto;
-  font-weight: 600;
-  color: var(--text, #fff);
-  text-align: center;
-  width: 100%;
-  display: block;
-}
 
-#rating-filter-collapsible {
-  border: none;
-  background: var(--bg-light, #1a1a1a);
-  border-radius: 10px;
-  margin-top: 0.5em;
-  padding: 0.5em 0.5em 0.5em 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  color: var(--text, #fff);
-  display: none;
-}
-#rating-filter-collapsible.open {
-  display: block;
-}
-#rating-filter-collapsible .tiles-title {
-  font-size: 1.15em;
-  font-weight: 700;
-  color: var(--accent-blue);
-  margin-bottom: 0.7em;
-}
-.ratings-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-.ratings-list .tile-btn {
-  background: transparent;
-  color: var(--text, #fff);
-  border: none;
-  border-radius: 6px;
-  padding: 0.5em 1em;
-  font-size: 1em;
-  font-family: var(--font-body, "Roboto", sans-serif);
-  cursor: pointer;
-  transition: border 0.2s, background 0.2s, color 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5em;
-}
-.ratings-list .tile-btn.selected,
-.ratings-list .tile-btn:focus {
-  border-color: var(--accent-green-tint);
-  background: transparent;
-  color: var(--accent-green);
-  outline: none;
-}
-#clear-rating-filter {
-  background: transparent;
-  color: var(--accent-blue);
-  border: none;
-  font-size: 0.98em;
-  margin-top: 0.5em;
-  cursor: pointer;
-  text-decoration: underline;
-  transition: color 0.2s;
-}
-#clear-rating-filter:hover,
-#clear-rating-filter:focus {
-  color: var(--accent-green);
-  outline: none;
-}
-/* === Filtro de Marca (Hamburguesa) === */
-#brand-filter-hamburger {
-  display: flex;
-  align-items: center;
-  gap: 0.7em;
-  background: var(--bg, #000);
-  color: var(--text, #fff);
-  border: 1.5px solid var(--accent-blue);
-  border-radius: 8px;
-  padding: 0.6em 1.1em;
-  cursor: pointer;
-  transition: border 0.2s, box-shadow 0.2s, background 0.2s;
-  font-family: var(--font-body, "Roboto", sans-serif);
-  font-size: 1.1em;
-  box-shadow: 0 1px 4px rgba(30, 144, 255, 0.08);
-  margin-top: 1em;
-}
-#brand-filter-hamburger:focus {
-  outline: 2px solid var(--accent-green);
-  border-color: var(--accent-green);
-}
-#brand-filter-hamburger[aria-expanded="true"] {
-  background: var(--accent-blue);
-  color: #fff;
-}
-#brand-filter-hamburger .hamburger-bar {
-  display: block;
-  width: 22px;
-  height: 3px;
-  background: var(--accent-blue);
-  border-radius: 2px;
-  margin: 2px 0;
-  transition: background 0.2s;
-}
-#brand-filter-hamburger .hamburger-title {
-  margin: 0 auto;
-  font-weight: 600;
-  color: var(--text, #fff);
-  text-align: center;
-  width: 100%;
-  display: block;
-}
-
-#brand-filter-collapsible {
-  border: none;
-  background: var(--bg-light, #1a1a1a);
-  border-radius: 10px;
-  margin-top: 0.5em;
-  padding: 0.5em 0.5em 0.5em 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  color: var(--text, #fff);
-  display: none;
-}
-#brand-filter-collapsible.open {
-  display: block;
-}
-#brand-filter-collapsible .tiles-title {
-  font-size: 1.15em;
-  font-weight: 700;
-  color: var(--accent-blue);
-  margin-bottom: 0.7em;
-}
-.brands-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-.brands-list .tile-btn {
-  background: transparent;
-  color: var(--text, #fff);
-  /* border: 1.5px solid var(--accent-blue); */
-  border-radius: 6px;
-  padding: 0.5em 1em;
-  font-size: 1em;
-  font-family: var(--font-body, "Roboto", sans-serif);
-  cursor: pointer;
-  transition: border 0.2s, background 0.2s, color 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5em;
-}
-.brands-list .tile-btn.selected,
-.brands-list .tile-btn:focus {
-  border-color: var(--accent-green-tint);
-  background: transparent;
-  color: var(--accent-green);
-  outline: none;
-}
-#clear-brand-filter {
-  background: transparent;
-  color: var(--accent-blue);
-  border: none;
-  font-size: 0.98em;
-  margin-top: 0.5em;
-  cursor: pointer;
-  text-decoration: underline;
-  transition: color 0.2s;
-}
-#clear-brand-filter:hover,
-#clear-brand-filter:focus {
-  color: var(--accent-green);
-  outline: none;
-}
-/* === Filtro de Categoría (Hamburguesa) === */
-#category-filter-hamburger {
-  display: flex;
-  align-items: center;
-  gap: 0.7em;
-  background: var(--bg, #000);
-  color: var(--text, #fff);
-  border: 1.5px solid var(--accent-blue);
-  border-radius: 8px;
-  padding: 0.6em 1.1em;
-  cursor: pointer;
-  transition: border 0.2s, box-shadow 0.2s, background 0.2s;
-  font-family: var(--font-body, "Roboto", sans-serif);
-  font-size: 1.1em;
-  box-shadow: 0 1px 4px rgba(30, 144, 255, 0.08);
-}
-#category-filter-hamburger:focus {
-  outline: 2px solid var(--accent-green);
-  border-color: var(--accent-green);
-}
-#category-filter-hamburger[aria-expanded="true"] {
-  background: var(--accent-blue);
-  color: #fff;
-}
-#category-filter-hamburger,
-#brand-filter-hamburger,
-#rating-filter-hamburger {
-  display: flex;
-  align-items: center;
-  gap: 0.7em;
-  background: var(--bg, #000);
-  color: var(--text, #fff);
-  border: 1.5px solid var(--accent-blue);
-  border-radius: 8px;
-  padding: 0.7em 1.3em;
-  min-width: 210px;
-  min-height: 48px;
-  cursor: pointer;
-  transition: border 0.2s, box-shadow 0.2s, background 0.2s;
-  font-family: var(--font-body, "Roboto", sans-serif);
-  font-size: 1.1em;
-  box-shadow: 0 1px 4px rgba(30, 144, 255, 0.08);
-  margin-top: 1em;
-  justify-content: flex-start;
-}
-#category-filter-hamburger {
-  margin-top: 0;
-}
-.categories-list .tile-btn {
-  background: transparent;
-  color: var(--text, #fff);
-  /* border: 1.5px solid var(--accent-blue); */
-  border-radius: 6px;
-  padding: 0.5em 1em;
-  font-size: 1em;
-  font-family: var(--font-body, "Roboto", sans-serif);
-  cursor: pointer;
-  transition: border 0.2s, background 0.2s, color 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5em;
-}
-.categories-list .tile-btn.selected,
-.categories-list .tile-btn:focus {
-  border-color: var(--accent-green-tint);
-  background: none;
-  color: var(--accent-green);
-  outline: none;
-}
-#clear-category-filter {
-  background: transparent;
-  color: var(--accent-blue);
-  border: none;
-  font-size: 0.98em;
-  margin-top: 0.5em;
-  cursor: pointer;
-  text-decoration: underline;
-  transition: color 0.2s;
-}
-#clear-category-filter:hover,
-#clear-category-filter:focus {
-  color: var(--accent-green);
-  outline: none;
-}
 #catalog-controls {
   display: flex;
   flex-wrap: wrap;
@@ -441,21 +125,7 @@
   background: var(--bg, #23272f);
   color: var(--text);
 }
-/* Sidebar de filtros */
-#catalog-sidebar {
-  min-width: 230px;
-  max-width: 260px;
-  background: var(--bg-light, #1a1a1a);
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border: 1.5px solid var(--accent-blue);
-  padding: 1.2rem 1.2rem 1.2rem 1.2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  margin-right: 2.5rem;
-  height: fit-content;
-}
+/* --- CATALOG LAYOUT --- */
 .catalog-main-layout {
   display: flex;
   flex-direction: row;
@@ -464,7 +134,10 @@
   flex-direction: row;
   align-items: flex-start;
   gap: 0;
-  margin: 0 4rem;
+  margin: 0 1rem;
+  max-width: 1366px;
+  margin: 0 auto;
+  padding: 1rem;
 }
 #productos.section {
   flex: 1 1 0%;
@@ -490,15 +163,8 @@
     box-shadow: 0 2px 8px rgba(30, 144, 255, 0.1);
     padding: 1.2em 0.7em 1.2em 0.7em;
   }
-  .product-grid {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 0.7rem !important;
-  }
 }
 @media (max-width: 600px) {
-  .product-grid {
-    grid-template-columns: 1fr !important;
-  }
   #catalog-sidebar {
     padding: 0.7em 0.3em 0.7em 0.3em;
   }
@@ -615,26 +281,26 @@
     }
   }
   /* Mostrar hamburguesas y ocultar los filtros colapsables por defecto */
-  .tiles-hamburger {
+  .catalog__tiles-hamburger {
     display: flex;
   }
-  .tiles-collapsible {
+  .catalog__tiles-collapsible {
     display: none;
   }
-  .tiles-collapsible.open {
+  .catalog__tiles-collapsible.open {
     display: flex;
   }
   /* Estilos para filtro de categorías (reutiliza los de los otros filtros) */
   #categories-hamburger {
     margin-top: 0.5em;
   }
-  .categories-list {
+  .catalog__categories-list {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     margin-bottom: 0.5rem;
   }
-  .categories-list .tile-btn {
+  .catalog__categories-list .catalog__tile-btn {
     font-size: 1.1em;
     display: flex;
     align-items: center;
@@ -650,13 +316,13 @@
   #ratings-hamburger {
     margin-top: 0.5em;
   }
-  .ratings-list {
+  .catalog__ratings-list {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     margin-bottom: 0.5rem;
   }
-  .ratings-list .tile-btn {
+  .catalog__ratings-list .catalog__tile-btn {
     font-size: 1.1em;
     display: flex;
     align-items: center;
@@ -666,16 +332,16 @@
   #brands-hamburger {
     margin-top: 0.5em;
   }
-  .brands-list {
+  .catalog__brands-list {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     margin-bottom: 0.5rem;
   }
-  .tiles-hamburger {
+  .catalog__tiles-hamburger {
     gap: 0.7em;
   }
-  .tiles-collapsible {
+  .catalog__tiles-collapsible {
     display: none;
     flex-direction: column;
     gap: 0.5rem;
@@ -686,7 +352,7 @@
     margin-bottom: 1rem;
     border: 1.5px solid var(--accent-blue);
   }
-  .tiles-collapsible.open {
+  .catalog__tiles-collapsible.open {
     display: flex;
     animation: fadeInTiles 0.2s;
   }
@@ -712,7 +378,7 @@
       transform: translateY(0);
     }
   }
-  .tile-clear-btn {
+  .catalog__tile-clear-btn {
     background: var(--bg, #23272f);
     color: #ff4444;
     border: 2px solid var(--accent-blue);
@@ -727,8 +393,8 @@
     box-shadow: 0 1px 4px rgba(30, 144, 255, 0.08);
     margin-top: 1.2rem;
   }
-  .tile-clear-btn:focus,
-  .tile-clear-btn:hover {
+  .catalog__tile-clear-btn:focus,
+  .catalog__tile-clear-btn:hover {
     border-color: #ff4444;
     color: #fff;
     background: #2a0a0a;
@@ -755,20 +421,13 @@
       box-shadow: 0 2px 8px rgba(30, 144, 255, 0.1);
       padding: 1.2em 0.7em 1.2em 0.7em;
     }
-    .product-grid {
-      grid-template-columns: 1fr 1fr !important;
-      gap: 0.7rem !important;
-    }
   }
   @media (max-width: 600px) {
-    .product-grid {
-      grid-template-columns: 1fr !important;
-    }
     #catalog-sidebar {
       padding: 0.7em 0.3em 0.7em 0.3em;
     }
   }
-  .category-tiles {
+  .catalog__category-tiles {
     position: fixed;
     top: 0;
     right: 0;
@@ -786,10 +445,10 @@
     display: block;
     overflow-y: auto;
   }
-  .category-tiles.open {
+  .catalog__category-tiles.open {
     transform: translateX(0);
   }
-  .tiles-hamburger {
+  .catalog__tiles-hamburger {
     position: static;
     display: flex;
     margin: 0 0 1.2em auto;
@@ -805,13 +464,13 @@
     box-shadow: 0 2px 8px rgba(30, 144, 255, 0.1);
     z-index: 1100;
   }
-  .sidebar-title {
+  .catalog__sidebar-title {
     margin-top: 2.5em;
     text-align: left;
   }
-  .tiles-collapsible,
-  .brands-list,
-  .ratings-list {
+  .catalog__tiles-collapsible,
+  .catalog__brands-list,
+  .catalog__ratings-list {
     flex-direction: column;
     gap: 0.5rem;
     background: none;
@@ -822,7 +481,7 @@
   }
 }
 
-.category-tiles {
+.catalog__category-tiles {
   min-width: 210px;
   max-width: 220px;
   background: var(--bg-light, #1a1a1a);
@@ -836,7 +495,7 @@
   border: 1.5px solid var(--accent-blue);
   height: fit-content;
 }
-.tiles-title {
+.catalog__tiles-title {
   font-size: 1.2rem;
   font-weight: bold;
   color: var(--accent-blue);
@@ -844,12 +503,12 @@
   letter-spacing: 0.5px;
   text-align: left;
 }
-.tiles-list {
+.catalog__tiles-list {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
-.tile-btn {
+.catalog__tile-btn {
   background: var(--bg, #23272f);
   color: var(--text);
   /* border: 2px solid var(--accent-blue); */
@@ -864,14 +523,14 @@
   text-align: left;
   box-shadow: 0 1px 4px rgba(30, 144, 255, 0.08);
 }
-.tile-btn:focus,
-.tile-btn:hover {
+.catalog__tile-btn:focus,
+.catalog__tile-btn:hover {
   border-color: var(--accent-green);
   color: var(--accent-green);
   background: #181c22;
   box-shadow: 0 0 0 2px var(--accent-green, #39ff14);
 }
-.tile-btn[aria-pressed="true"] {
+.catalog__tile-btn[aria-pressed="true"] {
   background: none;
   color: #fff;
   border-color: var(--accent-green);
@@ -1019,7 +678,41 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
   margin: 0 4px; /* 4px margin on each side */
+}
+
+/* Pagination icon (hidden by default on desktop) */
+.pagination-icon {
+  display: none;
+}
+
+/* Pagination text (visible by default) */
+.pagination-btn__text {
+  display: inline;
+}
+
+/* Navigation buttons (prev/next) */
+.pagination-btn--prev,
+.pagination-btn--next {
+  min-width: auto;
+}
+
+/* Mobile: Show icons, hide text at 588px and below */
+@media (max-width: 588px) {
+  .pagination-icon {
+    display: inline-block;
+  }
+
+  .pagination-btn__text {
+    display: none;
+  }
+
+  .pagination-btn--prev,
+  .pagination-btn--next {
+    padding: 0.5rem;
+    min-width: 44px;
+  }
 }
 
 /* Specific styles for page number buttons */
@@ -1086,14 +779,55 @@
 }
 
 /* Animation for smooth pagination transitions */
-.product-grid {
+.catalog__product-grid {
   transition: opacity 0.2s ease;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem !important;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
   justify-content: center;
+  width: 100%;
 }
 
-.product-grid.loading {
+.catalog__product-grid.loading {
   opacity: 0.6;
+}
+
+/* Responsive grid breakpoints */
+@media (max-width: 900px) {
+  .catalog__product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.7rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .catalog__product-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 461px) {
+  .pagination-controls {
+    padding: 1rem 0.5rem;
+  }
+
+  .pagination-buttons {
+    gap: 0.25rem;
+  }
+
+  .pagination-btn {
+    margin: 0 2px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem; /* Slightly smaller text */
+    min-width: 44px; /* Maintain accessibility */
+  }
+
+  /* Show only: [Prev] [Current] [Next] on smallest screens */
+  .pagination-btn.page-btn:not(.active) {
+    display: none;
+  }
+
+  .pagination-ellipsis {
+    display: none;
+  }
 }

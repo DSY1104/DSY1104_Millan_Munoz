@@ -1,38 +1,42 @@
-import React, { useState } from "react";
+import React from "react";
 
-export default function BrandHamburger({ brands = [], selected, onSelect }) {
-  const [open, setOpen] = useState(false);
-
+export default function BrandHamburger({
+  brands = [],
+  selected,
+  onSelect,
+  isOpen,
+  onToggle,
+}) {
   const handleKeyDown = (e) => {
     if (e.key === "Escape") {
-      setOpen(false);
+      onToggle(false);
     }
   };
 
   return (
     <>
       <button
-        className="tiles-hamburger"
+        className="filter-sidebar__hamburger"
         aria-label="Mostrar/Ocultar marcas"
-        aria-expanded={open}
+        aria-expanded={isOpen}
         aria-controls="brand-filter-collapsible"
-        id="brand-filter-hamburger"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => onToggle((v) => !v)}
         onKeyDown={handleKeyDown}
       >
-        <span className="hamburger-title">Marca</span>
+        <span className="filter-sidebar__hamburger-title">Marca</span>
       </button>
       <div
-        className={`tiles-collapsible${open ? " open" : ""}`}
+        className={`filter-sidebar__collapsible${
+          isOpen ? " filter-sidebar__collapsible--open" : ""
+        }`}
         id="brand-filter-collapsible"
-        style={{ transition: "max-height 0.3s", overflow: "hidden" }}
       >
-        <nav className="brands-list" role="list">
+        <nav className="filter-sidebar__list" role="list">
           {brands.map((brand) => (
             <button
               key={brand}
-              className={`tile-btn brand-btn${
-                selected === brand ? " selected" : ""
+              className={`filter-sidebar__item${
+                selected === brand ? " filter-sidebar__item--selected" : ""
               }`}
               data-brand={brand}
               tabIndex="0"

@@ -149,6 +149,9 @@
 }
 .add-to-cart {
   align-self: flex-start;
+  font-size: 18px;
+  font-weight: 500;
+  text-transform: uppercase;
 }
 
 .quantity-selector {
@@ -158,17 +161,19 @@
   margin-bottom: 0.5em;
 }
 #qty-input {
+  height: 45px;
   width: 3em;
   text-align: center;
   font-size: 1.1em;
-  border: 2px solid var(--accent-blue, #1e90ff);
+  /* border: 2px solid var(--accent-blue, #1e90ff); */
+  border: none;
   border-radius: 6px;
   padding: 0.25em 0.5em;
-  background: var(--bg, #000);
+  background: transparent;
   color: var(--text, #fff);
   font-family: var(--font-body, "Roboto", sans-serif);
   font-weight: var(--weight-medium, 500);
-  box-shadow: 0 1px 4px rgba(30, 144, 255, 0.08);
+  /* box-shadow: 0 1px 4px rgba(30, 144, 255, 0.08); */
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
@@ -514,18 +519,18 @@
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .reviews-summary {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
   }
-  
+
   .review-header {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .review-form-section {
     position: static;
   }

@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import ProductCard from "/src/components/products/ProductCard.jsx";
-import "/src/styles/pages/products.css";
+import "/src/styles/pages/catalog.css";
 import FilterSidebar from "/src/components/filters/FilterSidebar.jsx";
 import { getAllProducts } from "../services/catalogService";
 import { getAllCategories } from "../services/categoryService";
+import { IconError404 } from "@tabler/icons-react";
 
 const PRODUCTS_PER_PAGE = 12;
 
@@ -159,7 +160,7 @@ export default function CatalogPage() {
 
   return (
     <div>
-      <main className="main-content">
+      <main className="catalog__main-content">
         <header className="catalog-header">
           <h1>Catálogo de Productos</h1>
           <p className="catalog-subtitle">
@@ -231,10 +232,10 @@ export default function CatalogPage() {
                     <option value="rating-asc">Rating: Ascendente</option>
                   </select>
                 </form>
-                <div className="product-grid" id="product-list">
+                <div className="catalog__product-grid" id="product-list">
                   {paginatedProducts.length === 0 ? (
                     <div
-                      className="no-products-message fade-in"
+                      className="catalog__no-products-message catalog__fade-in"
                       style={{
                         display: "flex",
                         flexDirection: "column",
@@ -246,12 +247,13 @@ export default function CatalogPage() {
                       }}
                     >
                       <img
-                        src="/assets/image/icon/status-error.svg"
+                        src="src/assets/images/catalog/not-found.svg"
                         alt="Sin resultados"
                         style={{ width: 80, marginBottom: "1em", opacity: 0.7 }}
                       />
+
                       <span
-                        className="no-products-title"
+                        className="catalog__no-products-title"
                         style={{
                           color: "var(--accent-blue)",
                           fontSize: "1.5em",
@@ -260,7 +262,7 @@ export default function CatalogPage() {
                         No encontramos productos
                       </span>
                       <span
-                        className="no-products-sub"
+                        className="catalog__no-products-sub"
                         style={{
                           color: "#888",
                           fontSize: "1.1em",
@@ -297,13 +299,28 @@ export default function CatalogPage() {
                     </div>
                     <div className="pagination-buttons">
                       <button
-                        className="pagination-btn"
+                        className="pagination-btn pagination-btn--prev"
                         onClick={() =>
                           setCurrentPage((p) => Math.max(1, p - 1))
                         }
                         disabled={currentPage === 1}
+                        aria-label="Página anterior"
                       >
-                        ← Anterior
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="pagination-icon"
+                        >
+                          <path d="M15 6l-6 6l6 6" />
+                        </svg>
+                        <span className="pagination-btn__text">Anterior</span>
                       </button>
                       {/* Page number buttons (max 5) */}
                       {Array.from({ length: totalPages }, (_, i) => i + 1)
@@ -331,13 +348,28 @@ export default function CatalogPage() {
                           </React.Fragment>
                         ))}
                       <button
-                        className="pagination-btn"
+                        className="pagination-btn pagination-btn--next"
                         onClick={() =>
                           setCurrentPage((p) => Math.min(totalPages, p + 1))
                         }
                         disabled={currentPage === totalPages}
+                        aria-label="Página siguiente"
                       >
-                        Siguiente →
+                        <span className="pagination-btn__text">Siguiente</span>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="pagination-icon"
+                        >
+                          <path d="M9 6l6 6l-6 6" />
+                        </svg>
                       </button>
                     </div>
                   </div>

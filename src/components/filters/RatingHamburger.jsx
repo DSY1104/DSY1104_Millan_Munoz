@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 
-export default function RatingHamburger({ selected, onSelect }) {
-  const [open, setOpen] = useState(false);
-
+export default function RatingHamburger({
+  selected,
+  onSelect,
+  isOpen,
+  onToggle,
+}) {
   const handleKeyDown = (e) => {
     if (e.key === "Escape") {
-      setOpen(false);
+      onToggle(false);
     }
   };
 
@@ -18,27 +21,27 @@ export default function RatingHamburger({ selected, onSelect }) {
   return (
     <>
       <button
-        className="tiles-hamburger"
+        className="filter-sidebar__hamburger"
         aria-label="Mostrar/Ocultar ratings"
-        aria-expanded={open}
+        aria-expanded={isOpen}
         aria-controls="rating-filter-collapsible"
-        id="rating-filter-hamburger"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => onToggle((v) => !v)}
         onKeyDown={handleKeyDown}
       >
-        <span className="hamburger-title">Rating</span>
+        <span className="filter-sidebar__hamburger-title">Rating</span>
       </button>
       <div
-        className={`tiles-collapsible${open ? " open" : ""}`}
+        className={`filter-sidebar__collapsible${
+          isOpen ? " filter-sidebar__collapsible--open" : ""
+        }`}
         id="rating-filter-collapsible"
-        style={{ transition: "max-height 0.3s", overflow: "hidden" }}
       >
-        <nav className="ratings-list" role="list">
+        <nav className="filter-sidebar__list" role="list">
           {ratings.map((rating) => (
             <button
               key={rating}
-              className={`tile-btn rating-btn${
-                selected === rating ? " selected" : ""
+              className={`filter-sidebar__item${
+                selected === rating ? " filter-sidebar__item--selected" : ""
               }`}
               data-rating={rating}
               tabIndex="0"

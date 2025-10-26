@@ -64,30 +64,14 @@ export default function EventsSection() {
         <section
           className="events-list-index"
           style={{
-            display: "flex",
-            gap: "1.2rem",
-            flexWrap: "wrap",
-            alignItems: "stretch",
-            justifyContent: "center",
-            marginBottom: "2.5rem",
             opacity: fade ? 1 : 0,
             transition: "opacity 0.7s",
           }}
         >
           {events.slice(0, 3).map((event, idx) => (
             <div key={idx} className="event-blog-card">
-              <h3
-                className="event-title"
-                style={{ fontSize: "1.3rem", marginBottom: "0.5rem" }}
-              >
-                {event.name}
-              </h3>
-              <p
-                className="event-description"
-                style={{ marginBottom: "1.2rem" }}
-              >
-                {event.description}
-              </p>
+              <h3 className="event-title">{event.name}</h3>
+              <p className="event-description">{event.description}</p>
               <div
                 style={{
                   marginTop: "auto",
@@ -97,16 +81,6 @@ export default function EventsSection() {
               >
                 <button
                   className="event-more-btn"
-                  style={{
-                    background: "var(--accent-green,#1a237e)",
-                    color: "#454545",
-                    border: "none",
-                    borderRadius: "6px",
-                    padding: "0.5em 1.2em",
-                    fontSize: "1rem",
-                    cursor: "pointer",
-                    transition: "background 0.2s",
-                  }}
                   onClick={() => setModalEvent(event)}
                 >
                   Más información

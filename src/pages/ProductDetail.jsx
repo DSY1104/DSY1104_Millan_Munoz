@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getProductByCode } from "../services/catalogService";
 import { useAuth } from "../context/AuthContext";
+import { useUser } from "../hooks/useUser";
 import { useCart } from "../context/CartContext";
 import "/src/styles/pages/product-detail.css";
 
@@ -177,7 +178,8 @@ export default function ProductDetailPage() {
   const [qtyError, setQtyError] = useState("");
   const [addedToCart, setAddedToCart] = useState(false);
 
-  const { isAuthenticated, user, openLoginModal } = useAuth();
+  const { isAuthenticated, openLoginModal } = useAuth();
+  const { user } = useUser(); // Get full user data from UserContext
   const { addToCart } = useCart();
   const reviews = useReviews(productCode);
 
@@ -404,6 +406,7 @@ function ProductDetail({
             -
           </button>
           <input
+            id="qty-input"
             type="number"
             min="1"
             max={product.stock}
@@ -448,7 +451,7 @@ function ProductDetail({
             ? "Sin stock"
             : addedToCart
             ? "¡Añadido!"
-            : "Añadir al carrito"}
+            : "Agregar al carrito"}
         </button>
 
         <div className="share-buttons" style={{ marginTop: "1.5em" }}>

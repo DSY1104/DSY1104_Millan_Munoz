@@ -18,7 +18,7 @@ export default function ProductCard({
 
   const handleCardClick = (e) => {
     // Don't navigate if clicking the add to cart button
-    if (e.target.closest(".add-to-cart")) {
+    if (e.target.closest(".product-card__button")) {
       return;
     }
     if (code) {
@@ -73,26 +73,25 @@ export default function ProductCard({
       style={{ cursor: "pointer" }}
     >
       {categoriaId && (
-        <span className="product-category badge">{categoriaId}</span>
+        <span className="product-card__category">{categoriaId}</span>
       )}
-      <div className="product-image-wrapper">
-        <img src={imagen} alt={nombre} className="product-image" />
+      <div className="product-card__image-wrapper">
+        <img src={imagen} alt={nombre} className="product-card__image" />
       </div>
-      <div className="product-info">
-        <div className="product-meta-row">
-          <h3 className="product-name">{nombre}</h3>
-          {rating !== null && (
-            <span className="product-rating">⭐ {rating}</span>
-          )}
+      <div className="product-card__info">
+        <div className="product-card__meta-row">
+          <h3 className="product-card__name">{nombre}</h3>
         </div>
-        <p className="product-brand">{marca}</p>
-        <p className="product-price">${precioCLP.toLocaleString("es-CL")}</p>
+        <p className="product-card__brand">{marca}</p>
+        <p className="product-card__price">
+          ${precioCLP.toLocaleString("es-CL")}
+        </p>
         <button
-          className="add-to-cart"
+          className="product-card__button"
           onClick={handleAddToCart}
           disabled={stock <= 0}
         >
-          {stock <= 0 ? "Sin stock" : "Agregar al carrito"}
+          {stock <= 0 ? "Sin stock" : "comprar"}
         </button>
       </div>
     </div>

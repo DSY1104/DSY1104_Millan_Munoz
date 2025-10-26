@@ -1,12 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-
-const defaultProfile = {
-  gamerTag: "AlexGamer95",
-  favoriteGenre: "rpg",
-  skillLevel: "advanced",
-  streamingPlatforms: ["twitch", "youtube"],
-  favoriteGames: "The Witcher 3, Civilization VI, Stardew Valley, League of Legends, Minecraft",
-};
+import React, { useState, useRef, useEffect } from "react";
+import { useUser } from "../../hooks/useUser";
 
 const genres = [
   { value: "rpg", label: "RPG" },
@@ -35,28 +28,18 @@ const streamingPlatformsList = [
   { value: "kick", label: "Kick" },
 ];
 
-function loadUserProfile() {
-  try {
-    const stored = localStorage.getItem("userProfile");
-    return stored ? { ...defaultProfile, ...JSON.parse(stored) } : defaultProfile;
-  } catch {
-    return defaultProfile;
-  }
-}
-
-function saveUserProfile(profile) {
-  localStorage.setItem("userProfile", JSON.stringify(profile));
-}
-
 export default function ProfileGamingTab() {
-  const [profile, setProfile] = useState(defaultProfile);
+  const { user, updateGaming } = useUser();
+  const [profile, setProfile] = useState(user?.gaming || {});
   const [successMsg, setSuccessMsg] = useState("");
   const timeoutRef = useRef();
 
+  // Update form when user data changes
   useEffect(() => {
-    setProfile(loadUserProfile());
-    return () => clearTimeout(timeoutRef.current);
-  }, []);
+    if (user?.gaming) {
+      setProfile(user.gaming);
+    }
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -72,18 +55,28 @@ export default function ProfileGamingTab() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    saveUserProfile(profile);
-    setSuccessMsg("Perfil gamer guardado correctamente");
-    clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => setSuccessMsg(""), 3000);
+    try {
+      await updateGaming(profile);
+      setSuccessMsg("Perfil gamer guardado correctamente");
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => setSuccessMsg(""), 3000);
+    } catch (error) {
+      setSuccessMsg("Error al guardar perfil gamer");
+      console.error(error);
+    }
   };
 
   return (
     <section className="tab-content active" id="gaming-tab">
       <h2>Perfil de Gaming</h2>
-      <form className="profile-form" id="gaming-form" onSubmit={handleSubmit} autoComplete="off">
+      <form
+        className="profile-form"
+        id="gaming-form"
+        onSubmit={handleSubmit}
+        autoComplete="off"
+      >
         <div className="form-group">
           <label htmlFor="gamer-tag">Gamer Tag</label>
           <input
@@ -105,7 +98,9 @@ export default function ProfileGamingTab() {
             required
           >
             {genres.map((g) => (
-              <option key={g.value} value={g.value}>{g.label}</option>
+              <option key={g.value} value={g.value}>
+                {g.label}
+              </option>
             ))}
           </select>
         </div>
@@ -119,7 +114,9 @@ export default function ProfileGamingTab() {
             required
           >
             {skillLevels.map((s) => (
-              <option key={s.value} value={s.value}>{s.label}</option>
+              <option key={s.value} value={s.value}>
+                {s.label}
+              </option>
             ))}
           </select>
         </div>
@@ -127,7 +124,11 @@ export default function ProfileGamingTab() {
           <label>Plataformas de Streaming</label>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
             {streamingPlatformsList.map((p) => (
-              <label key={p.value} className="checkbox-label" style={{ marginRight: 12 }}>
+              <label
+                key={p.value}
+                className="checkbox-label"
+                style={{ marginRight: 12 }}
+              >
                 <input
                   type="checkbox"
                   name="streamingPlatforms"
@@ -151,7 +152,9 @@ export default function ProfileGamingTab() {
             placeholder="Ej: The Witcher 3, Civilization VI, Stardew Valley..."
           />
         </div>
-        <button type="submit" className="btn btn-primary">Guardar Cambios</button>
+        <button type="submit" className="btn btn-primary">
+          Guardar Cambios
+        </button>
         {successMsg && <div className="success-message">{successMsg}</div>}
       </form>
     </section>

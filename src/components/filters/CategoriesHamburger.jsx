@@ -1,38 +1,42 @@
-import React, { useState } from "react";
+import React from "react";
 
-export default function CategoryHamburger({ categories, selected, onSelect }) {
-  const [open, setOpen] = useState(false);
-
+export default function CategoryHamburger({
+  categories,
+  selected,
+  onSelect,
+  isOpen,
+  onToggle,
+}) {
   const handleKeyDown = (e) => {
     if (e.key === "Escape") {
-      setOpen(false);
+      onToggle(false);
     }
   };
 
   return (
     <>
       <button
-        className="tiles-hamburger"
+        className="filter-sidebar__hamburger"
         aria-label="Mostrar/Ocultar categorías"
-        aria-expanded={open}
+        aria-expanded={isOpen}
         aria-controls="category-filter-collapsible"
-        id="category-filter-hamburger"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => onToggle((v) => !v)}
         onKeyDown={handleKeyDown}
       >
-        <span className="hamburger-title">Categoría</span>
+        <span className="filter-sidebar__hamburger-title">Categoría</span>
       </button>
       <div
-        className={`tiles-collapsible${open ? " open" : ""}`}
+        className={`filter-sidebar__collapsible${
+          isOpen ? " filter-sidebar__collapsible--open" : ""
+        }`}
         id="category-filter-collapsible"
-        style={{ transition: "max-height 0.3s", overflow: "hidden" }}
       >
-        <nav className="categories-list" role="list">
+        <nav className="filter-sidebar__list" role="list">
           {categories.map((cat) => (
             <button
               key={cat.id}
-              className={`tile-btn category-btn${
-                selected === cat.id ? " selected" : ""
+              className={`filter-sidebar__item${
+                selected === cat.id ? " filter-sidebar__item--selected" : ""
               }`}
               data-category={cat.id}
               tabIndex="0"

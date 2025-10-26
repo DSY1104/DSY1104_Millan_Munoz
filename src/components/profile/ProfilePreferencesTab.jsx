@@ -1,15 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-
-
-const defaultProfile = {
-  favoriteCategories: [],
-  preferredPlatform: "pc",
-  gamingHours: "16-30",
-  notifyOffers: true,
-  notifyNewProducts: true,
-  notifyRestocks: false,
-  notifyNewsletter: true,
-};
+import React, { useState, useRef, useEffect } from "react";
+import { useUser } from "../../hooks/useUser";
 
 const categoriesList = [
   { id: "JM", nombre: "Juegos de Mesa" },
@@ -18,31 +8,20 @@ const categoriesList = [
   { id: "AC", nombre: "Accesorios" },
   { id: "MO", nombre: "Monitores" },
   { id: "AU", nombre: "Audio" },
-  // Agrega más categorías si es necesario
 ];
 
-function loadUserProfile() {
-  try {
-    const stored = localStorage.getItem("userProfile");
-    return stored ? { ...defaultProfile, ...JSON.parse(stored) } : defaultProfile;
-  } catch {
-    return defaultProfile;
-  }
-}
-
-function saveUserProfile(profile) {
-  localStorage.setItem("userProfile", JSON.stringify(profile));
-}
-
 export default function ProfilePreferencesTab() {
-  const [profile, setProfile] = useState(defaultProfile);
+  const { user, updatePreferences } = useUser();
+  const [profile, setProfile] = useState(user?.preferences || {});
   const [successMsg, setSuccessMsg] = useState("");
   const timeoutRef = useRef();
 
+  // Update form when user data changes
   useEffect(() => {
-    setProfile(loadUserProfile());
-    return () => clearTimeout(timeoutRef.current);
-  }, []);
+    if (user?.preferences) {
+      setProfile(user.preferences);
+    }
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -60,23 +39,41 @@ export default function ProfilePreferencesTab() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    saveUserProfile(profile);
-    setSuccessMsg("Preferencias guardadas correctamente");
-    clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => setSuccessMsg(""), 3000);
+    try {
+      await updatePreferences(profile);
+      setSuccessMsg("Preferencias guardadas correctamente");
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => setSuccessMsg(""), 3000);
+    } catch (error) {
+      setSuccessMsg("Error al guardar preferencias");
+      console.error(error);
+    }
   };
 
   return (
     <section className="tab-content active" id="preferences-tab">
       <h2>Preferencias</h2>
-      <form className="profile-form" id="preferences-form" onSubmit={handleSubmit} autoComplete="off">
+      <form
+        className="profile-form"
+        id="preferences-form"
+        onSubmit={handleSubmit}
+        autoComplete="off"
+      >
         <div className="form-group">
           <label>Categorías Favoritas</label>
-          <div id="favorite-categories" style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+          <div
+            className="checkbox-group"
+            id="favorite-categories"
+            style={{ display: "flex", flexWrap: "wrap", gap: 8 }}
+          >
             {categoriesList.map((cat) => (
-              <label key={cat.id} className="checkbox-label" style={{ marginRight: 12 }}>
+              <label
+                key={cat.id}
+                className="checkbox-label"
+                style={{ marginRight: 12 }}
+              >
                 <input
                   type="checkbox"
                   name="favoriteCategories"
@@ -119,7 +116,7 @@ export default function ProfilePreferencesTab() {
           </select>
         </div>
         <div className="form-group">
-          <label>
+          <label className="preference">
             <input
               type="checkbox"
               name="notifyOffers"
@@ -130,7 +127,7 @@ export default function ProfilePreferencesTab() {
           </label>
         </div>
         <div className="form-group">
-          <label>
+          <label className="preference">
             <input
               type="checkbox"
               name="notifyNewProducts"
@@ -141,7 +138,7 @@ export default function ProfilePreferencesTab() {
           </label>
         </div>
         <div className="form-group">
-          <label>
+          <label className="preference">
             <input
               type="checkbox"
               name="notifyRestocks"
@@ -152,7 +149,7 @@ export default function ProfilePreferencesTab() {
           </label>
         </div>
         <div className="form-group">
-          <label>
+          <label className="preference">
             <input
               type="checkbox"
               name="notifyNewsletter"
@@ -162,10 +159,11 @@ export default function ProfilePreferencesTab() {
             Suscribirme al newsletter
           </label>
         </div>
-        <button type="submit" className="btn btn-primary">Guardar Cambios</button>
+        <button type="submit" className="btn btn-primary">
+          Guardar Cambios
+        </button>
         {successMsg && <div className="success-message">{successMsg}</div>}
       </form>
     </section>
   );
 }
-

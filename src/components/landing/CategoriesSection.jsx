@@ -95,7 +95,7 @@ export default function CategoriesSection() {
           <div>
             <div className="BentoBox_bento-container__23r4y">
               <div
-                id="categorasdeproducto"
+                id="categoriasdeproducto"
                 aria-hidden="false"
                 className="BentoBox_bento-content-item__3UayJ BentoBox_top-center-copy__3UeyQ BentoBox_active__1FGCg"
               >

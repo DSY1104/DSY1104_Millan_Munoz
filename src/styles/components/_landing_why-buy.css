@@ -12,9 +12,8 @@
 /* Panel 4 */
 #why-buy {
   display: flex;
-  padding: 2rem;
   margin: 0 auto;
-  max-width: 1920px;
+  max-width: 1366px;
   flex-direction: column;
 }
 #why-buy h2 {

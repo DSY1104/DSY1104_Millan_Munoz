@@ -1,6 +1,6 @@
 /* Header estilo igual a cart-header */
-.main-content {
-  padding: 65px;
+.support__main-content {
+  padding: 4rem 1rem 0;
   min-height: calc(100vh - 80px); /* Ajusta según la altura del navbar */
 }
 
