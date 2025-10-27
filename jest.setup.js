@@ -5,6 +5,9 @@ import { TextEncoder, TextDecoder } from "util";
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
+// Mock import.meta for Vite environment variables
+global.import = { meta: { env: {} } };
+
 // Mock localStorage
 const localStorageMock = {
   getItem: jest.fn(),
@@ -52,7 +55,9 @@ global.IntersectionObserver = class IntersectionObserver {
 // Mock fetch globally for all tests
 beforeAll(() => {
   if (!global.fetch) {
-    global.fetch = jest.fn(() => Promise.resolve({ ok: true, json: () => Promise.resolve([]) }));
+    global.fetch = jest.fn(() =>
+      Promise.resolve({ ok: true, json: () => Promise.resolve([]) })
+    );
   }
 });
 

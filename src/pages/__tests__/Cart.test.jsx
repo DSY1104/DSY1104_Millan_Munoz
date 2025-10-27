@@ -227,4 +227,221 @@ describe("Cart Page", () => {
 
     expect(screen.getByText(/Stock máximo alcanzado/i)).toBeInTheDocument();
   });
+
+  test("should remove item from cart", () => {
+    const cartData = {
+      items: [
+        {
+          id: "JM001",
+          name: "Mouse Gaming",
+          price: 25000,
+          qty: 1,
+          image: "/test.png",
+          stock: 10,
+          metadata: {},
+        },
+      ],
+    };
+    localStorage.setItem("cart:data", JSON.stringify(cartData));
+
+    renderWithProviders(<Cart />);
+
+    expect(screen.getByText("Mouse Gaming")).toBeInTheDocument();
+
+    const removeButtons = screen.getAllByLabelText(/Eliminar/i);
+    fireEvent.click(removeButtons[0]);
+
+    // Should show empty cart
+    expect(
+      screen.getAllByText(/tu carrito está vacío/i).length
+    ).toBeGreaterThanOrEqual(1);
+  });
+
+  test("should navigate back from checkout form", () => {
+    const cartData = {
+      items: [
+        {
+          id: "JM001",
+          name: "Mouse Gaming",
+          price: 25000,
+          qty: 1,
+          image: "/test.png",
+          stock: 10,
+          metadata: {},
+        },
+      ],
+    };
+    localStorage.setItem("cart:data", JSON.stringify(cartData));
+
+    renderWithProviders(<Cart />);
+
+    // Go to checkout
+    const checkoutButton = screen.getByText(/Proceder al Pago/i);
+    fireEvent.click(checkoutButton);
+
+    // Should show checkout form
+    expect(screen.getByText(/Información de Envío/i)).toBeInTheDocument();
+
+    // Go back
+    const backButton = screen.getByText(/Volver al Carrito/i);
+    fireEvent.click(backButton);
+
+    // Should show cart items again
+    expect(screen.getByText("Mouse Gaming")).toBeInTheDocument();
+  });
+
+  test("should handle multiple items in cart", () => {
+    const cartData = {
+      items: [
+        {
+          id: "JM001",
+          name: "Mouse Gaming",
+          price: 25000,
+          qty: 1,
+          image: "/test.png",
+          stock: 10,
+          metadata: {},
+        },
+        {
+          id: "JM002",
+          name: "Teclado Gaming",
+          price: 50000,
+          qty: 1,
+          image: "/test.png",
+          stock: 10,
+          metadata: {},
+        },
+      ],
+    };
+    localStorage.setItem("cart:data", JSON.stringify(cartData));
+
+    renderWithProviders(<Cart />);
+
+    expect(screen.getByText("Mouse Gaming")).toBeInTheDocument();
+    expect(screen.getByText("Teclado Gaming")).toBeInTheDocument();
+  });
+
+  test("should display item metadata", () => {
+    const cartData = {
+      items: [
+        {
+          id: "JM001",
+          name: "Mouse Gaming",
+          price: 25000,
+          qty: 1,
+          image: "/test.png",
+          stock: 10,
+          metadata: {
+            color: "Negro",
+            size: "M",
+          },
+        },
+      ],
+    };
+    localStorage.setItem("cart:data", JSON.stringify(cartData));
+
+    renderWithProviders(<Cart />);
+
+    expect(screen.getByText("Mouse Gaming")).toBeInTheDocument();
+  });
+
+  test("should show error when coupon code is empty", () => {
+    const cartData = {
+      items: [
+        {
+          id: "JM001",
+          name: "Mouse Gaming",
+          price: 25000,
+          qty: 1,
+          image: "/test.png",
+          stock: 10,
+          metadata: {},
+        },
+      ],
+    };
+    localStorage.setItem("cart:data", JSON.stringify(cartData));
+
+    renderWithProviders(<Cart />);
+
+    const applyButton = screen.getByText("Aplicar");
+    fireEvent.click(applyButton);
+
+    // Should show error message
+    expect(
+      screen.getByText(/Por favor ingresa un código/i)
+    ).toBeInTheDocument();
+  });
+
+  test("should continue shopping", () => {
+    const cartData = {
+      items: [
+        {
+          id: "JM001",
+          name: "Mouse Gaming",
+          price: 25000,
+          qty: 1,
+          image: "/test.png",
+          stock: 10,
+          metadata: {},
+        },
+      ],
+    };
+    localStorage.setItem("cart:data", JSON.stringify(cartData));
+
+    renderWithProviders(<Cart />);
+
+    const continueButton = screen.getByText(/Seguir comprando/i);
+    expect(continueButton).toBeInTheDocument();
+  });
+
+  test("should show subtotal correctly", () => {
+    const cartData = {
+      items: [
+        {
+          id: "JM001",
+          name: "Mouse Gaming",
+          price: 10000,
+          qty: 3,
+          image: "/test.png",
+          stock: 10,
+          metadata: {},
+        },
+      ],
+    };
+    localStorage.setItem("cart:data", JSON.stringify(cartData));
+
+    renderWithProviders(<Cart />);
+
+    // Subtotal should be 30000
+    const subtotalElements = screen.getAllByText(/30\.000/);
+    expect(subtotalElements.length).toBeGreaterThan(0);
+  });
+
+  test("should not clear cart if user cancels", () => {
+    const cartData = {
+      items: [
+        {
+          id: "JM001",
+          name: "Mouse Gaming",
+          price: 25000,
+          qty: 1,
+          image: "/test.png",
+          stock: 10,
+          metadata: {},
+        },
+      ],
+    };
+    localStorage.setItem("cart:data", JSON.stringify(cartData));
+
+    // Mock window.confirm to return false
+    global.confirm = jest.fn(() => false);
+
+    renderWithProviders(<Cart />);
+
+    const clearButton = screen.getByText(/Vaciar carrito/i);
+    fireEvent.click(clearButton);
+
+    // Should still show item
+    expect(screen.getByText("Mouse Gaming")).toBeInTheDocument();
+  });
 });
