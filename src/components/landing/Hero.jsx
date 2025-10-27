@@ -12,7 +12,7 @@ export default function Hero() {
           loop
           muted
           playsInline
-          poster="/assets/images/home/hero-fallback.jpg"
+          poster="/assets/images/home/hero-fallback.png"
           preload="auto"
           tabIndex={-1}
         >
@@ -27,7 +27,7 @@ export default function Hero() {
             media="(max-width: 768px)"
           />
           {/* Imagen fallback para navegadores que no soportan video */}
-          <img src="/assets/images/home/hero-fallback.jpg" alt="Promoción LevelUp" />
+          <img src="/assets/images/home/hero-fallback.png" alt="Promoción LevelUp" />
         </video>
         <div className="hero-overlay"></div>
       </div>
