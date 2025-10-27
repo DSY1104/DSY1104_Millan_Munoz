@@ -5,7 +5,7 @@
     "description": "Descubre nuestra selección de auriculares gaming que te darán la ventaja competitiva que necesitas. Desde audio 7.1 hasta cancelación de ruido.",
     "category": "reviews",
     "date": "2025-09-10",
-    "image": "/src/assets/images/blog/audio.webp",
+    "image": "/assets/images/blog/audio.webp",
     "featured": true,
     "readingTime": "5 min",
     "slug": "auriculares-gaming-2025"
@@ -16,7 +16,7 @@
     "description": "Todo lo que necesitas saber para crear el setup gaming perfecto. Desde la iluminación RGB hasta la ergonomía del espacio de trabajo.",
     "category": "guias",
     "date": "2025-09-08",
-    "image": "/src/assets/images/blog/pc.webp",
+    "image": "/assets/images/blog/pc.webp",
     "featured": false,
     "readingTime": "8 min",
     "slug": "setup-gaming-completo"
@@ -27,7 +27,7 @@
     "description": "Los monitores 4K más esperados del año ya están aquí. Conoce sus especificaciones, precios y disponibilidad en LevelUp.",
     "category": "noticias",
     "date": "2025-09-05",
-    "image": "/src/assets/images/blog/monitor.webp",
+    "image": "/assets/images/blog/monitor.webp",
     "featured": false,
     "readingTime": "4 min",
     "slug": "monitores-4k-gaming"
@@ -38,7 +38,7 @@
     "description": "Gearbox Software regresa con una nueva aventura épica llena de acción, humor y millones de armas. Descubre todas las novedades.",
     "category": "gaming",
     "date": "2025-09-11",
-    "image": "/src/assets/images/blog/games.webp",
+    "image": "/assets/images/blog/games.webp",
     "featured": true,
     "readingTime": "6 min",
     "slug": "borderlands-4-preview"
@@ -49,7 +49,7 @@
     "description": "Sony eleva el listón con su nueva consola de gama alta. Después de semanas de pruebas intensivas, te contamos si vale la pena.",
     "category": "reviews",
     "date": "2025-09-10",
-    "image": "/src/assets/images/blog/ps5.webp",
+    "image": "/assets/images/blog/ps5.webp",
     "featured": false,
     "readingTime": "8 min",
     "slug": "ps5-pro-review"
@@ -60,7 +60,7 @@
     "description": "Desde el cloud gaming hasta la integración de IA, exploramos las tendencias más importantes que están moldeando el futuro.",
     "category": "gaming",
     "date": "2025-09-09",
-    "image": "/src/assets/images/blog/trends.webp",
+    "image": "/assets/images/blog/trends.webp",
     "featured": false,
     "readingTime": "7 min",
     "slug": "gaming-trends-2025"

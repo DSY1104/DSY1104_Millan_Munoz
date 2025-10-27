@@ -1,0 +1,68 @@
+[
+  {
+    "code": "JM001",
+    "nombre": "Catan",
+    "categoriaId": "JM",
+    "precioCLP": 29990,
+    "stock": 25,
+    "marca": "Kosmos",
+    "rating": 4.8,
+    "specs": ["3-4 jugadores", "60-90 min"],
+    "descripcion": "Clásico de estrategia de colonización y comercio.",
+    "tags": ["familiar", "estrategia"],
+    "imagen": "/assets/images/products/jm001.webp"
+  },
+  {
+    "code": "JM002",
+    "nombre": "Carcassonne",
+    "categoriaId": "JM",
+    "precioCLP": 24990,
+    "stock": 30,
+    "marca": "Z-Man Games",
+    "rating": 4.7,
+    "specs": ["2-5 jugadores", "35 min"],
+    "descripcion": "Construcción de losetas en la campiña medieval.",
+    "tags": ["familiar", "colocación"],
+    "imagen": "/assets/images/products/jm002.webp"
+  },
+  {
+    "code": "AC001",
+    "nombre": "Control Xbox Inalámbrico",
+    "categoriaId": "AC",
+    "precioCLP": 59990,
+    "stock": 18,
+    "marca": "Microsoft",
+    "rating": 4.6,
+    "specs": ["Bluetooth", "USB-C", "Xbox/PC"],
+    "descripcion": "Comodidad mejorada con agarre texturizado y baja latencia.",
+    "tags": ["xbox", "pc"],
+    "imagen": "/assets/images/products/ac001.webp"
+  },
+  {
+    "code": "AC002",
+    "nombre": "HyperX Cloud II",
+    "categoriaId": "AC",
+    "precioCLP": 79990,
+    "stock": 14,
+    "marca": "HyperX",
+    "rating": 4.7,
+    "specs": ["Sonido 7.1", "Micrófono desmontable"],
+    "descripcion": "Sonido envolvente y comodidad para largas sesiones.",
+    "tags": ["audio", "microfono"],
+    "imagen": "/assets/images/products/ac002.webp"
+  },
+  {
+    "code": "CO001",
+    "nombre": "PlayStation 5",
+    "categoriaId": "CO",
+    "precioCLP": 549990,
+    "stock": 8,
+    "marca": "Sony",
+    "rating": 4.9,
+    "specs": ["SSD ultra-rápido", "Ray Tracing"],
+    "descripcion": "Consola de nueva generación con tiempos de carga mínimos.",
+    "tags": ["ps5", "next-gen"],
+    "imagen": "/assets/images/products/co001.webp"
+  }
+  // ...continúa con el resto de los productos, corrigiendo las rutas de imagen...
+]
