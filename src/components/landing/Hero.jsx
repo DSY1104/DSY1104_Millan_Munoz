@@ -17,12 +17,12 @@ export default function Hero() {
           tabIndex={-1}
         >
           <source
-            src="/public/media/video/Homepage_Looping_Video.webm"
+            src="/media/video/Homepage_Looping_Video.webm"
             type="video/webm"
             media="(min-width: 769px)"
           />
           <source
-            src="/public/media/video/Homepage_Looping_Video_Vertical.webm"
+            src="/media/video/Homepage_Looping_Video_Vertical.webm"
             type="video/webm"
             media="(max-width: 768px)"
           />

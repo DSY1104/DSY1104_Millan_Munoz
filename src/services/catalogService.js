@@ -12,7 +12,7 @@ export const getAllProducts = async () => {
   try {
     // In a real scenario, this would be an API endpoint like '/api/products'
     // For now, we're simulating by fetching the local JSON file
-    const response = await fetch("/src/assets/data/products.json");
+  const response = await fetch("/data/products.json");
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

@@ -12,7 +12,7 @@ export const getAllArticles = async () => {
   try {
     // In a real scenario, this would be an API endpoint like '/api/blog/articles'
     // For now, we're simulating by fetching the local JSON file
-    const response = await fetch("/src/assets/data/blogArticles.json");
+  const response = await fetch("/data/blogArticles.json");
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
