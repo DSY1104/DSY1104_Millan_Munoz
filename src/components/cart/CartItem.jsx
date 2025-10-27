@@ -43,7 +43,7 @@ export default function CartItem({ item, onUpdateQuantity, onRemove }) {
     <div className="cart-item" data-testid={`cart-item-${id}`}>
       <div className="cart-item__image">
         {image ? (
-          <img src={image} alt={name} />
+          <img src={image.replace('/src/assets/images/', '/assets/images/')} alt={name} />
         ) : (
           <div className="cart-item__image-placeholder">No image</div>
         )}

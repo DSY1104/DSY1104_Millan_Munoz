@@ -12,7 +12,7 @@ export const getLevelsData = async () => {
   try {
     // In a real scenario, this would be an API endpoint like '/api/levels'
     // For now, we're simulating by fetching the local JSON file
-    const response = await fetch("/src/assets/data/levels.json");
+  const response = await fetch("/data/levels.json");
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

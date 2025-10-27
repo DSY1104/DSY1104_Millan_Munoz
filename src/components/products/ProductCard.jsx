@@ -77,7 +77,7 @@ export default function ProductCard({
         <span className="product-card__category">{categoriaId}</span>
       )}
       <div className="product-card__image-wrapper">
-        <img src={imagen} alt={nombre} className="product-card__image" />
+  <img src={imagen.replace('/src/assets/images/', '/assets/images/')} alt={nombre} className="product-card__image" />
       </div>
       <div className="product-card__info">
         <div className="product-card__meta-row">

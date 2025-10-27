@@ -86,7 +86,7 @@ export default function Navigation() {
       <div className="navbar-container">
         <NavLink to="/" className="navbar-brand">
           <img
-            src="/src/assets/images/logo/logo_nobg.png"
+            src="/assets/images/logo/logo_nobg.png"
             width="72"
             alt="LevelUp"
             style={{ verticalAlign: "middle" }}

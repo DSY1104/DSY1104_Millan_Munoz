@@ -229,7 +229,7 @@ export default function BlogPost() {
         </div>
 
         <figure className="blog-post__hero-image">
-          <img src={content.heroImage} alt={content.title} />
+          <img src={content.heroImage.replace('/src/assets/images/', '/assets/images/')} alt={content.title} />
           {content.heroCaption && (
             <figcaption>{content.heroCaption}</figcaption>
           )}

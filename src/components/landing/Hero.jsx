@@ -27,7 +27,7 @@ export default function Hero() {
             media="(max-width: 768px)"
           />
           {/* Imagen fallback para navegadores que no soportan video */}
-          <img src="/assets/img/hero-fallback.jpg" alt="Promoción LevelUp" />
+              <img src="/assets/img/hero-fallback.jpg" alt="Promoción LevelUp" />
         </video>
         <div className="hero-overlay"></div>
       </div>

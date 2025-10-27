@@ -117,7 +117,7 @@ export default function PurchaseSuccess() {
                   {orderData.items.map((item, index) => (
                     <div key={index} className="order-item">
                       <div className="item-image">
-                        <img src={item.image} alt={item.name} />
+                        <img src={item.image.replace('/src/assets/images/', '/assets/images/')} alt={item.name} />
                       </div>
                       <div className="item-details">
                         <p className="item-name">{item.name}</p>
