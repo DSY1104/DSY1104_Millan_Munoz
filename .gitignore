@@ -11,7 +11,20 @@ node_modules
 dist
 dist-ssr
 *.local
+
+# Testing
 coverage
+__tests__
+*.test.js
+*.test.jsx
+*.spec.js
+*.spec.jsx
+jest.config.js
+jest.setup.js
+
+# Documentation (except README)
+*.md
+!README.md
 
 # Editor directories and files
 .vscode/*
