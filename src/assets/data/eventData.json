@@ -6,7 +6,7 @@
     "dates": "Miércoles 24 a Domingo 28 de Septiembre de 2025",
     "hours": "10:00 a 20:00 hrs",
     "description": "La feria de videojuegos más grande de Chile. Reúne a los principales estudios nacionales e internacionales para presentar avances y demos jugables de sus próximos lanzamientos. Cuenta con una gran zona de freeplay con consolas y PCs, torneos de eSports, áreas de realidad virtual, charlas con desarrolladores y una feria de indies donde los creadores locales muestran su talento. El evento ideal para gamers de todos los niveles.",
-    "image": "/src/assets/images/maps/espacioRiesco.png"
+  "image": "/assets/images/maps/espacioRiesco.png"
   },
   {
     "name": "TechAndoSantiago 2025",
@@ -15,7 +15,7 @@
     "dates": "Jueves 2 a Domingo 5 de Octubre de 2025",
     "hours": "09:30 a 19:30 hrs",
     "description": "Un festival al aire libre que combina tecnología, innovación y entretenimiento para toda la familia. Con charlas sobre smart cities, Internet de las Cosas (IoT) y startups, junto a zonas interactivas de drones, robótica e impresión 3D. Por las noches, se transforma en un centro de entretenimiento con proyecciones mapping en los edificios del parque y conciertos de artistas que fusionan música y tecnología en vivo.",
-    "image": "/src/assets/images/maps/bicentenario.png"
+  "image": "/assets/images/maps/bicentenario.png"
   },
   {
     "name": "Iquique CryptoCon 2025",
@@ -24,7 +24,7 @@
     "dates": "Viernes 3 a Domingo 5 de Octubre de 2025",
     "hours": "11:00 a 21:00 hrs",
     "description": "El principal evento del norte grande sobre tecnologías disruptivas. Enfocado en blockchain, criptomonedas, NFTs y el metaverso. Ofrece conferencias de expertos internacionales, talleres prácticos para aprender a minar o tradear, zonas de inmersión en mundos virtuales y un espacio para que startups del rubro presenten sus proyectos. Una oportunidad única para estar a la vanguardia en el desierto de Atacama.",
-    "image": "/src/assets/images/maps/tierraCampeones.png"
+  "image": "/assets/images/maps/tierraCampeones.png"
   },
   {
     "name": "Concepción Game Summit",
@@ -33,12 +33,12 @@
     "dates": "Jueves 9 a Domingo 12 de Octubre de 2025",
     "hours": "10:00 a 20:00 hrs",
     "description": "El punto de encuentro para la creciente comunidad gamer del sur de Chile. Este evento se enfoca en la cultura gamer y los eSports, con grandes torneos de League of Legends, Counter-Strike 2 y Tekken 8 con importantes premios en dinero. Además, cuenta con una feria de comercio relacionado, invitados especiales como streamers nacionales y la posibilidad de probar periféricos de última generación.",
-    "image": "/src/assets/images/maps/esterRoa.png"
+  "image": "/assets/images/maps/esterRoa.png"
   },
   {
     "name": "Viña PC Master Expo",
     "location": "Estadio Sausalito",
-    "image": "/src/assets/images/maps/sausalito.png",
+  "image": "/assets/images/maps/sausalito.png",
     "region": "Región de Valparaíso (5ta Región)",
     "dates": "Viernes 17 a Domingo 19 de Octubre de 2025",
     "hours": "10:00 a 20:00 hrs",
@@ -47,7 +47,7 @@
   {
     "name": "RetroMad – Feria del Videojuego Retro",
     "location": "Teatro Caupolicán",
-    "image": "/src/assets/images/maps/caupolican.png",
+  "image": "/assets/images/maps/caupolican.png",
     "region": "Región Metropolitana",
     "dates": "Sábado 18 a Domingo 19 de Octubre de 2025",
     "hours": "11:00 a 21:00 hrs",
@@ -56,7 +56,7 @@
   {
     "name": "eSports Monumental",
     "location": "Estadio Monumental",
-    "image": "/src/assets/images/maps/monumental.png",
+  "image": "/assets/images/maps/monumental.png",
     "region": "Región Metropolitana",
     "dates": "Miércoles 22 a Domingo 26 de Octubre de 2025",
     "hours": "12:00 a 23:00 hrs",

@@ -10,7 +10,7 @@
     "specs": ["3-4 jugadores", "60-90 min"],
     "descripcion": "Clásico de estrategia de colonización y comercio.",
     "tags": ["familiar", "estrategia"],
-    "imagen": "/src/assets/images/products/jm001.webp"
+  "imagen": "/assets/images/products/jm001.webp"
   },
   {
     "code": "JM002",
@@ -23,7 +23,7 @@
     "specs": ["2-5 jugadores", "35 min"],
     "descripcion": "Construcción de losetas en la campiña medieval.",
     "tags": ["familiar", "colocación"],
-    "imagen": "/src/assets/images/products/jm002.webp"
+  "imagen": "/assets/images/products/jm002.webp"
   },
   {
     "code": "AC001",
@@ -36,7 +36,7 @@
     "specs": ["Bluetooth", "USB-C", "Xbox/PC"],
     "descripcion": "Comodidad mejorada con agarre texturizado y baja latencia.",
     "tags": ["xbox", "pc"],
-    "imagen": "/src/assets/images/products/ac001.webp"
+  "imagen": "/assets/images/products/ac001.webp"
   },
   {
     "code": "AC002",
@@ -49,7 +49,7 @@
     "specs": ["Sonido 7.1", "Micrófono desmontable"],
     "descripcion": "Sonido envolvente y comodidad para largas sesiones.",
     "tags": ["audio", "microfono"],
-    "imagen": "/src/assets/images/products/ac002.webp"
+  "imagen": "/assets/images/products/ac002.webp"
   },
   {
     "code": "CO001",
@@ -62,7 +62,7 @@
     "specs": ["SSD ultra-rápido", "Ray Tracing"],
     "descripcion": "Consola de nueva generación con tiempos de carga mínimos.",
     "tags": ["ps5", "next-gen"],
-    "imagen": "/src/assets/images/products/co001.webp"
+  "imagen": "/assets/images/products/co001.webp"
   },
   {
     "code": "CG001",
