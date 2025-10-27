@@ -5,19 +5,19 @@ import "/src/styles/components/_landing_news.css";
 const featuredArticles = [
   {
     slug: "borderlands-4-preview",
-    img: "/src/assets/images/blog/borderlands.webp",
+  img: "/assets/images/blog/borderlands.webp",
     category: "GAMING",
     title: "Borderlands 4: Todo lo que sabemos sobre el esperado shooter-RPG",
   },
   {
     slug: "monitores-4k-gaming",
-    img: "/src/assets/images/blog/monitor.webp",
+  img: "/assets/images/blog/monitor.webp",
     category: "NOTICIAS",
     title: "Nuevos lanzamientos de monitores 4K para gaming 2024",
   },
   {
     slug: "setup-gaming-completo",
-    img: "/src/assets/images/blog/pc.webp",
+  img: "/assets/images/blog/pc.webp",
     category: "GUÍAS",
     title: "Guía completa para configurar tu setup gaming perfecto",
   },
@@ -26,19 +26,19 @@ const featuredArticles = [
 const latestArticles = [
   {
     slug: "setup-gaming-completo",
-    img: "/src/assets/images/blog/pc.webp",
+  img: "/assets/images/blog/pc.webp",
     category: "GUÍAS",
     title: "Guía completa para configurar tu setup gaming perfecto",
   },
   {
     slug: "monitores-4k-gaming",
-    img: "/src/assets/images/blog/monitor.webp",
+  img: "/assets/images/blog/monitor.webp",
     category: "NOTICIAS",
     title: "Nuevos lanzamientos de monitores 4K para gaming 2024",
   },
   {
     slug: "borderlands-4-preview",
-    img: "/src/assets/images/blog/borderlands.webp",
+  img: "/assets/images/blog/borderlands.webp",
     category: "GAMING",
     title: "Borderlands 4: Todo lo que sabemos sobre el esperado shooter-RPG",
   },

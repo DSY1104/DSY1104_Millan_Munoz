@@ -10,20 +10,28 @@
  */
 export const getAllArticles = async () => {
   try {
-    // In a real scenario, this would be an API endpoint like '/api/blog/articles'
-    // For now, we're simulating by fetching the local JSON file
-  const response = await fetch("/data/blogArticles.json");
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    // Simulate network delay
+    // Obtener la lista de slugs de los archivos en /public/data/blogPosts
+    const slugs = [
+      "auriculares-gaming-2025",
+      "borderlands-4-preview",
+      "gaming-trends-2025",
+      "monitores-4k-gaming",
+      "ps5-pro-review",
+      "setup-gaming-completo"
+    ];
+    const articles = await Promise.all(
+      slugs.map(async (slug) => {
+        const response = await fetch(`/data/blogPosts/${slug}.json`);
+        if (!response.ok) return null;
+        const data = await response.json();
+        // Añade el slug como propiedad
+        return { ...data, slug };
+      })
+    );
+    // Simula delay de red
     await new Promise((resolve) => setTimeout(resolve, 500));
-
-    return data;
+    // Filtra nulos por si algún fetch falló
+    return articles.filter(Boolean);
   } catch (error) {
     console.error("Error fetching blog articles:", error);
     throw error;
