@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "title": "Los mejores auriculares gaming de 2024",
+    "description": "Descubre nuestra selección de auriculares gaming que te darán la ventaja competitiva que necesitas. Desde audio 7.1 hasta cancelación de ruido.",
+    "category": "reviews",
+    "date": "2025-09-10",
+    "image": "/assets/images/blog/audio.webp",
+    "featured": true,
+    "readingTime": "5 min",
+    "slug": "auriculares-gaming-2025"
+  },
+  {
+    "id": 2,
+    "title": "Guía completa para configurar tu setup gaming",
+    "description": "Todo lo que necesitas saber para crear el setup gaming perfecto. Desde la iluminación RGB hasta la ergonomía del espacio de trabajo.",
+    "category": "guias",
+    "date": "2025-09-08",
+    "image": "/assets/images/blog/pc.webp",
+    "featured": false,
+    "readingTime": "8 min",
+    "slug": "setup-gaming-completo"
+  },
+  {
+    "id": 3,
+    "title": "Nuevos lanzamientos de monitores 4K para gaming",
+    "description": "Los monitores 4K más esperados del año ya están aquí. Conoce sus especificaciones, precios y disponibilidad en LevelUp.",
+    "category": "noticias",
+    "date": "2025-09-05",
+    "image": "/assets/images/blog/monitor.webp",
+    "featured": false,
+    "readingTime": "4 min",
+    "slug": "monitores-4k-gaming"
+  },
+  {
+    "id": 4,
+    "title": "Borderlands 4: Todo lo que sabemos sobre el esperado shooter-RPG",
+    "description": "Gearbox Software regresa con una nueva aventura épica llena de acción, humor y millones de armas. Descubre todas las novedades.",
+    "category": "gaming",
+    "date": "2025-09-11",
+    "image": "/assets/images/blog/games.webp",
+    "featured": true,
+    "readingTime": "6 min",
+    "slug": "borderlands-4-preview"
+  },
+  {
+    "id": 5,
+    "title": "Review: PlayStation 5 Pro - La consola definitiva para gamers exigentes",
+    "description": "Sony eleva el listón con su nueva consola de gama alta. Después de semanas de pruebas intensivas, te contamos si vale la pena.",
+    "category": "reviews",
+    "date": "2025-09-10",
+    "image": "/assets/images/blog/ps5.webp",
+    "featured": false,
+    "readingTime": "8 min",
+    "slug": "ps5-pro-review"
+  },
+  {
+    "id": 6,
+    "title": "Gaming en 2025: Las tendencias que están redefiniendo la industria",
+    "description": "Desde el cloud gaming hasta la integración de IA, exploramos las tendencias más importantes que están moldeando el futuro.",
+    "category": "noticias",
+    "date": "2025-09-12",
+    "image": "/assets/images/blog/gaming.webp",
+    "featured": false,
+    "readingTime": "7 min",
+    "slug": "gaming-trends-2025"
+  }
+]
