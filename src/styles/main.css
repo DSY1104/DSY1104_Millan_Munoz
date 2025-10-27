@@ -20,7 +20,7 @@ body {
   background-color: #000;
   color: var(--text, #ffffff);
   line-height: 1.6;
-  background: url(/src/assets/images/home/bg.avif) no-repeat center center fixed;
+  background: url(/assets/images/home/bg.avif) no-repeat center center fixed;
   background-size: cover;
 }
 

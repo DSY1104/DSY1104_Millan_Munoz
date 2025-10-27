@@ -269,7 +269,7 @@ export default function CatalogPage() {
                       }}
                     >
                       <img
-                        src="src/assets/images/catalog/not-found.svg"
+                        src="/assets/images/catalog/not-found.svg"
                         alt="Sin resultados"
                         style={{ width: 80, marginBottom: "1em", opacity: 0.7 }}
                       />
