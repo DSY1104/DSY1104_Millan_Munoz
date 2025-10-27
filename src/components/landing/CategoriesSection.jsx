@@ -6,7 +6,7 @@ const categories = [
   {
     id: "JM",
     name: "JUEGOS DE MESA",
-    image: "/src/assets/images/categories/juegos-de-mesa.png",
+  image: "/assets/images/categories/juegos-de-mesa.png",
   },
   {
     id: "AC",
@@ -35,7 +35,7 @@ const categories = [
   {
     id: "MP",
     name: "MOUSEPAD",
-    image: "/src/assets/images/categories/mousepad.png",
+  image: "/assets/images/categories/mousepad.png",
   },
   {
     id: "SG",
@@ -46,12 +46,12 @@ const categories = [
   {
     id: "PP",
     name: "POLERAS",
-    image: "/src/assets/images/categories/poleras.png",
+  image: "/assets/images/categories/poleras.png",
   },
   {
     id: "PG",
     name: "POLERONES",
-    image: "/src/assets/images/categories/polerones.png",
+  image: "/assets/images/categories/polerones.png",
   },
 ];
 
