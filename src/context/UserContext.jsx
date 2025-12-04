@@ -9,6 +9,8 @@ import {
   saveCurrentUser,
   clearCurrentUser,
   updateUserProfile,
+  addUserPoints,
+  getCurrentUserProfile,
 } from "../services/userService";
 
 const UserContext = createContext();
@@ -77,12 +79,14 @@ export const UserProvider = ({ children, initialUser = null }) => {
     }
 
     try {
-      const updatedUser = await updateUserProfile(user.id, updates);
+      // API uses JWT to identify user, no need to pass user ID
+      const updatedUser = await updateUserProfile(updates);
       setUser(updatedUser);
       saveCurrentUser(updatedUser);
+      console.log("[UserContext] User profile updated successfully");
       return updatedUser;
     } catch (error) {
-      console.error("Error updating user:", error);
+      console.error("[UserContext] Error updating user:", error);
       throw error;
     }
   };
@@ -103,19 +107,35 @@ export const UserProvider = ({ children, initialUser = null }) => {
     return updateUser({ gaming: gamingData });
   };
 
-  const addPoints = (points) => {
-    if (!user) return;
+  const addPoints = async (points, reason = null) => {
+    if (!user) {
+      throw new Error("No user logged in");
+    }
 
-    const updatedUser = {
-      ...user,
-      stats: {
-        ...user.stats,
-        points: user.stats.points + points,
-      },
-    };
+    if (!points || points < 1) {
+      throw new Error("Points must be at least 1");
+    }
 
-    setUser(updatedUser);
-    saveCurrentUser(updatedUser);
+    try {
+      // Call API to add points (JWT-based)
+      const updatedStats = await addUserPoints(points, reason);
+
+      // Update user state with new stats
+      const updatedUser = {
+        ...user,
+        stats: updatedStats,
+      };
+
+      setUser(updatedUser);
+      saveCurrentUser(updatedUser);
+
+      console.log(`[UserContext] Added ${points} points successfully. New balance: ${updatedStats.points}`);
+
+      return updatedUser;
+    } catch (error) {
+      console.error("[UserContext] Error adding points:", error);
+      throw error;
+    }
   };
 
   const value = {

@@ -3,32 +3,37 @@
  * Handles all product catalog-related API calls
  */
 
+import api from "./api";
+
+// API endpoints for Inventario Service
+const ENDPOINTS = {
+   ALL_PRODUCTS: "/productos",
+   ACTIVE_PRODUCTS: "/productos/activos",
+   PRODUCT_BY_ID: (id) => `/productos/${id}`,
+   PRODUCT_BY_CODE: (code) => `/productos/code/${code}`,
+   SEARCH_PRODUCTS: (nombre) => `/productos/buscar?nombre=${nombre}`,
+   PRODUCTS_BY_CATEGORY: (categoriaId) => `/productos/categoria/${categoriaId}`,
+   PRODUCTS_BY_BRAND: (marca) => `/productos/marca/${marca}`,
+   PRODUCTS_IN_STOCK: "/productos/en-stock",
+   PRODUCTS_BY_PRICE: (min, max) => `/productos/precio?min=${min}&max=${max}`,
+   PRODUCTS_BY_RATING: (min) => `/productos/rating?min=${min}`,
+   PRODUCTS_BY_TAG: (tag) => `/productos/tag/${tag}`,
+};
+
 /**
  * Fetch all products
- * Simulates an API call by fetching the local JSON file
  * @returns {Promise<Array>} - Array of product objects
  */
 export const getAllProducts = async () => {
-  try {
-    // In a real scenario, this would be an API endpoint like '/api/products'
-    // For now, we're simulating by fetching the local JSON file
-  const response = await fetch("/data/products.json");
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    // Simulate network delay
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    // Add index for sorting stability
-    return data.map((product, index) => ({ ...product, _idx: index }));
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    throw error;
-  }
+   try {
+      const response = await api.get(ENDPOINTS.ALL_PRODUCTS);
+      const products = response.data;
+      // Add index for sorting stability
+      return products.map((product, index) => ({ ...product, _idx: index }));
+   } catch (error) {
+      console.error("Error fetching products:", error);
+      throw error;
+   }
 };
 
 /**
@@ -37,13 +42,16 @@ export const getAllProducts = async () => {
  * @returns {Promise<object|null>} - The product object or null if not found
  */
 export const getProductByCode = async (code) => {
-  try {
-    const products = await getAllProducts();
-    return products.find((product) => product.code === code) || null;
-  } catch (error) {
-    console.error(`Error fetching product ${code}:`, error);
-    throw error;
-  }
+   try {
+      const response = await api.get(ENDPOINTS.PRODUCT_BY_CODE(code));
+      return response.data;
+   } catch (error) {
+      if (error.response?.status === 404) {
+         return null;
+      }
+      console.error(`Error fetching product ${code}:`, error);
+      throw error;
+   }
 };
 
 /**
@@ -52,13 +60,13 @@ export const getProductByCode = async (code) => {
  * @returns {Promise<Array>} - Array of product objects in that category
  */
 export const getProductsByCategory = async (categoryId) => {
-  try {
-    const products = await getAllProducts();
-    return products.filter((product) => product.categoriaId === categoryId);
-  } catch (error) {
-    console.error(`Error fetching products for category ${categoryId}:`, error);
-    throw error;
-  }
+   try {
+      const response = await api.get(ENDPOINTS.PRODUCTS_BY_CATEGORY(categoryId));
+      return response.data;
+   } catch (error) {
+      console.error(`Error fetching products for category ${categoryId}:`, error);
+      throw error;
+   }
 };
 
 /**
@@ -67,13 +75,13 @@ export const getProductsByCategory = async (categoryId) => {
  * @returns {Promise<Array>} - Array of product objects of that brand
  */
 export const getProductsByBrand = async (brand) => {
-  try {
-    const products = await getAllProducts();
-    return products.filter((product) => product.marca === brand);
-  } catch (error) {
-    console.error(`Error fetching products for brand ${brand}:`, error);
-    throw error;
-  }
+   try {
+      const response = await api.get(ENDPOINTS.PRODUCTS_BY_BRAND(brand));
+      return response.data;
+   } catch (error) {
+      console.error(`Error fetching products for brand ${brand}:`, error);
+      throw error;
+   }
 };
 
 /**
@@ -81,25 +89,21 @@ export const getProductsByBrand = async (brand) => {
  * @returns {Promise<Array>} - Array of unique brand strings
  */
 export const getAllBrands = async () => {
-  try {
-    const products = await getAllProducts();
-    const brands = new Set();
+   try {
+      const products = await getAllProducts();
+      const brands = new Set();
 
-    products.forEach((product) => {
-      if (
-        product.marca &&
-        typeof product.marca === "string" &&
-        product.marca.trim() !== ""
-      ) {
-        brands.add(product.marca.trim());
-      }
-    });
+      products.forEach((product) => {
+         if (product.marca && typeof product.marca === "string" && product.marca.trim() !== "") {
+            brands.add(product.marca.trim());
+         }
+      });
 
-    return Array.from(brands).sort((a, b) => a.localeCompare(b, "es"));
-  } catch (error) {
-    console.error("Error fetching brands:", error);
-    throw error;
-  }
+      return Array.from(brands).sort((a, b) => a.localeCompare(b, "es"));
+   } catch (error) {
+      console.error("Error fetching brands:", error);
+      throw error;
+   }
 };
 
 /**
@@ -107,21 +111,21 @@ export const getAllBrands = async () => {
  * @returns {Promise<Array>} - Array of unique category IDs
  */
 export const getProductCategories = async () => {
-  try {
-    const products = await getAllProducts();
-    const categories = new Set();
+   try {
+      const products = await getAllProducts();
+      const categories = new Set();
 
-    products.forEach((product) => {
-      if (product.categoriaId) {
-        categories.add(product.categoriaId);
-      }
-    });
+      products.forEach((product) => {
+         if (product.categoriaId) {
+            categories.add(product.categoriaId);
+         }
+      });
 
-    return Array.from(categories).sort();
-  } catch (error) {
-    console.error("Error fetching product categories:", error);
-    throw error;
-  }
+      return Array.from(categories).sort();
+   } catch (error) {
+      console.error("Error fetching product categories:", error);
+      throw error;
+   }
 };
 
 /**
@@ -131,51 +135,40 @@ export const getProductCategories = async () => {
  * @returns {Promise<Array>} - Array of matching product objects
  */
 export const searchProducts = async (query) => {
-  try {
-    const products = await getAllProducts();
+   try {
+      if (!query || query.trim() === "") {
+         return await getAllProducts();
+      }
 
-    if (!query || query.trim() === "") {
-      return products;
-    }
-
-    const normalizedQuery = normalizeText(query);
-
-    return products.filter(
-      (product) =>
-        normalizeText(product.nombre).includes(normalizedQuery) ||
-        normalizeText(product.code).includes(normalizedQuery)
-    );
-  } catch (error) {
-    console.error(`Error searching products for "${query}":`, error);
-    throw error;
-  }
+      const response = await api.get(ENDPOINTS.SEARCH_PRODUCTS(encodeURIComponent(query)));
+      return response.data;
+   } catch (error) {
+      console.error(`Error searching products for "${query}":`, error);
+      throw error;
+   }
 };
 
 /**
  * Filter products by rating
  * @param {number} minRating - Minimum rating (inclusive)
- * @param {number} maxRating - Maximum rating (exclusive)
+ * @param {number} maxRating - Maximum rating (exclusive, optional)
  * @returns {Promise<Array>} - Array of product objects within rating range
  */
-export const getProductsByRating = async (
-  minRating,
-  maxRating = minRating + 1
-) => {
-  try {
-    const products = await getAllProducts();
-    return products.filter(
-      (product) =>
-        typeof product.rating === "number" &&
-        product.rating >= minRating &&
-        product.rating < maxRating
-    );
-  } catch (error) {
-    console.error(
-      `Error fetching products by rating ${minRating}-${maxRating}:`,
-      error
-    );
-    throw error;
-  }
+export const getProductsByRating = async (minRating, maxRating = null) => {
+   try {
+      const response = await api.get(ENDPOINTS.PRODUCTS_BY_RATING(minRating));
+      let products = response.data;
+
+      // Filter by maxRating on client side if provided
+      if (maxRating !== null) {
+         products = products.filter((product) => product.rating < maxRating);
+      }
+
+      return products;
+   } catch (error) {
+      console.error(`Error fetching products by rating ${minRating}${maxRating ? "-" + maxRating : ""}:`, error);
+      throw error;
+   }
 };
 
 /**
@@ -185,19 +178,13 @@ export const getProductsByRating = async (
  * @returns {Promise<Array>} - Array of product objects within price range
  */
 export const getProductsByPriceRange = async (minPrice, maxPrice) => {
-  try {
-    const products = await getAllProducts();
-    return products.filter(
-      (product) =>
-        product.precioCLP >= minPrice && product.precioCLP <= maxPrice
-    );
-  } catch (error) {
-    console.error(
-      `Error fetching products by price range ${minPrice}-${maxPrice}:`,
-      error
-    );
-    throw error;
-  }
+   try {
+      const response = await api.get(ENDPOINTS.PRODUCTS_BY_PRICE(minPrice, maxPrice));
+      return response.data;
+   } catch (error) {
+      console.error(`Error fetching products by price range ${minPrice}-${maxPrice}:`, error);
+      throw error;
+   }
 };
 
 /**
@@ -206,20 +193,20 @@ export const getProductsByPriceRange = async (minPrice, maxPrice) => {
  * @returns {Promise<Array>} - Array of sorted product objects
  */
 export const getProductsSortedByPrice = async (order = "asc") => {
-  try {
-    const products = await getAllProducts();
-    return products.slice().sort((a, b) => {
-      if (order === "asc") {
-        return a.precioCLP - b.precioCLP;
-      } else if (order === "desc") {
-        return b.precioCLP - a.precioCLP;
-      }
-      return 0;
-    });
-  } catch (error) {
-    console.error("Error sorting products by price:", error);
-    throw error;
-  }
+   try {
+      const products = await getAllProducts();
+      return products.slice().sort((a, b) => {
+         if (order === "asc") {
+            return a.precioCLP - b.precioCLP;
+         } else if (order === "desc") {
+            return b.precioCLP - a.precioCLP;
+         }
+         return 0;
+      });
+   } catch (error) {
+      console.error("Error sorting products by price:", error);
+      throw error;
+   }
 };
 
 /**
@@ -228,20 +215,20 @@ export const getProductsSortedByPrice = async (order = "asc") => {
  * @returns {Promise<Array>} - Array of sorted product objects
  */
 export const getProductsSortedByRating = async (order = "desc") => {
-  try {
-    const products = await getAllProducts();
-    return products.slice().sort((a, b) => {
-      if (order === "asc") {
-        return a.rating - b.rating;
-      } else if (order === "desc") {
-        return b.rating - a.rating;
-      }
-      return 0;
-    });
-  } catch (error) {
-    console.error("Error sorting products by rating:", error);
-    throw error;
-  }
+   try {
+      const products = await getAllProducts();
+      return products.slice().sort((a, b) => {
+         if (order === "asc") {
+            return a.rating - b.rating;
+         } else if (order === "desc") {
+            return b.rating - a.rating;
+         }
+         return 0;
+      });
+   } catch (error) {
+      console.error("Error sorting products by rating:", error);
+      throw error;
+   }
 };
 
 /**
@@ -249,13 +236,13 @@ export const getProductsSortedByRating = async (order = "desc") => {
  * @returns {Promise<Array>} - Array of products with stock > 0
  */
 export const getProductsInStock = async () => {
-  try {
-    const products = await getAllProducts();
-    return products.filter((product) => product.stock > 0);
-  } catch (error) {
-    console.error("Error fetching products in stock:", error);
-    throw error;
-  }
+   try {
+      const response = await api.get(ENDPOINTS.PRODUCTS_IN_STOCK);
+      return response.data;
+   } catch (error) {
+      console.error("Error fetching products in stock:", error);
+      throw error;
+   }
 };
 
 /**
@@ -265,44 +252,30 @@ export const getProductsInStock = async () => {
  * @returns {Promise<Array>} - Array of featured product objects
  */
 export const getFeaturedProducts = async (minRating = 4.5, limit = 10) => {
-  try {
-    const products = await getAllProducts();
-    return products
-      .filter((product) => product.rating >= minRating && product.stock > 0)
-      .sort((a, b) => b.rating - a.rating)
-      .slice(0, limit);
-  } catch (error) {
-    console.error("Error fetching featured products:", error);
-    throw error;
-  }
+   try {
+      const products = await getAllProducts();
+      return products
+         .filter((product) => product.rating >= minRating && product.stock > 0)
+         .sort((a, b) => b.rating - a.rating)
+         .slice(0, limit);
+   } catch (error) {
+      console.error("Error fetching featured products:", error);
+      throw error;
+   }
 };
 
-/**
- * Normalize text for search (remove accents and convert to lowercase)
- * @param {string} str - Text to normalize
- * @returns {string} - Normalized text
- */
-function normalizeText(str) {
-  return str
-    ? str
-        .normalize("NFD")
-        .replace(/\p{Diacritic}/gu, "")
-        .toLowerCase()
-    : "";
-}
-
 export default {
-  getAllProducts,
-  getProductByCode,
-  getProductsByCategory,
-  getProductsByBrand,
-  getAllBrands,
-  getProductCategories,
-  searchProducts,
-  getProductsByRating,
-  getProductsByPriceRange,
-  getProductsSortedByPrice,
-  getProductsSortedByRating,
-  getProductsInStock,
-  getFeaturedProducts,
+   getAllProducts,
+   getProductByCode,
+   getProductsByCategory,
+   getProductsByBrand,
+   getAllBrands,
+   getProductCategories,
+   searchProducts,
+   getProductsByRating,
+   getProductsByPriceRange,
+   getProductsSortedByPrice,
+   getProductsSortedByRating,
+   getProductsInStock,
+   getFeaturedProducts,
 };

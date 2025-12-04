@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { authenticateUser } from "../services/userService";
+import { authenticateUser, registerUser, getCurrentUserProfile } from "../services/userService";
 
 const AuthContext = createContext(null);
 
@@ -73,15 +73,58 @@ export function AuthProvider({ children }) {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
 
-  // Check for existing session on mount
+  // Helper function to check if JWT token is expired
+  const isTokenExpired = (token) => {
+    if (!token) return true;
+
+    try {
+      // Decode JWT payload (second part of the token)
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const currentTime = Math.floor(Date.now() / 1000);
+
+      // Check if token has expired
+      return payload.exp && payload.exp < currentTime;
+    } catch (error) {
+      console.error("[AuthContext] Error checking token expiration:", error);
+      return true;
+    }
+  };
+
+  // Check for existing session on mount and validate token
   useEffect(() => {
-    const checkSession = () => {
+    const checkSession = async () => {
       try {
         const session = cookies.get("userSession");
-        if (session && session.isAuthenticated) {
-          setAuthUser(session);
-          setIsAuthenticated(true);
-          console.log("[AuthContext] Restored session, token:", session.token);
+
+        if (session && session.isAuthenticated && session.token) {
+          // Check if token is expired
+          if (isTokenExpired(session.token)) {
+            console.log("[AuthContext] Token expired, logging out");
+            logout();
+            return;
+          }
+
+          // Token is valid, try to get fresh profile data
+          try {
+            const profile = await getCurrentUserProfile();
+            if (profile) {
+              // Update stored user data with fresh profile
+              localStorage.setItem("currentUser", JSON.stringify(profile));
+
+              setAuthUser(session);
+              setIsAuthenticated(true);
+              console.log("[AuthContext] Session restored successfully");
+            } else {
+              // Profile fetch failed, clear session
+              console.log("[AuthContext] Failed to fetch profile, clearing session");
+              logout();
+            }
+          } catch (error) {
+            // If profile fetch fails, still restore session but log warning
+            console.warn("[AuthContext] Could not fetch profile, using cached session:", error);
+            setAuthUser(session);
+            setIsAuthenticated(true);
+          }
         }
       } catch (error) {
         console.error("[AuthContext] Error checking session:", error);
@@ -93,60 +136,38 @@ export function AuthProvider({ children }) {
     checkSession();
   }, []);
 
-  // Helper function to generate fake JWT token
-  const generateFakeJWT = (userId, email) => {
-    const header = btoa(JSON.stringify({ alg: "HS256", typ: "JWT" }));
-    const payload = btoa(
-      JSON.stringify({
-        sub: userId,
-        email: email,
-        iat: Math.floor(Date.now() / 1000),
-        exp: Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60, // 30 days
-      })
-    );
-    const signature = btoa("fake-signature-" + userId + "-" + Date.now());
-    return `${header}.${payload}.${signature}`;
-  };
-
-  // Helper function to check if email has DUOC discount
-  const checkDuocDiscount = (email) => {
-    if (!email) return false;
-    const domain = email.split("@")[1]?.toLowerCase();
-    return domain === "duoc.cl" || domain === "profesor.duoc.cl";
-  };
-
   // Login function
   const login = async (email, password, remember = false) => {
     try {
-      // Authenticate user against users.json
-      const authenticatedUser = await authenticateUser(email, password);
+      // Authenticate user via Usuario API - returns { token, user }
+      const authResult = await authenticateUser(email, password);
 
-      if (!authenticatedUser) {
+      if (!authResult) {
         console.log("[AuthContext] Login failed - Invalid credentials");
         return {
           success: false,
-          error:
-            "Credenciales inválidas. Solo usuarios registrados pueden acceder.",
+          error: "Credenciales inválidas. Por favor, verifica tu email y contraseña.",
         };
       }
 
-      // Generate fake JWT token
-      const token = generateFakeJWT(
-        authenticatedUser.id,
-        authenticatedUser.email
-      );
+      const { token, user } = authResult;
 
-      // Create auth session (only auth data, no user profile)
+      // Fetch complete profile data
+      let fullProfile = user;
+      try {
+        const profile = await getCurrentUserProfile();
+        if (profile) {
+          fullProfile = profile;
+        }
+      } catch (error) {
+        console.warn("[AuthContext] Could not fetch full profile, using basic user data:", error);
+      }
+
+      // Create auth session (token, authentication state, login time)
       const authData = {
         token: token,
         isAuthenticated: true,
         loginTime: new Date().toISOString(),
-        hasLifetimeDiscount:
-          authenticatedUser.hasLifetimeDiscount ||
-          checkDuocDiscount(authenticatedUser.email),
-        discountPercentage:
-          authenticatedUser.discountPercentage ||
-          (checkDuocDiscount(authenticatedUser.email) ? 20 : 0),
       };
 
       // Set cookies based on remember me choice
@@ -172,38 +193,41 @@ export function AuthProvider({ children }) {
       // Store auth data in localStorage as backup
       localStorage.setItem("userSession", JSON.stringify(authData));
 
-      // Save full user data for UserContext
-      localStorage.setItem("currentUser", JSON.stringify(authenticatedUser));
+      // Save full user profile data for UserContext
+      localStorage.setItem("currentUser", JSON.stringify(fullProfile));
 
       setAuthUser(authData);
       setIsAuthenticated(true);
       setShowLoginModal(false);
 
       console.log("[AuthContext] Login successful", {
-        token: token.substring(0, 20) + "...",
+        userId: user.id,
+        username: user.username,
+        email: user.email,
+        level: user.stats?.level,
         loginTime: authData.loginTime,
-        hasDiscount: authData.hasLifetimeDiscount,
       });
 
-      // Dispatch custom event for other components (pass full user data)
+      // Dispatch custom event for other components (pass full profile data)
       window.dispatchEvent(
-        new CustomEvent("userLoggedIn", { detail: authenticatedUser })
+        new CustomEvent("userLoggedIn", { detail: fullProfile })
       );
 
       // If user is on profile page, reload to refresh data
       if (window.location.pathname === "/profile") {
-        console.log(
-          "[AuthContext] Reloading /profile page to refresh user data"
-        );
+        console.log("[AuthContext] Reloading /profile page to refresh user data");
         setTimeout(() => {
           window.location.reload();
         }, 100);
       }
 
-      return { success: true, authData, user: authenticatedUser };
+      return { success: true, authData, user: fullProfile };
     } catch (error) {
       console.error("[AuthContext] Login error:", error);
-      return { success: false, error: error.message };
+      return {
+        success: false,
+        error: error.message || "Error al iniciar sesión. Por favor, intenta de nuevo.",
+      };
     }
   };
 
@@ -240,21 +264,57 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // Register function (DISABLED - only users.json users allowed)
+  // Register function
   const register = async (userData) => {
     try {
-      console.log(
-        "[AuthContext] Registration is disabled. Only pre-registered users can access the system."
-      );
+      console.log("[AuthContext] Registering new user:", {
+        email: userData.email,
+        username: userData.username,
+      });
 
-      return {
-        success: false,
-        error:
-          "El registro está deshabilitado. Solo usuarios autorizados pueden acceder al sistema. Por favor, contacta al administrador.",
-      };
+      // Call Usuario API to register user
+      const registeredUser = await registerUser({
+        username: userData.username || userData.email.split('@')[0],
+        email: userData.email,
+        password: userData.password,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        phone: userData.phone,
+      });
+
+      if (!registeredUser) {
+        return {
+          success: false,
+          error: "Error al crear la cuenta. Por favor, intenta de nuevo.",
+        };
+      }
+
+      console.log("[AuthContext] Registration successful, auto-logging in user");
+
+      // Auto-login after successful registration
+      const loginResult = await login(userData.email, userData.password, false);
+
+      if (loginResult.success) {
+        setShowRegisterModal(false);
+        return {
+          success: true,
+          message: "¡Cuenta creada exitosamente! Has sido autenticado.",
+          user: loginResult.user,
+        };
+      } else {
+        // Registration succeeded but login failed
+        return {
+          success: true,
+          message: "Cuenta creada exitosamente. Por favor, inicia sesión.",
+          requiresLogin: true,
+        };
+      }
     } catch (error) {
       console.error("[AuthContext] Registration error:", error);
-      return { success: false, error: error.message };
+      return {
+        success: false,
+        error: error.message || "Error al crear la cuenta. El correo puede estar ya registrado.",
+      };
     }
   };
 
