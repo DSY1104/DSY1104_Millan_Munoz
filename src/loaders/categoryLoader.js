@@ -1,23 +1,24 @@
 /**
  * Category Loader
  * Loads category data for React Router
+ * Updated to use Inventario API (Spring Boot microservice)
  */
 
 import {
   getAllCategories,
   getCategoryById,
   getCategoryMap,
-} from "../services/categoryService";
+} from "../services/inventarioService";
 
 /**
  * Loader for all categories
  * Used in routes that need to display category lists
- * @returns {Promise<Array>} - Array of category objects
+ * @returns {Promise<Array>} - Array of category objects from Inventario API
  */
 export const categoriesLoader = async () => {
   try {
     const categories = await getAllCategories();
-    return categories;
+    return categories || [];
   } catch (error) {
     console.error("Error in categoriesLoader:", error);
     // Return empty array instead of throwing to prevent route breaking
@@ -59,7 +60,8 @@ export const categoryDetailLoader = async ({ params }) => {
  */
 export const categoryMapLoader = async () => {
   try {
-    const map = await getCategoryMap();
+    const categories = await getAllCategories();
+    const map = getCategoryMap(categories || []);
     return map;
   } catch (error) {
     console.error("Error in categoryMapLoader:", error);
@@ -68,19 +70,17 @@ export const categoryMapLoader = async () => {
 };
 
 /**
- * Combined loader for categories with products count
+ * Combined loader for categories with metadata
  * Useful for displaying categories with product statistics
- * @returns {Promise<object>} - Object with categories and metadata
+ * @returns {Promise<object>} - Object with categories and metadata from Inventario API
  */
 export const categoriesWithMetaLoader = async () => {
   try {
     const categories = await getAllCategories();
 
-    // In a real app, you might fetch product counts per category here
-    // For now, we just return the categories
     return {
-      categories,
-      total: categories.length,
+      categories: categories || [],
+      total: categories?.length || 0,
     };
   } catch (error) {
     console.error("Error in categoriesWithMetaLoader:", error);

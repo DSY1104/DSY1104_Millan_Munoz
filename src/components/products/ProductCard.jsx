@@ -4,25 +4,32 @@ import { useCart } from "../../context/CartContext";
 import "/src/styles/components/_product-card.css";
 
 export default function ProductCard({
+  // Support both old format and Inventario API format
+  idProducto,
   code = "",
   imagen = "",
   nombre = "",
   marca = "",
   precioCLP = "",
   categoriaId = "",
+  categoria, // Inventario API: categoria object with idCategoria and nombreCategoria
   rating = null,
   stock = 0,
 }) {
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
+  // Derive categoryId from either categoriaId or categoria.idCategoria
+  const derivedCategoryId = categoriaId || categoria?.idCategoria || "";
+  const productCode = code || idProducto?.toString() || "";
+
   const handleCardClick = (e) => {
     // Don't navigate if clicking the add to cart button
     if (e.target.closest(".product-card__button")) {
       return;
     }
-    if (code) {
-      navigate(`/products/${code}`);
+    if (productCode) {
+      navigate(`/products/${productCode}`);
     }
   };
 
@@ -41,10 +48,10 @@ export default function ProductCard({
       return;
     }
 
-    console.log("ProductCard: Adding to cart", { code, nombre, qty: 1 });
+    console.log("ProductCard: Adding to cart", { code: productCode, nombre, qty: 1 });
 
     addToCart({
-      id: code,
+      id: productCode,
       name: nombre,
       price: precioCLP,
       qty: 1,
@@ -52,7 +59,7 @@ export default function ProductCard({
       image: imagen,
       metadata: {
         marca: marca,
-        categoriaId: categoriaId,
+        categoriaId: derivedCategoryId,
       },
     });
 
@@ -73,8 +80,8 @@ export default function ProductCard({
       onClick={handleCardClick}
       style={{ cursor: "pointer" }}
     >
-      {categoriaId && (
-        <span className="product-card__category">{categoriaId}</span>
+      {derivedCategoryId && (
+        <span className="product-card__category">{derivedCategoryId}</span>
       )}
       <div className="product-card__image-wrapper">
         <img src={imagen} alt={nombre} className="product-card__image" />
