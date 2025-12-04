@@ -134,6 +134,7 @@ export default function Cart() {
          const checkoutResponse = await initiateCheckout({
             carritoId: carritoId,
             returnUrl: returnUrl,
+            notasCliente: data.notes || "", // Optional customer notes
          });
 
          console.log("Checkout initiated:", checkoutResponse);
@@ -774,6 +775,20 @@ function CheckoutForm({ register, errors, selectedPaymentMethod, setSelectedPaym
                   ))}
                </div>
                {!selectedPaymentMethod && <p className="payment-hint">Por favor selecciona un método de pago</p>}
+            </div>
+
+            {/* Customer Notes (Optional) */}
+            <div className="form-section">
+               <h3 className="form-section-title">Notas de Entrega (Opcional)</h3>
+               <div className="form-group">
+                  <label htmlFor="notes">Instrucciones especiales o comentarios</label>
+                  <textarea
+                     id="notes"
+                     rows="3"
+                     placeholder="Ej: Tocar el timbre, dejar en conserjería, etc."
+                     {...register("notes")}
+                  />
+               </div>
             </div>
          </form>
       </div>

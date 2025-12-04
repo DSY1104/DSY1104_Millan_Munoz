@@ -64,8 +64,9 @@ export const ORDER_STATUS = {
  */
 export const getOrCreateCart = async (usuarioId) => {
    try {
+      // api.get already unwraps and returns the data
       const response = await api.get(ENDPOINTS.GET_OR_CREATE_CART(usuarioId));
-      return response.data;
+      return response;
    } catch (error) {
       console.error("Error getting/creating cart:", error);
       throw error;
@@ -80,7 +81,7 @@ export const getOrCreateCart = async (usuarioId) => {
 export const getCartById = async (carritoId) => {
    try {
       const response = await api.get(ENDPOINTS.GET_CART_BY_ID(carritoId));
-      return response.data;
+      return response;
    } catch (error) {
       console.error("Error getting cart:", error);
       throw error;
@@ -95,7 +96,7 @@ export const getCartById = async (carritoId) => {
 export const getAllUserCarts = async (usuarioId) => {
    try {
       const response = await api.get(ENDPOINTS.GET_ALL_USER_CARTS(usuarioId));
-      return response.data;
+      return response;
    } catch (error) {
       console.error("Error getting user carts:", error);
       throw error;
@@ -118,7 +119,7 @@ export const addItemToCart = async (carritoId, item) => {
          cantidad: item.cantidad,
          personalizaciones: item.personalizaciones || {},
       });
-      return response.data;
+      return response;
    } catch (error) {
       console.error("Error adding item to cart:", error);
       throw error;
@@ -136,7 +137,7 @@ export const updateCartItem = async (itemId, cantidad) => {
       const response = await api.put(ENDPOINTS.UPDATE_ITEM(itemId), {
          cantidad,
       });
-      return response.data;
+      return response;
    } catch (error) {
       console.error("Error updating cart item:", error);
       throw error;
@@ -165,7 +166,7 @@ export const removeCartItem = async (itemId) => {
 export const processCart = async (carritoId) => {
    try {
       const response = await api.put(ENDPOINTS.PROCESS_CART(carritoId));
-      return response.data;
+      return response;
    } catch (error) {
       console.error("Error processing cart:", error);
       throw error;
@@ -193,7 +194,7 @@ export const emptyCart = async (carritoId) => {
 export const getCartStatistics = async () => {
    try {
       const response = await api.get(ENDPOINTS.CART_STATISTICS);
-      return response.data;
+      return response;
    } catch (error) {
       console.error("Error getting cart statistics:", error);
       throw error;
@@ -216,8 +217,9 @@ export const initiateCheckout = async (checkoutData) => {
       const response = await api.post(ENDPOINTS.INITIATE_CHECKOUT, {
          carritoId: checkoutData.carritoId,
          returnUrl: checkoutData.returnUrl,
+         notasCliente: checkoutData.notasCliente || "",
       });
-      return response.data;
+      return response;
    } catch (error) {
       console.error("Error initiating checkout:", error);
       throw error;
@@ -232,7 +234,7 @@ export const initiateCheckout = async (checkoutData) => {
 export const confirmCheckout = async (token) => {
    try {
       const response = await api.get(ENDPOINTS.CONFIRM_CHECKOUT_GET(token));
-      return response.data;
+      return response;
    } catch (error) {
       console.error("Error confirming checkout:", error);
       throw error;
@@ -247,7 +249,7 @@ export const confirmCheckout = async (token) => {
 export const confirmCheckoutPost = async (token) => {
    try {
       const response = await api.post(ENDPOINTS.CONFIRM_CHECKOUT_POST(token));
-      return response.data;
+      return response;
    } catch (error) {
       console.error("Error confirming checkout (POST):", error);
       throw error;
@@ -266,7 +268,7 @@ export const confirmCheckoutPost = async (token) => {
 export const getOrderById = async (orderId) => {
    try {
       const response = await api.get(ENDPOINTS.GET_ORDER_BY_ID(orderId));
-      return response.data;
+      return response;
    } catch (error) {
       if (error.response?.status === 404) {
          return null;
@@ -284,7 +286,7 @@ export const getOrderById = async (orderId) => {
 export const getOrderByNumber = async (numeroOrden) => {
    try {
       const response = await api.get(ENDPOINTS.GET_ORDER_BY_NUMBER(numeroOrden));
-      return response.data;
+      return response;
    } catch (error) {
       if (error.response?.status === 404) {
          return null;
@@ -302,7 +304,7 @@ export const getOrderByNumber = async (numeroOrden) => {
 export const getUserOrders = async (usuarioId) => {
    try {
       const response = await api.get(ENDPOINTS.GET_USER_ORDERS(usuarioId));
-      return response.data;
+      return response;
    } catch (error) {
       console.error("Error getting user orders:", error);
       throw error;
@@ -318,7 +320,7 @@ export const getUserOrders = async (usuarioId) => {
 export const getUserOrdersByStatus = async (usuarioId, estado) => {
    try {
       const response = await api.get(ENDPOINTS.GET_USER_ORDERS_BY_STATUS(usuarioId, estado));
-      return response.data;
+      return response;
    } catch (error) {
       console.error("Error getting user orders by status:", error);
       throw error;
@@ -334,7 +336,7 @@ export const getUserOrdersByStatus = async (usuarioId, estado) => {
 export const updateOrderStatus = async (orderId, nuevoEstado) => {
    try {
       const response = await api.put(ENDPOINTS.UPDATE_ORDER_STATUS(orderId, nuevoEstado));
-      return response.data;
+      return response;
    } catch (error) {
       console.error("Error updating order status:", error);
       throw error;
@@ -349,7 +351,7 @@ export const updateOrderStatus = async (orderId, nuevoEstado) => {
 export const cancelOrder = async (orderId) => {
    try {
       const response = await api.put(ENDPOINTS.CANCEL_ORDER(orderId));
-      return response.data;
+      return response;
    } catch (error) {
       console.error("Error cancelling order:", error);
       throw error;
@@ -368,7 +370,7 @@ export const cancelOrder = async (orderId) => {
 export const getPaymentById = async (pagoId) => {
    try {
       const response = await api.get(ENDPOINTS.GET_PAYMENT_BY_ID(pagoId));
-      return response.data;
+      return response;
    } catch (error) {
       if (error.response?.status === 404) {
          return null;
@@ -386,7 +388,7 @@ export const getPaymentById = async (pagoId) => {
 export const getPaymentByOrder = async (pedidoId) => {
    try {
       const response = await api.get(ENDPOINTS.GET_PAYMENT_BY_ORDER(pedidoId));
-      return response.data;
+      return response;
    } catch (error) {
       if (error.response?.status === 404) {
          return null;
@@ -404,7 +406,7 @@ export const getPaymentByOrder = async (pedidoId) => {
 export const getPaymentByToken = async (token) => {
    try {
       const response = await api.get(ENDPOINTS.GET_PAYMENT_BY_TOKEN(token));
-      return response.data;
+      return response;
    } catch (error) {
       if (error.response?.status === 404) {
          return null;
@@ -422,7 +424,7 @@ export const getPaymentByToken = async (token) => {
 export const checkPaymentApproved = async (pagoId) => {
    try {
       const response = await api.get(ENDPOINTS.CHECK_PAYMENT_APPROVED(pagoId));
-      return response.data;
+      return response;
    } catch (error) {
       console.error("Error checking payment approval:", error);
       throw error;
@@ -436,7 +438,7 @@ export const checkPaymentApproved = async (pagoId) => {
 export const checkPaymentHealth = async () => {
    try {
       const response = await api.get(ENDPOINTS.PAYMENT_HEALTH);
-      return response.data;
+      return response;
    } catch (error) {
       console.error("Error checking payment health:", error);
       throw error;
