@@ -1,10 +1,61 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { getOrCreateCart, addItemToCart, updateCartItem, removeCartItem, emptyCart } from "../services/cartService";
+import { getProductById } from "../services/inventarioService";
 
 const CartContext = createContext();
 
 const CART_KEY = "cart:data";
 const CART_ID_KEY = "cart:id";
+
+/**
+ * Enrich cart items with product details from Inventario API
+ * Cart API returns: { id (itemId), servicioId, cantidad, precioUnitario, subtotal, personalizaciones }
+ * We need to fetch: { nombre, imagen, marca, stock } from Inventario
+ */
+const enrichCartItems = async (apiItems) => {
+   const enrichedItems = [];
+
+   for (const item of apiItems) {
+      try {
+         // Fetch product details from Inventario API
+         const product = await getProductById(item.servicioId);
+
+         if (product) {
+            enrichedItems.push({
+               id: item.servicioId, // Product ID (for local cart operations)
+               itemId: item.id, // Cart item ID (for API operations)
+               name: product.nombre,
+               price: item.precioUnitario, // Use price snapshot from cart
+               qty: item.cantidad,
+               image: product.imagen,
+               stock: product.stock,
+               metadata: {
+                  marca: product.marca,
+                  categoriaId: product.categoriaId || product.categoria?.idCategoria,
+                  personalizaciones: item.personalizaciones,
+               },
+            });
+         }
+      } catch (error) {
+         console.error(`Error enriching cart item ${item.servicioId}:`, error);
+         // Include item with minimal data if product fetch fails
+         enrichedItems.push({
+            id: item.servicioId,
+            itemId: item.id,
+            name: `Product ${item.servicioId}`,
+            price: item.precioUnitario,
+            qty: item.cantidad,
+            image: "/assets/images/products/fallback.png",
+            stock: Infinity,
+            metadata: {
+               personalizaciones: item.personalizaciones,
+            },
+         });
+      }
+   }
+
+   return enrichedItems;
+};
 
 export function CartProvider({ children }) {
    const [cart, setCart] = useState({ items: [] });
@@ -32,30 +83,29 @@ export function CartProvider({ children }) {
          setLoading(true);
          setUserId(usuarioId);
 
+         console.log("[CartContext] Initializing cart for user:", usuarioId);
+
          // Get or create cart from API
          const cartData = await getOrCreateCart(usuarioId);
-         setCarritoId(cartData.carritoId);
-         localStorage.setItem(CART_ID_KEY, cartData.carritoId);
+         console.log("[CartContext] Cart data from API:", cartData);
 
-         // Transform API cart to match local format
+         // Fix: API returns 'id', not 'carritoId'
+         setCarritoId(cartData.id);
+         localStorage.setItem(CART_ID_KEY, cartData.id);
+
+         // Enrich cart items with product details from Inventario API
+         const enrichedItems = await enrichCartItems(cartData.items || []);
+         console.log("[CartContext] Enriched items:", enrichedItems);
+
          const transformedCart = {
-            items:
-               cartData.items?.map((item) => ({
-                  id: item.servicioId,
-                  name: item.nombre || "Product",
-                  price: item.precio || 0,
-                  qty: item.cantidad,
-                  image: item.imagenUrl,
-                  stock: item.stock || Infinity,
-                  metadata: item.personalizaciones || {},
-               })) || [],
+            items: enrichedItems,
             appliedCoupon: cart.appliedCoupon, // Preserve coupon from local state
          };
 
          setCart(transformedCart);
          localStorage.setItem(CART_KEY, JSON.stringify(transformedCart));
       } catch (error) {
-         console.error("Error initializing cart:", error);
+         console.error("[CartContext] Error initializing cart:", error);
          // Fallback to localStorage on error
          const stored = localStorage.getItem(CART_KEY);
          if (stored) {
@@ -132,11 +182,11 @@ export function CartProvider({ children }) {
 
    const addToCart = async (item) => {
       if (!item || item.id == null) {
-         console.error("Item must have an id");
+         console.error("[CartContext] Item must have an id");
          return;
       }
 
-      console.log("Adding to cart:", item);
+      console.log("[CartContext] Adding to cart:", item);
 
       const stock = item.stock || Infinity;
       const qtyToAdd = item.qty || 1;
@@ -150,44 +200,36 @@ export function CartProvider({ children }) {
             const newQty = currentQty + qtyToAdd;
 
             if (newQty > stock) {
-               console.warn(`Cannot add more items. Stock limit: ${stock}`);
+               console.warn(`[CartContext] Cannot add more items. Stock limit: ${stock}`);
                alert(`No hay suficiente stock. Disponible: ${stock} unidades`);
                return;
             }
 
-            // Add to API cart
+            console.log("[CartContext] Adding item to API cart:", {
+               carritoId,
+               servicioId: item.id,
+               cantidad: qtyToAdd,
+            });
+
+            // Add to API cart - use item.id as servicioId
             await addItemToCart(carritoId, {
                servicioId: item.id,
                cantidad: qtyToAdd,
                personalizaciones: item.metadata || {},
             });
 
-            // Update local state
-            setCart((prevCart) => {
-               const existingIndex = prevCart.items.findIndex((i) => i.id === item.id);
+            // Re-fetch cart to get updated items with item IDs
+            const updatedCart = await getOrCreateCart(userId);
+            const enrichedItems = await enrichCartItems(updatedCart.items || []);
 
-               if (existingIndex !== -1) {
-                  const newItems = [...prevCart.items];
-                  newItems[existingIndex] = {
-                     ...newItems[existingIndex],
-                     qty: newQty,
-                  };
-                  return { ...prevCart, items: newItems };
-               } else {
-                  const newItem = {
-                     id: item.id,
-                     name: item.name,
-                     price: item.price,
-                     qty: qtyToAdd,
-                     image: item.image,
-                     stock: stock,
-                     metadata: item.metadata || {},
-                  };
-                  return { ...prevCart, items: [...prevCart.items, newItem] };
-               }
-            });
+            setCart((prevCart) => ({
+               ...prevCart,
+               items: enrichedItems,
+            }));
+
+            console.log("[CartContext] Cart updated after adding item");
          } catch (error) {
-            console.error("Error adding to cart:", error);
+            console.error("[CartContext] Error adding to cart:", error);
             alert("Error al agregar el producto al carrito");
          }
       } else {
@@ -236,7 +278,10 @@ export function CartProvider({ children }) {
 
    const updateQuantity = async (id, qty) => {
       const itemIndex = cart.items.findIndex((i) => i.id === id);
-      if (itemIndex === -1) return;
+      if (itemIndex === -1) {
+         console.warn("[CartContext] Item not found in cart:", id);
+         return;
+      }
 
       const item = cart.items[itemIndex];
       const stock = item.stock || Infinity;
@@ -248,37 +293,41 @@ export function CartProvider({ children }) {
       }
 
       if (qty > stock) {
-         console.warn(`Cannot update quantity to ${qty}. Stock limit: ${stock}`);
+         console.warn(`[CartContext] Cannot update quantity to ${qty}. Stock limit: ${stock}`);
          alert(`No hay suficiente stock. Disponible: ${stock} unidades`);
          return;
       }
 
       if (userId && carritoId) {
          try {
-            // Find the item ID in the API cart (we need to track this)
-            // For now, we'll update via API by servicioId
             const cartItem = cart.items[itemIndex];
 
-            // Update via API (Note: API expects itemId, not servicioId)
-            // We need to get the actual cart to find the item's API ID
-            const apiCart = await getOrCreateCart(userId);
-            const apiItem = apiCart.items?.find((i) => i.servicioId === id);
-
-            if (apiItem) {
-               await updateCartItem(apiItem.itemId, qty);
+            // Use the tracked itemId for API operations
+            if (!cartItem.itemId) {
+               console.error("[CartContext] No itemId found for cart item");
+               throw new Error("Cart item ID not found");
             }
 
-            // Update local state
-            setCart((prevCart) => {
-               const newItems = [...prevCart.items];
-               newItems[itemIndex] = {
-                  ...newItems[itemIndex],
-                  qty: qty,
-               };
-               return { ...prevCart, items: newItems };
+            console.log("[CartContext] Updating cart item:", {
+               itemId: cartItem.itemId,
+               newQty: qty,
             });
+
+            // Update via API using the cart item ID
+            await updateCartItem(cartItem.itemId, qty);
+
+            // Re-fetch cart to get updated data
+            const updatedCart = await getOrCreateCart(userId);
+            const enrichedItems = await enrichCartItems(updatedCart.items || []);
+
+            setCart((prevCart) => ({
+               ...prevCart,
+               items: enrichedItems,
+            }));
+
+            console.log("[CartContext] Cart updated after quantity change");
          } catch (error) {
-            console.error("Error updating cart item:", error);
+            console.error("[CartContext] Error updating cart item:", error);
             alert("Error al actualizar la cantidad");
          }
       } else {
@@ -297,21 +346,34 @@ export function CartProvider({ children }) {
    const removeFromCart = async (id) => {
       if (userId && carritoId) {
          try {
-            // Get the API item ID
-            const apiCart = await getOrCreateCart(userId);
-            const apiItem = apiCart.items?.find((i) => i.servicioId === id);
+            // Find the item in local cart to get the itemId
+            const cartItem = cart.items.find((i) => i.id === id);
 
-            if (apiItem) {
-               await removeCartItem(apiItem.itemId);
+            if (!cartItem || !cartItem.itemId) {
+               console.error("[CartContext] No itemId found for cart item to remove");
+               throw new Error("Cart item ID not found");
             }
 
-            // Update local state
+            console.log("[CartContext] Removing cart item:", {
+               itemId: cartItem.itemId,
+               productId: id,
+            });
+
+            // Remove via API using cart item ID
+            await removeCartItem(cartItem.itemId);
+
+            // Re-fetch cart to get updated data
+            const updatedCart = await getOrCreateCart(userId);
+            const enrichedItems = await enrichCartItems(updatedCart.items || []);
+
             setCart((prevCart) => ({
                ...prevCart,
-               items: prevCart.items.filter((i) => i.id !== id),
+               items: enrichedItems,
             }));
+
+            console.log("[CartContext] Cart updated after item removal");
          } catch (error) {
-            console.error("Error removing cart item:", error);
+            console.error("[CartContext] Error removing cart item:", error);
             alert("Error al eliminar el producto");
          }
       } else {
