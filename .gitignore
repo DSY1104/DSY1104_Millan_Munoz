@@ -23,7 +23,7 @@ jest.config.js
 jest.setup.js
 
 # Documentation (except README)
-*.md
+!*.md
 !README.md
 
 # Editor directories and files

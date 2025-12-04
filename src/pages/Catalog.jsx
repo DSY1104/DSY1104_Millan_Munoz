@@ -3,8 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import ProductCard from "/src/components/products/ProductCard.jsx";
 import "/src/styles/pages/catalog.css";
 import FilterSidebar from "/src/components/filters/FilterSidebar.jsx";
-import { getAllProducts } from "../services/catalogService";
-import { getAllCategories } from "../services/categoryService";
+import { getActiveProducts, getAllCategories } from "../services/inventarioService";
 import { IconError404 } from "@tabler/icons-react";
 
 const PRODUCTS_PER_PAGE = 12;
@@ -47,11 +46,11 @@ export default function CatalogPage() {
       try {
         setLoading(true);
         const [productsData, categoriesData] = await Promise.all([
-          getAllProducts(),
+          getActiveProducts(),
           getAllCategories(),
         ]);
-        setProducts(productsData);
-        setCategories(categoriesData);
+        setProducts(productsData || []);
+        setCategories(categoriesData || []);
         setError(null);
       } catch (err) {
         console.error("Error loading catalog data:", err);
@@ -88,9 +87,11 @@ export default function CatalogPage() {
     if (selectedCategory) {
       filtered = filtered.filter(
         (p) =>
+          // Support both old format (categoriaId) and new Inventario API format (categoria.idCategoria)
           p.categoriaId === selectedCategory ||
-          (p.categoria &&
-            normalizeText(p.categoria).includes(
+          (p.categoria?.idCategoria === selectedCategory) ||
+          (p.categoria?.nombreCategoria &&
+            normalizeText(p.categoria.nombreCategoria).includes(
               normalizeText(selectedCategory)
             ))
       );
@@ -300,7 +301,7 @@ export default function CatalogPage() {
                   ) : (
                     paginatedProducts.map((product) => (
                       <ProductCard
-                        key={product.id || product.code}
+                        key={product.idProducto || product.id || product.code}
                         {...product}
                       />
                     ))

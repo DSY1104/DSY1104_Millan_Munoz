@@ -1,24 +1,27 @@
 /**
  * Catalog Loader
  * Loads product catalog data for React Router
+ * Updated to use Inventario API (Spring Boot microservice)
  */
 
 import {
-  getAllProducts,
+  getActiveProducts,
   getProductByCode,
   getProductsByCategory,
-  getAllBrands,
-} from "../services/catalogService";
+  searchProducts,
+  getUniqueBrands,
+} from "../services/inventarioService";
+import { getAllCategories } from "../services/inventarioService";
 
 /**
- * Loader for all products
+ * Loader for all active products
  * Used in catalog/products list pages
- * @returns {Promise<Array>} - Array of product objects
+ * @returns {Promise<Array>} - Array of active product objects
  */
 export const catalogLoader = async () => {
   try {
-    const products = await getAllProducts();
-    return products;
+    const products = await getActiveProducts();
+    return products || [];
   } catch (error) {
     console.error("Error in catalogLoader:", error);
     // Return empty array instead of throwing to prevent route breaking
@@ -77,24 +80,29 @@ export const categoryProductsLoader = async ({ params }) => {
 
 /**
  * Combined loader for catalog page with filters data
- * Loads both products and filter options (brands, categories)
- * @returns {Promise<object>} - Object with products and filter data
+ * Loads products, categories, and derives brands from products
+ * @returns {Promise<object>} - Object with products, categories, and brands
  */
 export const catalogWithFiltersLoader = async () => {
   try {
-    const [products, brands] = await Promise.all([
-      getAllProducts(),
-      getAllBrands(),
+    const [products, categories] = await Promise.all([
+      getActiveProducts(),
+      getAllCategories(),
     ]);
 
+    // Derive unique brands from products
+    const brands = getUniqueBrands(products || []);
+
     return {
-      products,
+      products: products || [],
+      categories: categories || [],
       brands,
     };
   } catch (error) {
     console.error("Error in catalogWithFiltersLoader:", error);
     return {
       products: [],
+      categories: [],
       brands: [],
     };
   }
@@ -102,7 +110,7 @@ export const catalogWithFiltersLoader = async () => {
 
 /**
  * Loader for search results
- * Gets search query from URL search params
+ * Gets search query from URL search params and uses Inventario API search
  * @param {object} request - Request object
  * @param {URL} request.request.url - URL with search params
  * @returns {Promise<object>} - Object with search results and query
@@ -112,12 +120,17 @@ export const searchResultsLoader = async ({ request }) => {
     const url = new URL(request.url);
     const query = url.searchParams.get("q") || "";
 
-    const products = await getAllProducts();
+    let products = [];
 
-    // Client-side filtering will be done in component
-    // but we can pre-load all products
+    // Use API search if query exists, otherwise get all active products
+    if (query.trim()) {
+      products = await searchProducts(query);
+    } else {
+      products = await getActiveProducts();
+    }
+
     return {
-      products,
+      products: products || [],
       query,
     };
   } catch (error) {

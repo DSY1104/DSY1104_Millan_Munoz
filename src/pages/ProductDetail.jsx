@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getProductByCode } from "../services/catalogService";
+import { getProductByCode, getProductById } from "../services/inventarioService";
 import { useAuth } from "../context/AuthContext";
 import { useUser } from "../hooks/useUser";
 import { useCart } from "../context/CartContext";
@@ -193,7 +193,22 @@ export default function ProductDetailPage() {
 
       try {
         setLoading(true);
-        const productData = await getProductByCode(productCode);
+
+        // Try to load by code first (if numeric, try as ID)
+        let productData;
+        const isNumeric = /^\d+$/.test(productCode);
+
+        if (isNumeric) {
+          try {
+            productData = await getProductById(parseInt(productCode, 10));
+          } catch (err) {
+            // If loading by ID fails, try by code
+            productData = await getProductByCode(productCode);
+          }
+        } else {
+          productData = await getProductByCode(productCode);
+        }
+
         if (!productData) {
           navigate("/products");
           return;
@@ -236,7 +251,7 @@ export default function ProductDetailPage() {
     if (!product || quantity < 1 || quantity > product.stock) return;
 
     addToCart({
-      id: product.code,
+      id: product.code || product.idProducto?.toString(),
       name: product.nombre,
       price: product.precioCLP,
       qty: quantity,
@@ -244,7 +259,7 @@ export default function ProductDetailPage() {
       image: product.imagen,
       metadata: {
         marca: product.marca,
-        categoriaId: product.categoriaId,
+        categoriaId: product.categoriaId || product.categoria?.idCategoria,
       },
     });
 
