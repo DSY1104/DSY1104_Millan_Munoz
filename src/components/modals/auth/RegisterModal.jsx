@@ -257,7 +257,7 @@ export default function RegisterModal() {
       return;
     }
 
-    // Calculate referral points if code is provided and valid
+    // Calculate referral points if code is provided and valid (client-side only)
     let referralPoints = { newUser: 0, referrer: 0 };
     if (formData.referralCode && isValidReferralCode(formData.referralCode)) {
       const code = formData.referralCode.toUpperCase();
@@ -270,12 +270,15 @@ export default function RegisterModal() {
       }
     }
 
-    // Prepare registration data
+    // Prepare registration data for Usuario API
     const registrationData = {
-      ...formData,
-      isDuocEmail: isDuocEmail(formData.email),
-      referralPoints,
-      registeredAt: new Date().toISOString(),
+      username: formData.email.split('@')[0], // Derive username from email
+      email: formData.email,
+      password: formData.password,
+      firstName: formData.nombre,
+      lastName: formData.apellidos,
+      phone: formData.run || null, // Optional: use RUN field as phone for now
+      // Note: referralCode and referralPoints are client-side only, not sent to backend
     };
 
     // Call register function (now async)

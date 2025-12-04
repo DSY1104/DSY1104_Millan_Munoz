@@ -20,88 +20,93 @@ import SupportPage from "./pages/Support.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import UserProfile from "./pages/UserProfile.jsx";
 import PurchaseSuccess from "./pages/PurchaseSuccess.jsx";
+import PaymentConfirm from "./pages/PaymentConfirm.jsx";
 import { userProfileLoader } from "./loaders/userLoader";
 import { blogPostLoader } from "./loaders/blogPostLoader";
 
 // Layout component
 function Layout() {
-  return (
-    <>
-      <ScrollToTop />
-      <Navbar />
-      <Outlet />
-      <Footer />
-      <LoginModal />
-      <RegisterModal />
-    </>
-  );
+   return (
+      <>
+         <ScrollToTop />
+         <Navbar />
+         <Outlet />
+         <Footer />
+         <LoginModal />
+         <RegisterModal />
+      </>
+   );
 }
 
 // Create router with data API
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout />,
-    errorElement: <ErrorBoundary />,
-    children: [
-      {
-        index: true,
-        element: <HomePage />,
-      },
-      {
-        path: "blog",
-        element: <BlogPage />,
-      },
-      {
-        path: "blog/:slug",
-        element: <BlogPost />,
-        loader: blogPostLoader,
-      },
-      {
-        path: "about",
-        element: <About />,
-      },
-      {
-        path: "cart",
-        element: <Cart />,
-      },
-      {
-        path: "purchase-success",
-        element: <PurchaseSuccess />,
-      },
-      {
-        path: "products",
-        element: <CatalogPage />,
-      },
-      {
-        path: "products/:id",
-        element: <ProductDetailPage />,
-      },
-      {
-        path: "profile",
-        element: <UserProfile />,
-        loader: userProfileLoader,
-      },
-      {
-        path: "support",
-        element: <SupportPage />,
-      },
-      {
-        path: "*",
-        element: <NotFound />,
-      },
-    ],
-  },
+   {
+      path: "/",
+      element: <Layout />,
+      errorElement: <ErrorBoundary />,
+      children: [
+         {
+            index: true,
+            element: <HomePage />,
+         },
+         {
+            path: "blog",
+            element: <BlogPage />,
+         },
+         {
+            path: "blog/:slug",
+            element: <BlogPost />,
+            loader: blogPostLoader,
+         },
+         {
+            path: "about",
+            element: <About />,
+         },
+         {
+            path: "cart",
+            element: <Cart />,
+         },
+         {
+            path: "payment-confirm",
+            element: <PaymentConfirm />,
+         },
+         {
+            path: "purchase-success",
+            element: <PurchaseSuccess />,
+         },
+         {
+            path: "products",
+            element: <CatalogPage />,
+         },
+         {
+            path: "products/:id",
+            element: <ProductDetailPage />,
+         },
+         {
+            path: "profile",
+            element: <UserProfile />,
+            loader: userProfileLoader,
+         },
+         {
+            path: "support",
+            element: <SupportPage />,
+         },
+         {
+            path: "*",
+            element: <NotFound />,
+         },
+      ],
+   },
 ]);
 
 export default function App() {
-  return (
-    <AuthProvider>
-      <UserProvider>
-        <CartProvider>
-          <RouterProvider router={router} />
-        </CartProvider>
-      </UserProvider>
-    </AuthProvider>
-  );
+   return (
+      <AuthProvider>
+         <UserProvider>
+            <CartProvider>
+               <RouterProvider router={router} />
+            </CartProvider>
+         </UserProvider>
+      </AuthProvider>
+   );
 }

@@ -1,184 +1,242 @@
 /**
  * User Service
- * Handles user data operations
+ * Handles user authentication and profile operations with Usuario API
  */
 
-import usersData from "../assets/data/users.json";
+import api from "./api";
 
-// Simulate API delay
-const delay = (ms = 300) => new Promise((resolve) => setTimeout(resolve, ms));
+// API endpoints for Usuario Service
+const ENDPOINTS = {
+   // Authentication
+   REGISTER: "/auth/register",
+   LOGIN: "/auth/login",
+
+   // Profile (JWT-based, no user ID needed)
+   PROFILE: "/profile",
+
+   // Points (JWT-based)
+   ADD_POINTS: "/points",
+
+   // Coupons (JWT-based)
+   COUPONS: "/coupons",
+   REDEEM_COUPON: "/coupons/redeem",
+   REMOVE_COUPON: (couponId) => `/coupons/${couponId}`,
+};
+
+// ============================================================================
+// AUTHENTICATION
+// ============================================================================
 
 /**
- * Get user by ID
- * @param {number} userId - The user ID
- * @returns {Promise<object|null>} - User object or null if not found
+ * Register a new user
+ * @param {object} userData - User registration data
+ * @param {string} userData.username - Username
+ * @param {string} userData.email - Email address
+ * @param {string} userData.password - Password
+ * @param {string} userData.firstName - First name (optional)
+ * @param {string} userData.lastName - Last name (optional)
+ * @param {string} userData.phone - Phone number (optional)
+ * @returns {Promise<object>} - Registered user object (without password)
  */
-export const getUserById = async (userId) => {
-  await delay();
-  const user = usersData.find((u) => u.id === parseInt(userId));
-  return user || null;
+export const registerUser = async (userData) => {
+   try {
+      const response = await api.post(ENDPOINTS.REGISTER, {
+         username: userData.username,
+         email: userData.email,
+         password: userData.password,
+         firstName: userData.firstName,
+         lastName: userData.lastName,
+         phone: userData.phone,
+      });
+      return response;
+   } catch (error) {
+      if (error.response?.status === 400) {
+         throw new Error(error.response.data?.message || "El correo ya está registrado");
+      }
+      throw error;
+   }
 };
 
 /**
- * Get user by username
- * @param {string} username - The username
- * @returns {Promise<object|null>} - User object or null if not found
- */
-export const getUserByUsername = async (username) => {
-  await delay();
-  const user = usersData.find((u) => u.username === username);
-  return user || null;
-};
-
-/**
- * Get user by email
- * @param {string} email - The email address
- * @returns {Promise<object|null>} - User object or null if not found
- */
-export const getUserByEmail = async (email) => {
-  await delay();
-  const user = usersData.find((u) => u.email === email);
-  return user || null;
-};
-
-/**
- * Get all users (admin function)
- * @returns {Promise<Array>} - Array of all users
- */
-export const getAllUsers = async () => {
-  await delay();
-  return usersData;
-};
-
-/**
- * Authenticate user
- * @param {string} emailOrUsername - Email or username
+ * Authenticate user and get JWT token
+ * @param {string} identifier - Email or username
  * @param {string} password - Password
- * @returns {Promise<object|null>} - User object without password or null if auth fails
+ * @returns {Promise<object>} - { token, user } or null if auth fails
  */
-export const authenticateUser = async (emailOrUsername, password) => {
-  await delay();
-  const user = usersData.find(
-    (u) =>
-      (u.email === emailOrUsername || u.username === emailOrUsername) &&
-      u.password === password
-  );
+export const authenticateUser = async (identifier, password) => {
+   try {
+      const response = await api.post(ENDPOINTS.LOGIN, {
+         identifier,
+         password,
+      });
 
-  if (user) {
-    // Return user without password
-    const { password: _, ...userWithoutPassword } = user;
-    return userWithoutPassword;
-  }
+      // Usuario API returns: { userId, username, email, fullName, isActive, isVerified, token, level, points, message }
+      // We need to structure it as { token, user }
+      return {
+         token: response.token,
+         user: {
+            id: response.userId,
+            username: response.username,
+            email: response.email,
+            fullName: response.fullName,
+            isActive: response.isActive,
+            isVerified: response.isVerified,
+            stats: {
+               level: response.level,
+               points: response.points,
+            },
+         },
+      };
+   } catch (error) {
+      if (error.response?.status === 401 || error.response?.status === 404) {
+         return null;
+      }
+      throw error;
+   }
+};
 
-  return null;
+// ============================================================================
+// PROFILE MANAGEMENT
+// ============================================================================
+
+/**
+ * Get current user's profile (JWT-based)
+ * @returns {Promise<object>} - User profile object
+ */
+export const getCurrentUserProfile = async () => {
+   try {
+      const response = await api.get(ENDPOINTS.PROFILE);
+      return response;
+   } catch (error) {
+      if (error.response?.status === 404) {
+         return null;
+      }
+      throw error;
+   }
 };
 
 /**
- * Update user profile
- * @param {number} userId - The user ID
+ * Update current user's profile (JWT-based)
  * @param {object} updates - Object with fields to update
- * @returns {Promise<object>} - Updated user object
+ * @param {string} updates.firstName - First name
+ * @param {string} updates.lastName - Last name
+ * @param {string} updates.phone - Phone number
+ * @param {string} updates.birthdate - Birthdate (YYYY-MM-DD)
+ * @param {string} updates.bio - Biography
+ * @param {string} updates.avatar - Avatar URL
+ * @param {object} updates.address - Address object
+ * @param {object} updates.gaming - Gaming profile object
+ * @param {object} updates.preferences - Preferences object
+ * @returns {Promise<object>} - Updated user profile
  */
-export const updateUserProfile = async (userId, updates) => {
-  await delay();
-  const userIndex = usersData.findIndex((u) => u.id === parseInt(userId));
-
-  if (userIndex === -1) {
-    throw new Error("User not found");
-  }
-
-  // Deep merge updates
-  const updatedUser = {
-    ...usersData[userIndex],
-    personal: {
-      ...usersData[userIndex].personal,
-      ...(updates.personal || {}),
-    },
-    address: {
-      ...usersData[userIndex].address,
-      ...(updates.address || {}),
-    },
-    preferences: {
-      ...usersData[userIndex].preferences,
-      ...(updates.preferences || {}),
-    },
-    gaming: {
-      ...usersData[userIndex].gaming,
-      ...(updates.gaming || {}),
-    },
-    stats: {
-      ...usersData[userIndex].stats,
-      ...(updates.stats || {}),
-    },
-  };
-
-  // In a real app, this would persist to a backend
-  // For demo purposes, we return the updated user
-  const { password: _, ...userWithoutPassword } = updatedUser;
-  return userWithoutPassword;
+export const updateUserProfile = async (updates) => {
+   try {
+      const response = await api.put(ENDPOINTS.PROFILE, updates);
+      return response;
+   } catch (error) {
+      if (error.response?.status === 404) {
+         throw new Error("Usuario no encontrado");
+      }
+      throw error;
+   }
 };
 
+// ============================================================================
+// POINTS MANAGEMENT
+// ============================================================================
+
 /**
- * Add points to user
- * @param {number} userId - The user ID
+ * Add points to current user (JWT-based)
  * @param {number} points - Points to add
- * @returns {Promise<object>} - Updated user object
+ * @param {string} reason - Reason for adding points (optional)
+ * @returns {Promise<object>} - Updated user stats
  */
-export const addUserPoints = async (userId, points) => {
-  await delay();
-  const user = await getUserById(userId);
+export const addUserPoints = async (points, reason = null) => {
+   try {
+      const body = { points };
+      if (reason) {
+         body.reason = reason;
+      }
 
-  if (!user) {
-    throw new Error("User not found");
-  }
+      const response = await api.post(ENDPOINTS.ADD_POINTS, body);
+      return response; // Returns updated ClientStats
+   } catch (error) {
+      if (error.response?.status === 400) {
+         throw new Error(error.response.data?.message || "Puntos inválidos");
+      }
+      throw error;
+   }
+};
 
-  const newPoints = user.stats.points + points;
-  return updateUserProfile(userId, {
-    stats: { points: newPoints },
-  });
+// ============================================================================
+// COUPON MANAGEMENT
+// ============================================================================
+
+/**
+ * Get all coupons for current user (JWT-based)
+ * @returns {Promise<Array>} - Array of coupon objects
+ */
+export const getUserCoupons = async () => {
+   try {
+      const response = await api.get(ENDPOINTS.COUPONS);
+      return response || [];
+   } catch (error) {
+      console.error("Error fetching coupons:", error);
+      return [];
+   }
 };
 
 /**
- * Redeem user coupon
- * @param {number} userId - The user ID
- * @param {string} couponId - The coupon ID to redeem
- * @returns {Promise<object>} - Updated coupon
+ * Redeem points for a coupon (JWT-based)
+ * @param {number} pointsToRedeem - Number of points to redeem (minimum 100)
+ * @returns {Promise<object>} - Created coupon object
  */
-export const redeemCoupon = async (userId, couponId) => {
-  await delay();
-  const user = await getUserById(userId);
-
-  if (!user) {
-    throw new Error("User not found");
-  }
-
-  const coupon = user.coupons.find((c) => c.id === couponId);
-
-  if (!coupon) {
-    throw new Error("Coupon not found");
-  }
-
-  if (coupon.isUsed) {
-    throw new Error("Coupon already used");
-  }
-
-  // Mark coupon as used
-  coupon.isUsed = true;
-
-  return coupon;
+export const redeemPointsForCoupon = async (pointsToRedeem) => {
+   try {
+      const response = await api.post(ENDPOINTS.REDEEM_COUPON, {
+         pointsToRedeem,
+      });
+      return response;
+   } catch (error) {
+      if (error.response?.status === 400) {
+         const message = error.response.data?.message || "Puntos insuficientes";
+         throw new Error(message);
+      }
+      throw error;
+   }
 };
+
+/**
+ * Remove a coupon from current user (JWT-based)
+ * @param {string} couponId - Coupon ID to remove
+ * @returns {Promise<void>}
+ */
+export const removeCoupon = async (couponId) => {
+   try {
+      await api.delete(ENDPOINTS.REMOVE_COUPON(couponId));
+   } catch (error) {
+      if (error.response?.status === 404) {
+         throw new Error("Cupón no encontrado");
+      }
+      throw error;
+   }
+};
+
+// ============================================================================
+// LOCAL STORAGE HELPERS
+// ============================================================================
 
 /**
  * Get current user from localStorage
  * @returns {object|null} - Current user or null
  */
 export const getCurrentUser = () => {
-  try {
-    const storedUser = localStorage.getItem("currentUser");
-    return storedUser ? JSON.parse(storedUser) : null;
-  } catch {
-    return null;
-  }
+   try {
+      const storedUser = localStorage.getItem("currentUser");
+      return storedUser ? JSON.parse(storedUser) : null;
+   } catch {
+      return null;
+   }
 };
 
 /**
@@ -186,30 +244,43 @@ export const getCurrentUser = () => {
  * @param {object} user - User object to save
  */
 export const saveCurrentUser = (user) => {
-  try {
-    localStorage.setItem("currentUser", JSON.stringify(user));
-  } catch (error) {
-    console.error("Error saving user to localStorage:", error);
-  }
+   try {
+      localStorage.setItem("currentUser", JSON.stringify(user));
+   } catch (error) {
+      console.error("Error saving user to localStorage:", error);
+   }
 };
 
 /**
  * Clear current user from localStorage
  */
 export const clearCurrentUser = () => {
-  localStorage.removeItem("currentUser");
+   localStorage.removeItem("currentUser");
 };
 
+// ============================================================================
+// EXPORTS
+// ============================================================================
+
 export default {
-  getUserById,
-  getUserByUsername,
-  getUserByEmail,
-  getAllUsers,
-  authenticateUser,
-  updateUserProfile,
-  addUserPoints,
-  redeemCoupon,
-  getCurrentUser,
-  saveCurrentUser,
-  clearCurrentUser,
+   // Authentication
+   registerUser,
+   authenticateUser,
+
+   // Profile
+   getCurrentUserProfile,
+   updateUserProfile,
+
+   // Points
+   addUserPoints,
+
+   // Coupons
+   getUserCoupons,
+   redeemPointsForCoupon,
+   removeCoupon,
+
+   // Local storage helpers
+   getCurrentUser,
+   saveCurrentUser,
+   clearCurrentUser,
 };
