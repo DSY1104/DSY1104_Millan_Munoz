@@ -3,222 +3,218 @@ import { useAuth } from "../../../context/AuthContext";
 import "../../../styles/components/_modal.css";
 
 export default function LoginModal() {
-  const {
-    showLoginModal,
-    closeLoginModal,
-    switchToRegister,
-    login,
-    isAuthenticated,
-  } = useAuth();
+   const { showLoginModal, closeLoginModal, switchToRegister, login, isAuthenticated } = useAuth();
 
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    remember: false,
-  });
+   const [formData, setFormData] = useState({
+      email: "",
+      password: "",
+      remember: false,
+   });
 
-  const [errors, setErrors] = useState({
-    email: false,
-    password: false,
-  });
+   const [errors, setErrors] = useState({
+      email: false,
+      password: false,
+   });
 
-  const emailInputRef = useRef(null);
+   const [loginError, setLoginError] = useState("");
+   const [isShaking, setIsShaking] = useState(false);
 
-  // Focus on email input when modal opens
-  useEffect(() => {
-    if (showLoginModal && emailInputRef.current) {
-      setTimeout(() => {
-        emailInputRef.current?.focus();
-      }, 100);
-    }
-  }, [showLoginModal]);
+   const emailInputRef = useRef(null);
 
-  // Close modal on Escape key
-  useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === "Escape" && showLoginModal) {
-        closeLoginModal();
+   // Focus on email input when modal opens
+   useEffect(() => {
+      if (showLoginModal && emailInputRef.current) {
+         setTimeout(() => {
+            emailInputRef.current?.focus();
+         }, 100);
       }
-    };
+   }, [showLoginModal]);
 
-    if (showLoginModal) {
-      document.addEventListener("keydown", handleEscape);
-      document.body.classList.add("modal-open");
-    }
+   // Close modal on Escape key
+   useEffect(() => {
+      const handleEscape = (e) => {
+         if (e.key === "Escape" && showLoginModal) {
+            closeLoginModal();
+         }
+      };
 
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-      document.body.classList.remove("modal-open");
-    };
-  }, [showLoginModal, closeLoginModal]);
+      if (showLoginModal) {
+         document.addEventListener("keydown", handleEscape);
+         document.body.classList.add("modal-open");
+      }
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+      return () => {
+         document.removeEventListener("keydown", handleEscape);
+         document.body.classList.remove("modal-open");
+      };
+   }, [showLoginModal, closeLoginModal]);
 
-    // Clear error when user types
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: false }));
-    }
-  };
+   const handleChange = (e) => {
+      const { name, value, type, checked } = e.target;
+      setFormData((prev) => ({
+         ...prev,
+         [name]: type === "checkbox" ? checked : value,
+      }));
 
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+      // Clear error when user types
+      if (errors[name]) {
+         setErrors((prev) => ({ ...prev, [name]: false }));
+      }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+      // Clear login error when user types
+      if (loginError) {
+         setLoginError("");
+      }
+   };
 
-    // Validation
-    const newErrors = {
-      email: !validateEmail(formData.email),
-      password: formData.password.length < 6,
-    };
+   const validateEmail = (email) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+   };
 
-    setErrors(newErrors);
+   const handleSubmit = async (e) => {
+      e.preventDefault();
 
-    if (newErrors.email || newErrors.password) {
-      return;
-    }
+      // Validation
+      const newErrors = {
+         email: !validateEmail(formData.email),
+         password: formData.password.length < 6,
+      };
 
-    // Call login function (now async)
-    const result = await login(
-      formData.email,
-      formData.password,
-      formData.remember
-    );
+      setErrors(newErrors);
 
-    if (result.success) {
-      // Reset form
-      setFormData({ email: "", password: "", remember: false });
-      setErrors({ email: false, password: false });
-    } else {
-      // Handle login error - show error message to user
-      console.error("Login failed:", result.error);
-      alert(
-        result.error ||
-          "Error al iniciar sesión. Por favor, verifica tus credenciales."
-      );
-    }
-  };
+      if (newErrors.email || newErrors.password) {
+         return;
+      }
 
-  const handleBackdropClick = (e) => {
-    if (e.target === e.currentTarget) {
-      closeLoginModal();
-    }
-  };
+      // Call login function (now async)
+      const result = await login(formData.email, formData.password, formData.remember);
 
-  if (!showLoginModal) return null;
+      if (result.success) {
+         // Reset form
+         setFormData({ email: "", password: "", remember: false });
+         setErrors({ email: false, password: false });
+         setLoginError("");
+      } else {
+         // Handle login error - show error message and shake modal
+         console.error("Login failed:", result.error);
+         setLoginError(result.error || "Error al iniciar sesión. Por favor, verifica tus credenciales.");
 
-  return (
-    <div
-      className={`lu-modal${showLoginModal ? " active" : ""}`}
-      id="login-modal"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="login-modal-title"
-    >
+         // Trigger shake animation
+         setIsShaking(true);
+         setTimeout(() => setIsShaking(false), 500);
+      }
+   };
+
+   const handleBackdropClick = (e) => {
+      if (e.target === e.currentTarget) {
+         closeLoginModal();
+      }
+   };
+
+   if (!showLoginModal) return null;
+
+   return (
       <div
-        className="lu-modal__backdrop"
-        onClick={handleBackdropClick}
-        aria-label="Cerrar modal"
-      ></div>
-      <div className="lu-modal__dialog" role="document">
-        <div className="lu-modal__content">
-          <button
-            className="lu-modal__close"
-            aria-label="Cerrar"
-            onClick={closeLoginModal}
-          >
-            &times;
-          </button>
-          <header className="lu-modal__header">
-            <h2 id="login-modal-title">Ingresar</h2>
-          </header>
-          <div className="lu-modal__body">
-            <form id="login-form" onSubmit={handleSubmit} noValidate>
-              <div className="form-control">
-                <label htmlFor="login-email">Correo electrónico</label>
-                <input
-                  ref={emailInputRef}
-                  type="email"
-                  id="login-email"
-                  name="email"
-                  autoComplete="email"
-                  required
-                  placeholder="tucorreo@ejemplo.com"
-                  value={formData.email}
-                  onChange={handleChange}
-                  aria-invalid={errors.email}
-                  aria-describedby={errors.email ? "email-error" : undefined}
-                />
-                {errors.email && (
-                  <p className="form-hint" id="email-error" role="alert">
-                    Ingresa un correo válido.
-                  </p>
-                )}
-              </div>
+         className={`lu-modal${showLoginModal ? " active" : ""}`}
+         id="login-modal"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="login-modal-title"
+      >
+         <div className="lu-modal__backdrop" onClick={handleBackdropClick} aria-label="Cerrar modal"></div>
+         <div className="lu-modal__dialog" role="document">
+            <div className={`lu-modal__content${isShaking ? " shake" : ""}`}>
+               <button className="lu-modal__close" aria-label="Cerrar" onClick={closeLoginModal}>
+                  &times;
+               </button>
+               <header className="lu-modal__header">
+                  <h2 id="login-modal-title">Ingresar</h2>
+               </header>
+               <div className="lu-modal__body">
+                  <form id="login-form" onSubmit={handleSubmit} noValidate>
+                     <div className="form-control">
+                        <label htmlFor="login-email">Correo electrónico</label>
+                        <input
+                           ref={emailInputRef}
+                           type="email"
+                           id="login-email"
+                           name="email"
+                           autoComplete="email"
+                           required
+                           placeholder="tucorreo@ejemplo.com"
+                           value={formData.email}
+                           onChange={handleChange}
+                           aria-invalid={errors.email}
+                           aria-describedby={errors.email ? "email-error" : undefined}
+                        />
+                        {errors.email && (
+                           <p className="form-hint" id="email-error" role="alert">
+                              Ingresa un correo válido.
+                           </p>
+                        )}
+                     </div>
 
-              <div className="form-control">
-                <label htmlFor="login-password">Contraseña</label>
-                <input
-                  type="password"
-                  id="login-password"
-                  name="password"
-                  autoComplete="current-password"
-                  required
-                  minLength="6"
-                  placeholder="••••••"
-                  value={formData.password}
-                  onChange={handleChange}
-                  aria-invalid={errors.password}
-                  aria-describedby={
-                    errors.password ? "password-error" : undefined
-                  }
-                />
-                {errors.password && (
-                  <p className="form-hint" id="password-error" role="alert">
-                    Mínimo 6 caracteres.
-                  </p>
-                )}
-              </div>
+                     <div className="form-control">
+                        <label htmlFor="login-password">Contraseña</label>
+                        <input
+                           type="password"
+                           id="login-password"
+                           name="password"
+                           autoComplete="current-password"
+                           required
+                           minLength="6"
+                           placeholder="••••••"
+                           value={formData.password}
+                           onChange={handleChange}
+                           aria-invalid={errors.password}
+                           aria-describedby={errors.password ? "password-error" : undefined}
+                        />
+                        {errors.password && (
+                           <p className="form-hint" id="password-error" role="alert">
+                              Mínimo 6 caracteres.
+                           </p>
+                        )}
+                     </div>
 
-              <div className="form-row form-remember">
-                <label className="checkbox">
-                  <input
-                    type="checkbox"
-                    id="login-remember"
-                    name="remember"
-                    checked={formData.remember}
-                    onChange={handleChange}
-                  />
-                  <span>Recordarme</span>
-                </label>
-                <a
-                  href="#"
-                  className="alt-link"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    switchToRegister();
-                  }}
-                >
-                  Crear cuenta
-                </a>
-              </div>
+                     <div className="form-row form-remember">
+                        <label className="checkbox">
+                           <input
+                              type="checkbox"
+                              id="login-remember"
+                              name="remember"
+                              checked={formData.remember}
+                              onChange={handleChange}
+                           />
+                           <span>Recordarme</span>
+                        </label>
+                        <a
+                           href="#"
+                           className="alt-link"
+                           onClick={(e) => {
+                              e.preventDefault();
+                              switchToRegister();
+                           }}
+                        >
+                           Crear cuenta
+                        </a>
+                     </div>
 
-              <div className="form-actions">
-                <button type="submit" className="btn-primary" id="login-submit">
-                  Ingresar
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+                     <div className="form-actions">
+                        <button type="submit" className="btn-primary" id="login-submit">
+                           Ingresar
+                        </button>
+                     </div>
+
+                     {loginError && (
+                        <div className="login-error-message" role="alert">
+                           {loginError}
+                        </div>
+                     )}
+                  </form>
+               </div>
+            </div>
+         </div>
       </div>
-    </div>
-  );
+   );
 }
