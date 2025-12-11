@@ -14,9 +14,12 @@ const CARRITO_BASE_URL = import.meta.env.VITE_CARRITO_API_URL || "http://localho
  */
 const getAuthToken = () => {
    try {
-      const session = JSON.parse(localStorage.getItem('userSession'));
-      return session?.token || null;
-   } catch {
+      const session = JSON.parse(localStorage.getItem("userSession"));
+      const token = session?.token || null;
+      console.log("[API] getAuthToken - token found:", token ? `${token.substring(0, 20)}...` : "null");
+      return token;
+   } catch (error) {
+      console.error("[API] Error getting auth token:", error);
       return null;
    }
 };
@@ -28,19 +31,19 @@ const getAuthToken = () => {
 const handleUnauthorized = () => {
    try {
       // Clear all session data
-      localStorage.removeItem('userSession');
-      localStorage.removeItem('currentUser');
+      localStorage.removeItem("userSession");
+      localStorage.removeItem("currentUser");
 
       // Clear cookies
-      document.cookie = 'userSession=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-      document.cookie = 'rememberLogin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      document.cookie = "userSession=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      document.cookie = "rememberLogin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
       // Dispatch logout event
-      window.dispatchEvent(new CustomEvent('userLoggedOut'));
+      window.dispatchEvent(new CustomEvent("userLoggedOut"));
 
-      console.log('[API] Session expired or invalid - user logged out');
+      console.log("[API] Session expired or invalid - user logged out");
    } catch (error) {
-      console.error('[API] Error handling unauthorized:', error);
+      console.error("[API] Error handling unauthorized:", error);
    }
 };
 
@@ -102,7 +105,12 @@ export const fetchAPI = async (endpoint, options = {}) => {
       // Add Authorization header for authenticated requests
       if (token) {
          headers["Authorization"] = `Bearer ${token}`;
+         console.log("[API] Request to", endpoint, "with Authorization header");
+      } else {
+         console.log("[API] Request to", endpoint, "WITHOUT Authorization header");
       }
+
+      console.log("[API] Headers:", headers);
 
       const response = await fetch(url, {
          headers,
@@ -117,7 +125,7 @@ export const fetchAPI = async (endpoint, options = {}) => {
       // Handle 401 Unauthorized - session expired
       if (response.status === 401) {
          handleUnauthorized();
-         const error = new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+         const error = new Error("Sesión expirada. Por favor, inicia sesión nuevamente.");
          error.response = { status: 401, data: null };
          throw error;
       }
@@ -132,13 +140,18 @@ export const fetchAPI = async (endpoint, options = {}) => {
       }
 
       // Handle both response formats:
-      // Usuario API: { success: true, data: {...}, message: null, statusCode: 200 }
+      // Usuario API: { success: true, response: {...}, message: null, statusCode: 200 }
       // Other services: { status: "success", data: {...} }
       if (data.data !== undefined) {
          return data.data;
       }
 
-      // If no data field, return as is
+      // Handle Usuario API response format
+      if (data.response !== undefined) {
+         return data.response;
+      }
+
+      // If no data/response field, return as is
       return data;
    } catch (error) {
       console.error(`[API] Error fetching ${endpoint}:`, error);

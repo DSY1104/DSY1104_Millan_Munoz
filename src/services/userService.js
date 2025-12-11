@@ -70,9 +70,18 @@ export const authenticateUser = async (identifier, password) => {
          password,
       });
 
-      // Usuario API returns: { userId, username, email, fullName, isActive, isVerified, token, level, points, message }
+      console.log("[userService] Login response:", response);
+      console.log("[userService] Token extracted:", response.token);
+      console.log("[userService] Response structure:", {
+         hasToken: !!response.token,
+         hasUserId: !!response.userId,
+         keys: Object.keys(response),
+      });
+
+      // api.js unwraps the 'response' field, so we get the inner object directly
+      // Response contains: { userId, username, email, fullName, isActive, isVerified, token, level, points, message }
       // We need to structure it as { token, user }
-      return {
+      const result = {
          token: response.token,
          user: {
             id: response.userId,
@@ -87,7 +96,16 @@ export const authenticateUser = async (identifier, password) => {
             },
          },
       };
+
+      console.log("[userService] Returning:", {
+         hasToken: !!result.token,
+         token: result.token ? `${result.token.substring(0, 30)}...` : null,
+         userId: result.user.id,
+      });
+
+      return result;
    } catch (error) {
+      console.error("[userService] Login error:", error);
       if (error.response?.status === 401 || error.response?.status === 404) {
          return null;
       }
@@ -105,9 +123,13 @@ export const authenticateUser = async (identifier, password) => {
  */
 export const getCurrentUserProfile = async () => {
    try {
+      console.log("[userService] Getting current user profile");
       const response = await api.get(ENDPOINTS.PROFILE);
+      console.log("[userService] Profile response:", response);
+      // Usuario API returns the profile directly, not nested in response.response
       return response;
    } catch (error) {
+      console.error("[userService] Profile error:", error);
       if (error.response?.status === 404) {
          return null;
       }
