@@ -49,10 +49,11 @@ export default function Cart() {
    useEffect(() => {
       // Get user profile for shipping address from UserContext
       if (user) {
-         const region = user.address.region || "-";
-         const city = user.address.city || "-";
-         let address = user.address.addressLine1 || "-";
-         if (user.address.addressLine2) address += ", " + user.address.addressLine2;
+         console.log(user.address);
+         const region = user.address?.region || "-";
+         const city = user.address?.city || "-";
+         let address = user.address?.addressLine1 || "-";
+         if (user.address?.addressLine2) address += ", " + user.address?.addressLine2;
          setShippingText(`Enviar a: ${address}, ${city}, ${region}`);
 
          // Pre-fill form with user profile data when in checkout step
@@ -61,11 +62,11 @@ export default function Cart() {
             setValue("email", user.email || "");
             setValue("phone", user.personal.phone || "");
             setValue("rut", user.rut || "");
-            setValue("addressLine1", user.address.addressLine1 || "");
-            setValue("addressLine2", user.address.addressLine2 || "");
-            setValue("city", user.address.city || "");
-            setValue("region", user.address.region || "");
-            setValue("postalCode", user.address.postalCode || "");
+            setValue("addressLine1", user.address?.addressLine1 || "");
+            setValue("addressLine2", user.address?.addressLine2 || "");
+            setValue("city", user.address?.city || "");
+            setValue("region", user.address?.region || "");
+            setValue("postalCode", user.address?.postalCode || "");
          }
       } else {
          // If no user, set default shipping text
