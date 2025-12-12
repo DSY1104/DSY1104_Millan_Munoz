@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import Swal from "sweetalert2";
 import { getOrCreateCart, addItemToCart, updateCartItem, removeCartItem, emptyCart } from "../services/cartService";
 import { getProductById } from "../services/inventarioService";
 
@@ -123,10 +124,18 @@ export function CartProvider({ children }) {
    // Initialize cart on mount if user is already logged in
    useEffect(() => {
       const storedUser = localStorage.getItem("currentUser");
+      const storedCarritoId = localStorage.getItem(CART_ID_KEY);
+
+      // Restore carritoId from localStorage if available
+      if (storedCarritoId) {
+         setCarritoId(storedCarritoId);
+      }
+
       if (storedUser) {
          try {
             const user = JSON.parse(storedUser);
             if (user?.id) {
+               setUserId(user.id);
                initializeCart(user.id);
             }
          } catch (error) {
@@ -171,14 +180,13 @@ export function CartProvider({ children }) {
       };
    }, []);
 
-   // Save to localStorage for guest users
+   // Save to localStorage and dispatch event for all users
    useEffect(() => {
-      if (!userId) {
-         localStorage.setItem(CART_KEY, JSON.stringify(cart));
-      }
+      // Always update localStorage for cart count and cross-component sync
+      localStorage.setItem(CART_KEY, JSON.stringify(cart));
       // Dispatch event for cross-component sync
       document.dispatchEvent(new CustomEvent("cart:changed", { detail: cart }));
-   }, [cart, userId]);
+   }, [cart]);
 
    const addToCart = async (item) => {
       if (!item || item.id == null) {
@@ -201,7 +209,11 @@ export function CartProvider({ children }) {
 
             if (newQty > stock) {
                console.warn(`[CartContext] Cannot add more items. Stock limit: ${stock}`);
-               alert(`No hay suficiente stock. Disponible: ${stock} unidades`);
+               Swal.fire({
+                  icon: "warning",
+                  title: "Stock insuficiente",
+                  text: `No hay suficiente stock. Disponible: ${stock} unidades`,
+               });
                return;
             }
 
@@ -230,7 +242,11 @@ export function CartProvider({ children }) {
             console.log("[CartContext] Cart updated after adding item");
          } catch (error) {
             console.error("[CartContext] Error adding to cart:", error);
-            alert("Error al agregar el producto al carrito");
+            Swal.fire({
+               icon: "error",
+               title: "Error",
+               text: "Error al agregar el producto al carrito",
+            });
          }
       } else {
          // Guest user - use local storage
@@ -243,7 +259,11 @@ export function CartProvider({ children }) {
 
                if (newQty > stock) {
                   console.warn(`Cannot add more items. Stock limit: ${stock}`);
-                  alert(`No hay suficiente stock. Disponible: ${stock} unidades`);
+                  Swal.fire({
+                     icon: "warning",
+                     title: "Stock insuficiente",
+                     text: `No hay suficiente stock. Disponible: ${stock} unidades`,
+                  });
                   return prevCart;
                }
 
@@ -257,7 +277,11 @@ export function CartProvider({ children }) {
             } else {
                if (qtyToAdd > stock) {
                   console.warn(`Cannot add ${qtyToAdd} items. Stock limit: ${stock}`);
-                  alert(`No hay suficiente stock. Disponible: ${stock} unidades`);
+                  Swal.fire({
+                     icon: "warning",
+                     title: "Stock insuficiente",
+                     text: `No hay suficiente stock. Disponible: ${stock} unidades`,
+                  });
                   return prevCart;
                }
 
@@ -294,7 +318,11 @@ export function CartProvider({ children }) {
 
       if (qty > stock) {
          console.warn(`[CartContext] Cannot update quantity to ${qty}. Stock limit: ${stock}`);
-         alert(`No hay suficiente stock. Disponible: ${stock} unidades`);
+         Swal.fire({
+            icon: "warning",
+            title: "Stock insuficiente",
+            text: `No hay suficiente stock. Disponible: ${stock} unidades`,
+         });
          return;
       }
 
@@ -328,7 +356,11 @@ export function CartProvider({ children }) {
             console.log("[CartContext] Cart updated after quantity change");
          } catch (error) {
             console.error("[CartContext] Error updating cart item:", error);
-            alert("Error al actualizar la cantidad");
+            Swal.fire({
+               icon: "error",
+               title: "Error",
+               text: "Error al actualizar la cantidad",
+            });
          }
       } else {
          // Guest user - local storage
@@ -374,7 +406,11 @@ export function CartProvider({ children }) {
             console.log("[CartContext] Cart updated after item removal");
          } catch (error) {
             console.error("[CartContext] Error removing cart item:", error);
-            alert("Error al eliminar el producto");
+            Swal.fire({
+               icon: "error",
+               title: "Error",
+               text: "Error al eliminar el producto",
+            });
          }
       } else {
          // Guest user - local storage

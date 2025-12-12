@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import Swal from "sweetalert2";
 import { useAuth } from "../../../context/AuthContext";
 import "../../../styles/components/_modal.css";
 
@@ -300,9 +301,11 @@ export default function RegisterModal() {
       setReferralCodeStatus({ valid: false, message: "", showFormat: false });
     } else {
       console.error("Registration failed:", result.error);
-      alert(
-        result.error || "Error en el registro. Por favor, intenta nuevamente."
-      );
+      Swal.fire({
+        icon: "error",
+        title: "Error en el registro",
+        text: result.error || "Error en el registro. Por favor, intenta nuevamente.",
+      });
     }
   };
 

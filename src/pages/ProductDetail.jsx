@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import { getProductByCode, getProductById } from "../services/inventarioService";
 import { useAuth } from "../context/AuthContext";
 import { useUser } from "../hooks/useUser";
@@ -699,7 +700,11 @@ function ReviewForm({
         setIsSubmitting(false);
       }, 1000);
     } else {
-      alert("Error al publicar la reseña. Por favor intenta de nuevo.");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Error al publicar la reseña. Por favor intenta de nuevo.",
+      });
       setIsSubmitting(false);
     }
   };
