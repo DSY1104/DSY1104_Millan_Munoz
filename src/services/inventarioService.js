@@ -19,7 +19,7 @@ import { get, post, put, patch, del } from "./api";
 export const getAllProducts = async () => {
    try {
       const response = await get("/productos");
-      return response.response;
+      return response;
    } catch (error) {
       console.error("[InventarioService] Error fetching all products:", error);
       throw error;
@@ -33,7 +33,7 @@ export const getAllProducts = async () => {
 export const getActiveProducts = async () => {
    try {
       const response = await get("/productos/activos");
-      return response.response;
+      return response;
    } catch (error) {
       console.error("[InventarioService] Error fetching active products:", error);
       throw error;
@@ -48,7 +48,7 @@ export const getActiveProducts = async () => {
 export const getProductById = async (productId) => {
    try {
       const response = await get(`/productos/${productId}`);
-      return response.response;
+      return response;
    } catch (error) {
       console.error(`[InventarioService] Error fetching product ${productId}:`, error);
       throw error;
@@ -63,7 +63,7 @@ export const getProductById = async (productId) => {
 export const getProductByCode = async (code) => {
    try {
       const response = await get(`/productos/code/${code}`);
-      return response.response;
+      return response;
    } catch (error) {
       console.error(`[InventarioService] Error fetching product by code ${code}:`, error);
       throw error;
@@ -78,7 +78,7 @@ export const getProductByCode = async (code) => {
 export const searchProducts = async (searchTerm) => {
    try {
       const response = await get(`/productos/buscar?nombre=${encodeURIComponent(searchTerm)}`);
-      return response.response;
+      return response;
    } catch (error) {
       console.error(`[InventarioService] Error searching products with term "${searchTerm}":`, error);
       throw error;
@@ -93,7 +93,7 @@ export const searchProducts = async (searchTerm) => {
 export const getProductsByCategory = async (categoryId) => {
    try {
       const response = await get(`/productos/categoria/${categoryId}`);
-      return response.response;
+      return response;
    } catch (error) {
       console.error(`[InventarioService] Error fetching products for category ${categoryId}:`, error);
       throw error;
@@ -108,7 +108,7 @@ export const getProductsByCategory = async (categoryId) => {
 export const getProductsByBrand = async (brand) => {
    try {
       const response = await get(`/productos/marca/${encodeURIComponent(brand)}`);
-      return response.response;
+      return response;
    } catch (error) {
       console.error(`[InventarioService] Error fetching products by brand ${brand}:`, error);
       throw error;
@@ -122,7 +122,7 @@ export const getProductsByBrand = async (brand) => {
 export const getProductsInStock = async () => {
    try {
       const response = await get("/productos/en-stock");
-      return response.response;
+      return response;
    } catch (error) {
       console.error("[InventarioService] Error fetching in-stock products:", error);
       throw error;
@@ -138,7 +138,7 @@ export const getProductsInStock = async () => {
 export const getProductsByPriceRange = async (minPrice, maxPrice) => {
    try {
       const response = await get(`/productos/precio?min=${minPrice}&max=${maxPrice}`);
-      return response.response;
+      return response;
    } catch (error) {
       console.error(`[InventarioService] Error fetching products by price range ${minPrice}-${maxPrice}:`, error);
       throw error;
@@ -153,7 +153,7 @@ export const getProductsByPriceRange = async (minPrice, maxPrice) => {
 export const getProductsByRating = async (minRating) => {
    try {
       const response = await get(`/productos/rating?min=${minRating}`);
-      return response.response;
+      return response;
    } catch (error) {
       console.error(`[InventarioService] Error fetching products by rating ${minRating}:`, error);
       throw error;
@@ -168,7 +168,7 @@ export const getProductsByRating = async (minRating) => {
 export const getProductsByTag = async (tag) => {
    try {
       const response = await get(`/productos/tag/${encodeURIComponent(tag)}`);
-      return response.response;
+      return response;
    } catch (error) {
       console.error(`[InventarioService] Error fetching products by tag ${tag}:`, error);
       throw error;
@@ -188,7 +188,7 @@ export const getProductsByTag = async (tag) => {
 export const getAllCategories = async () => {
    try {
       const response = await get("/categorias");
-      return response.response;
+      return response;
    } catch (error) {
       console.error("[InventarioService] Error fetching all categories:", error);
       throw error;
@@ -203,7 +203,7 @@ export const getAllCategories = async () => {
 export const getCategoryById = async (categoryId) => {
    try {
       const response = await get(`/categorias/${categoryId}`);
-      return response.response;
+      return response;
    } catch (error) {
       console.error(`[InventarioService] Error fetching category ${categoryId}:`, error);
       throw error;
@@ -218,7 +218,7 @@ export const getCategoryById = async (categoryId) => {
 export const searchCategories = async (searchTerm) => {
    try {
       const response = await get(`/categorias/buscar?nombre=${encodeURIComponent(searchTerm)}`);
-      return response.response;
+      return response;
    } catch (error) {
       console.error(`[InventarioService] Error searching categories with term "${searchTerm}":`, error);
       throw error;

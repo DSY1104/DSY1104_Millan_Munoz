@@ -27,7 +27,8 @@ const ENDPOINTS = {
 export const getAllProducts = async () => {
    try {
       const response = await api.get(ENDPOINTS.ALL_PRODUCTS);
-      const products = response.data;
+      const products = response;
+      console.log(`Fetched ${products.length} products`);
       // Add index for sorting stability
       return products.map((product, index) => ({ ...product, _idx: index }));
    } catch (error) {
@@ -44,7 +45,7 @@ export const getAllProducts = async () => {
 export const getProductByCode = async (code) => {
    try {
       const response = await api.get(ENDPOINTS.PRODUCT_BY_CODE(code));
-      return response.data;
+      return response;
    } catch (error) {
       if (error.response?.status === 404) {
          return null;
@@ -62,7 +63,7 @@ export const getProductByCode = async (code) => {
 export const getProductsByCategory = async (categoryId) => {
    try {
       const response = await api.get(ENDPOINTS.PRODUCTS_BY_CATEGORY(categoryId));
-      return response.data;
+      return response;
    } catch (error) {
       console.error(`Error fetching products for category ${categoryId}:`, error);
       throw error;
@@ -77,7 +78,7 @@ export const getProductsByCategory = async (categoryId) => {
 export const getProductsByBrand = async (brand) => {
    try {
       const response = await api.get(ENDPOINTS.PRODUCTS_BY_BRAND(brand));
-      return response.data;
+      return response;
    } catch (error) {
       console.error(`Error fetching products for brand ${brand}:`, error);
       throw error;
@@ -141,7 +142,7 @@ export const searchProducts = async (query) => {
       }
 
       const response = await api.get(ENDPOINTS.SEARCH_PRODUCTS(encodeURIComponent(query)));
-      return response.data;
+      return response;
    } catch (error) {
       console.error(`Error searching products for "${query}":`, error);
       throw error;
@@ -157,7 +158,7 @@ export const searchProducts = async (query) => {
 export const getProductsByRating = async (minRating, maxRating = null) => {
    try {
       const response = await api.get(ENDPOINTS.PRODUCTS_BY_RATING(minRating));
-      let products = response.data;
+      let products = response;
 
       // Filter by maxRating on client side if provided
       if (maxRating !== null) {
@@ -180,7 +181,7 @@ export const getProductsByRating = async (minRating, maxRating = null) => {
 export const getProductsByPriceRange = async (minPrice, maxPrice) => {
    try {
       const response = await api.get(ENDPOINTS.PRODUCTS_BY_PRICE(minPrice, maxPrice));
-      return response.data;
+      return response;
    } catch (error) {
       console.error(`Error fetching products by price range ${minPrice}-${maxPrice}:`, error);
       throw error;
@@ -238,7 +239,7 @@ export const getProductsSortedByRating = async (order = "desc") => {
 export const getProductsInStock = async () => {
    try {
       const response = await api.get(ENDPOINTS.PRODUCTS_IN_STOCK);
-      return response.data;
+      return response.response;
    } catch (error) {
       console.error("Error fetching products in stock:", error);
       throw error;
