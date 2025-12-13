@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { confirmCheckout, getOrderById } from "../services/cartService";
+import { confirmCheckout } from "../services/cartService";
 import { useCart } from "../context/CartContext";
 import "/src/styles/pages/purchase-success.css";
 
@@ -44,13 +44,10 @@ export default function PaymentConfirm() {
                }
             }
 
-            // Get full order details
-            const orderDetails = await getOrderById(confirmResponse.pedidoId);
-
-            // Prepare order data for success page
+            // Prepare simplified order data for success page
             const orderData = {
                orderNumber: confirmResponse.numeroPedido,
-               orderId: confirmResponse.pedidoId,
+               orderId: confirmResponse.pedidoId || confirmResponse.orderId,
                orderDate: new Date().toLocaleDateString("es-CL", {
                   year: "numeric",
                   month: "long",
@@ -63,13 +60,12 @@ export default function PaymentConfirm() {
                paymentStatus: confirmResponse.pago?.estadoPago,
                authorizationCode: confirmResponse.pago?.authorizationCode,
                shipping: checkoutData.shippingData || {},
-               items: orderDetails.items || [],
+               items: checkoutData.items || [],
                pricing: checkoutData.pricing || {
-                  // Fallback to order total if no pricing data
-                  subtotal: orderDetails.totalProductos || 0,
+                  subtotal: checkoutData.montoTotal || 0,
                   discount: 0,
                   duocDiscount: 0,
-                  total: orderDetails.totalProductos || 0,
+                  total: checkoutData.montoTotal || 0,
                },
                pointsEarned: checkoutData.pointsEarned || 0,
                deliveryDate: calculateDeliveryDate(),

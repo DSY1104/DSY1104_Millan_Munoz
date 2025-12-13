@@ -172,7 +172,7 @@ export default function Cart() {
             throw new Error("Respuesta de pago inválida: Falta URL o token");
          }
 
-         // Store checkout data including shipping address and pricing
+         // Store checkout data including shipping address, items, and pricing
          sessionStorage.setItem(
             `checkout:${checkoutResponse.numeroOrden}`,
             JSON.stringify({
@@ -180,6 +180,7 @@ export default function Cart() {
                pedidoId: pedidoId,
                montoTotal: checkoutResponse.montoTotal || finalTotal,
                shippingData: data, // Full shipping form data
+               items: items, // Cart items for display on success page
                pricing: {
                   subtotal: totals.subtotal,
                   discount: totals.discount,
