@@ -266,6 +266,7 @@ export function CartProvider({ children }) {
             }
 
             // Add to API cart - use item.id as servicioId
+            console.log(item);
             await addItemToCart(carritoId, {
                servicioId: item.id,
                cantidad: qtyToAdd,
@@ -466,7 +467,7 @@ export function CartProvider({ children }) {
    const clearCart = async () => {
       if (userId && carritoId) {
          try {
-            await emptyCart(carritoId);
+            // await emptyCart(carritoId);
             setCart({ items: [] });
          } catch (error) {
             console.error("Error clearing cart:", error);
@@ -484,7 +485,7 @@ export function CartProvider({ children }) {
       if (userId && carritoId) {
          try {
             // Empty the current cart via API
-            await emptyCart(carritoId);
+            // await emptyCart(carritoId);
          } catch (error) {
             console.error("[CartContext] Error emptying cart on reset:", error);
             // Continue with reset even if API fails

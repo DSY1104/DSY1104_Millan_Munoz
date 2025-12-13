@@ -65,6 +65,7 @@ export const ORDER_STATUS = {
 export const getOrCreateCart = async (usuarioId) => {
    try {
       // api.get already unwraps and returns the data
+      console.log("[cartService] Getting or creating cart for user:", usuarioId);
       const response = await api.get(ENDPOINTS.GET_OR_CREATE_CART(usuarioId));
       return response;
    } catch (error) {
@@ -115,9 +116,9 @@ export const getAllUserCarts = async (usuarioId) => {
 export const addItemToCart = async (carritoId, item) => {
    try {
       const response = await api.post(ENDPOINTS.ADD_ITEM(carritoId), {
-         servicioId: item.servicioId,
+         servicioId: 1,
          cantidad: item.cantidad,
-         personalizaciones: item.personalizaciones || {},
+         personalizaciones: "",
       });
       return response;
    } catch (error) {
