@@ -3,70 +3,66 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "/src/styles/pages/purchase-success.css";
 
 export default function PurchaseSuccess() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [orderData, setOrderData] = useState(null);
+   const navigate = useNavigate();
+   const location = useLocation();
+   const [orderData, setOrderData] = useState(null);
 
-  useEffect(() => {
-    // Get order data from navigation state
-    if (location.state && location.state.orderData) {
-      setOrderData(location.state.orderData);
-    } else {
-      // If no order data, redirect to home
+   useEffect(() => {
+      // Get order data from navigation state
+      if (location.state && location.state.orderData) {
+         setOrderData(location.state.orderData);
+      } else {
+         // If no order data, redirect to home
+         navigate("/");
+      }
+   }, [location, navigate]);
+
+   const handleContinueShopping = () => {
+      navigate("/products");
+   };
+
+   const handleGoHome = () => {
       navigate("/");
-    }
-  }, [location, navigate]);
+   };
 
-  const handleContinueShopping = () => {
-    navigate("/products");
-  };
+   if (!orderData) {
+      return null;
+   }
 
-  const handleGoHome = () => {
-    navigate("/");
-  };
+   return (
+      <div className="purchase-success-page">
+         <main className="purchase-success-main">
+            <div className="purchase-success-container">
+               {/* Success Icon and Message */}
+               <div className="success-header">
+                  <div className="success-icon">✓</div>
+                  <h1 className="success-title">¡Compra Exitosa!</h1>
+                  <p className="success-message">Tu pedido ha sido procesado correctamente</p>
+               </div>
 
-  if (!orderData) {
-    return null;
-  }
+               {/* Order Summary */}
+               <div className="order-summary-section">
+                  <div className="order-info-card">
+                     <h2>Resumen de tu Pedido</h2>
 
-  return (
-    <div className="purchase-success-page">
-      <main className="purchase-success-main">
-        <div className="purchase-success-container">
-          {/* Success Icon and Message */}
-          <div className="success-header">
-            <div className="success-icon">✓</div>
-            <h1 className="success-title">¡Compra Exitosa!</h1>
-            <p className="success-message">
-              Tu pedido ha sido procesado correctamente
-            </p>
-          </div>
+                     {/* Order Number and Date */}
+                     <div className="order-details">
+                        <div className="order-detail-item">
+                           <span className="detail-label">Número de Orden:</span>
+                           <span className="detail-value">{orderData.orderNumber}</span>
+                        </div>
+                        <div className="order-detail-item">
+                           <span className="detail-label">Fecha:</span>
+                           <span className="detail-value">{orderData.orderDate}</span>
+                        </div>
+                        <div className="order-detail-item">
+                           <span className="detail-label">Método de Pago:</span>
+                           <span className="detail-value">{orderData.paymentMethod}</span>
+                        </div>
+                     </div>
 
-          {/* Order Summary */}
-          <div className="order-summary-section">
-            <div className="order-info-card">
-              <h2>Resumen de tu Pedido</h2>
-
-              {/* Order Number and Date */}
-              <div className="order-details">
-                <div className="order-detail-item">
-                  <span className="detail-label">Número de Orden:</span>
-                  <span className="detail-value">{orderData.orderNumber}</span>
-                </div>
-                <div className="order-detail-item">
-                  <span className="detail-label">Fecha:</span>
-                  <span className="detail-value">{orderData.orderDate}</span>
-                </div>
-                <div className="order-detail-item">
-                  <span className="detail-label">Método de Pago:</span>
-                  <span className="detail-value">
-                    {orderData.paymentMethod}
-                  </span>
-                </div>
-              </div>
-
-              {/* Shipping Information */}
-              <div className="shipping-details">
+                     {/* Shipping Information */}
+                     {/* <div className="shipping-details">
                 <h3>Información de Envío</h3>
                 <div className="shipping-info-grid">
                   <div className="shipping-info-item">
@@ -108,10 +104,10 @@ export default function PurchaseSuccess() {
                     </span>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
-              {/* Items Purchased */}
-              <div className="items-section">
+                     {/* Items Purchased */}
+                     {/* <div className="items-section">
                 <h3>Productos Comprados</h3>
                 <div className="items-list">
                   {orderData.items.map((item, index) => (
@@ -129,10 +125,10 @@ export default function PurchaseSuccess() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </div> */}
 
-              {/* Price Summary */}
-              <div className="price-summary">
+                     {/* Price Summary */}
+                     {/* <div className="price-summary">
                 <div className="price-row">
                   <span>Subtotal:</span>
                   <span>
@@ -161,54 +157,45 @@ export default function PurchaseSuccess() {
                     ${orderData.pricing.total.toLocaleString("es-CL")}
                   </span>
                 </div>
-              </div>
+              </div> */}
 
-              {/* Points Earned */}
-              {orderData.pointsEarned > 0 && (
-                <div className="points-earned">
+                     {/* Points Earned */}
+                     {orderData.pointsEarned > 0 && (
+                        <div className="points-earned">
+                           <p>
+                              🌟 Has ganado <strong>{orderData.pointsEarned} puntos</strong> con esta compra
+                           </p>
+                        </div>
+                     )}
+
+                     {/* Delivery Estimate */}
+                     <div className="delivery-estimate">
+                        <p>
+                           📦 Tu pedido llegará antes del <strong>{orderData.deliveryDate}</strong>
+                        </p>
+                     </div>
+                  </div>
+               </div>
+
+               {/* Action Buttons */}
+               <div className="success-actions">
+                  <button className="btn btn-primary" onClick={handleContinueShopping}>
+                     Seguir Comprando
+                  </button>
+                  <button className="btn btn-secondary" onClick={handleGoHome}>
+                     Volver al Inicio
+                  </button>
+               </div>
+
+               {/* Additional Info */}
+               <div className="success-footer">
                   <p>
-                    🌟 Has ganado{" "}
-                    <strong>{orderData.pointsEarned} puntos</strong> con esta
-                    compra
+                     Recibirás un correo de confirmación en <strong>{orderData.shipping.email}</strong>
                   </p>
-                </div>
-              )}
-
-              {/* Delivery Estimate */}
-              <div className="delivery-estimate">
-                <p>
-                  📦 Tu pedido llegará antes del{" "}
-                  <strong>{orderData.deliveryDate}</strong>
-                </p>
-              </div>
+                  <p className="footer-note">Puedes revisar el estado de tu pedido en tu perfil</p>
+               </div>
             </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="success-actions">
-            <button
-              className="btn btn-primary"
-              onClick={handleContinueShopping}
-            >
-              Seguir Comprando
-            </button>
-            <button className="btn btn-secondary" onClick={handleGoHome}>
-              Volver al Inicio
-            </button>
-          </div>
-
-          {/* Additional Info */}
-          <div className="success-footer">
-            <p>
-              Recibirás un correo de confirmación en{" "}
-              <strong>{orderData.shipping.email}</strong>
-            </p>
-            <p className="footer-note">
-              Puedes revisar el estado de tu pedido en tu perfil
-            </p>
-          </div>
-        </div>
-      </main>
-    </div>
-  );
+         </main>
+      </div>
+   );
 }
