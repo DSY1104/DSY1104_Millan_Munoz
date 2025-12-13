@@ -91,7 +91,7 @@ export default function PaymentConfirm() {
       };
 
       confirmPayment();
-   }, [searchParams, navigate, clearCart]);
+   }, [searchParams, navigate, resetCart]);
 
    const calculateDeliveryDate = () => {
       const meses = [
