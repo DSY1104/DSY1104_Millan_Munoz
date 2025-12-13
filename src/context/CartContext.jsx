@@ -123,8 +123,12 @@ export function CartProvider({ children }) {
 
    // Initialize cart on mount if user is already logged in
    useEffect(() => {
+      console.log("[CartContext] Mount useEffect running");
       const storedUser = localStorage.getItem("currentUser");
       const storedCarritoId = localStorage.getItem(CART_ID_KEY);
+
+      console.log("[CartContext] Stored user:", storedUser ? "EXISTS" : "NULL");
+      console.log("[CartContext] Stored carritoId:", storedCarritoId || "NULL");
 
       // Restore carritoId from localStorage if available
       if (storedCarritoId) {
@@ -134,14 +138,23 @@ export function CartProvider({ children }) {
       if (storedUser) {
          try {
             const user = JSON.parse(storedUser);
+            console.log("[CartContext] Parsed user:", user);
+            console.log("[CartContext] User has id?", !!user?.id);
+            console.log("[CartContext] User.id value:", user?.id);
+
             if (user?.id) {
+               console.log("[CartContext] ✅ Calling initializeCart with userId:", user.id);
                setUserId(user.id);
+               console.warn("[CartContext] Initializing cart for existing user on mount");
                initializeCart(user.id);
+            } else {
+               console.warn("[CartContext] ❌ User exists but has no id field!");
             }
          } catch (error) {
-            console.error("Error loading user on mount:", error);
+            console.error("[CartContext] Error loading user on mount:", error);
          }
       } else {
+         console.log("[CartContext] No stored user, loading guest cart from localStorage");
          // Load from localStorage for guest
          const stored = localStorage.getItem(CART_KEY);
          if (stored) {
@@ -156,14 +169,26 @@ export function CartProvider({ children }) {
 
    // Listen for user login/logout events
    useEffect(() => {
+      console.log("[CartContext] Setting up login/logout event listeners");
+
       const handleUserLogin = (e) => {
+         console.log("[CartContext] userLoggedIn event received!");
+         console.log("[CartContext] Event detail:", e.detail);
          const user = e.detail;
+         console.log("[CartContext] User has id?", !!user?.id);
+         console.log("[CartContext] User.id value:", user?.id);
+
          if (user?.id) {
+            console.log("[CartContext] ✅ Initializing cart for user:", user.id);
+            // Initialize cart immediately on login
             initializeCart(user.id);
+         } else {
+            console.warn("[CartContext] ❌ Login event received but user has no id field!");
          }
       };
 
       const handleUserLogout = () => {
+         console.log("[CartContext] userLoggedOut event received!");
          setUserId(null);
          setCarritoId(null);
          setCart({ items: [] });
@@ -171,12 +196,13 @@ export function CartProvider({ children }) {
          localStorage.removeItem(CART_ID_KEY);
       };
 
-      document.addEventListener("userLoggedIn", handleUserLogin);
-      document.addEventListener("userLoggedOut", handleUserLogout);
+      // Listen on window to match AuthContext dispatch
+      window.addEventListener("userLoggedIn", handleUserLogin);
+      window.addEventListener("userLoggedOut", handleUserLogout);
 
       return () => {
-         document.removeEventListener("userLoggedIn", handleUserLogin);
-         document.removeEventListener("userLoggedOut", handleUserLogout);
+         window.removeEventListener("userLoggedIn", handleUserLogin);
+         window.removeEventListener("userLoggedOut", handleUserLogout);
       };
    }, []);
 
@@ -200,6 +226,7 @@ export function CartProvider({ children }) {
       const qtyToAdd = item.qty || 1;
 
       // Check if adding to API cart or local cart
+      console.log("[CartContext] User ID:", userId, "Carrito ID:", carritoId);
       if (userId && carritoId) {
          try {
             // Check existing quantity
@@ -223,11 +250,26 @@ export function CartProvider({ children }) {
                cantidad: qtyToAdd,
             });
 
+            // Format metadata as string for personalizaciones
+            // The API expects a string like "Color: Rojo, Talla: M"
+            // IMPORTANT: Exclude internal metadata fields (marca, categoriaId)
+            let personalizacionesStr = "";
+            if (item.metadata && typeof item.metadata === "object") {
+               const excludedFields = ["marca", "categoriaId", "personalizaciones"];
+
+               personalizacionesStr = Object.entries(item.metadata)
+                  .filter(([key, value]) => !excludedFields.includes(key) && value != null && value !== "")
+                  .map(([key, value]) => `${key}: ${value}`)
+                  .join(", ");
+            } else if (typeof item.metadata === "string") {
+               personalizacionesStr = item.metadata;
+            }
+
             // Add to API cart - use item.id as servicioId
             await addItemToCart(carritoId, {
                servicioId: item.id,
                cantidad: qtyToAdd,
-               personalizaciones: item.metadata || {},
+               personalizaciones: personalizacionesStr,
             });
 
             // Re-fetch cart to get updated items with item IDs
@@ -436,6 +478,28 @@ export function CartProvider({ children }) {
       }
    };
 
+   const resetCart = async () => {
+      console.log("[CartContext] Resetting cart completely");
+
+      if (userId && carritoId) {
+         try {
+            // Empty the current cart via API
+            await emptyCart(carritoId);
+         } catch (error) {
+            console.error("[CartContext] Error emptying cart on reset:", error);
+            // Continue with reset even if API fails
+         }
+      }
+
+      // Clear all cart state
+      setCarritoId(null);
+      setCart({ items: [] });
+      localStorage.removeItem(CART_KEY);
+      localStorage.removeItem(CART_ID_KEY);
+
+      console.log("[CartContext] Cart reset complete");
+   };
+
    const applyCoupon = (coupon) => {
       setCart((prevCart) => ({
          ...prevCart,
@@ -484,6 +548,7 @@ export function CartProvider({ children }) {
       updateQuantity,
       removeFromCart,
       clearCart,
+      resetCart,
       applyCoupon,
       removeCoupon,
       getTotals,

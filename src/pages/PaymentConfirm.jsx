@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { confirmCheckout, getOrderById } from "../services/cartService";
+import { confirmCheckout } from "../services/cartService";
 import { useCart } from "../context/CartContext";
 import "/src/styles/pages/purchase-success.css";
 
 export default function PaymentConfirm() {
    const navigate = useNavigate();
    const [searchParams] = useSearchParams();
-   const { clearCart } = useCart();
+   const { resetCart } = useCart();
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState(null);
 
@@ -27,22 +27,27 @@ export default function PaymentConfirm() {
             const confirmResponse = await confirmCheckout(token);
             console.log("Payment confirmed:", confirmResponse);
 
-            // Get stored checkout data
-            const storedData = sessionStorage.getItem("pendingCheckout");
+            // Get stored checkout data using order number from response
+            const storedData = sessionStorage.getItem(`checkout:${confirmResponse.numeroPedido}`);
             let checkoutData = {};
 
             if (storedData) {
                checkoutData = JSON.parse(storedData);
-               sessionStorage.removeItem("pendingCheckout");
+               // Clean up after retrieval
+               sessionStorage.removeItem(`checkout:${confirmResponse.numeroPedido}`);
+            } else {
+               // Fallback: try old key for backward compatibility
+               const legacyData = sessionStorage.getItem("pendingCheckout");
+               if (legacyData) {
+                  checkoutData = JSON.parse(legacyData);
+                  sessionStorage.removeItem("pendingCheckout");
+               }
             }
 
-            // Get full order details
-            const orderDetails = await getOrderById(confirmResponse.pedidoId);
-
-            // Prepare order data for success page
+            // Prepare simplified order data for success page
             const orderData = {
                orderNumber: confirmResponse.numeroPedido,
-               orderId: confirmResponse.pedidoId,
+               orderId: confirmResponse.pedidoId || confirmResponse.orderId,
                orderDate: new Date().toLocaleDateString("es-CL", {
                   year: "numeric",
                   month: "long",
@@ -55,19 +60,19 @@ export default function PaymentConfirm() {
                paymentStatus: confirmResponse.pago?.estadoPago,
                authorizationCode: confirmResponse.pago?.authorizationCode,
                shipping: checkoutData.shippingData || {},
-               items: orderDetails.items || [],
-               pricing: {
-                  subtotal: orderDetails.totalProductos || 0,
+               items: checkoutData.items || [],
+               pricing: checkoutData.pricing || {
+                  subtotal: checkoutData.montoTotal || 0,
                   discount: 0,
                   duocDiscount: 0,
-                  total: orderDetails.totalProductos || 0,
+                  total: checkoutData.montoTotal || 0,
                },
                pointsEarned: checkoutData.pointsEarned || 0,
                deliveryDate: calculateDeliveryDate(),
             };
 
-            // Clear cart after successful payment
-            await clearCart();
+            // Reset cart after successful payment (clears items AND cart ID)
+            await resetCart();
 
             // Navigate to success page
             navigate("/purchase-success", {
@@ -82,7 +87,7 @@ export default function PaymentConfirm() {
       };
 
       confirmPayment();
-   }, [searchParams, navigate, clearCart]);
+   }, [searchParams, navigate, resetCart]);
 
    const calculateDeliveryDate = () => {
       const meses = [
