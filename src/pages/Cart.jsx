@@ -162,9 +162,10 @@ export default function Cart() {
 
          console.log("Checkout initiated:", checkoutResponse);
 
-         // Handle different response structures
-         const tbUrl = checkoutResponse.transbankUrl || checkoutResponse.url;
+         // Handle different response structures from backend
+         const tbUrl = checkoutResponse.transbankUrl || checkoutResponse.paymentUrl || checkoutResponse.url;
          const tbToken = checkoutResponse.transbankToken || checkoutResponse.token;
+         const pedidoId = checkoutResponse.pedidoId || checkoutResponse.orderId;
 
          if (!tbUrl || !tbToken) {
             console.error("Invalid checkout response:", checkoutResponse);
@@ -176,8 +177,8 @@ export default function Cart() {
             `checkout:${checkoutResponse.numeroOrden}`,
             JSON.stringify({
                numeroOrden: checkoutResponse.numeroOrden,
-               pedidoId: checkoutResponse.pedidoId,
-               montoTotal: checkoutResponse.montoTotal,
+               pedidoId: pedidoId,
+               montoTotal: checkoutResponse.montoTotal || finalTotal,
                shippingData: data, // Full shipping form data
                pricing: {
                   subtotal: totals.subtotal,
