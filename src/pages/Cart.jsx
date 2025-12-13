@@ -162,15 +162,31 @@ export default function Cart() {
 
          console.log("Checkout initiated:", checkoutResponse);
 
-         // Store checkout data in sessionStorage for payment confirmation
+         // Handle different response structures
+         const tbUrl = checkoutResponse.transbankUrl || checkoutResponse.url;
+         const tbToken = checkoutResponse.transbankToken || checkoutResponse.token;
+
+         if (!tbUrl || !tbToken) {
+            console.error("Invalid checkout response:", checkoutResponse);
+            throw new Error("Respuesta de pago inválida: Falta URL o token");
+         }
+
+         // Store checkout data including shipping address and pricing
          sessionStorage.setItem(
-            "pendingCheckout",
+            `checkout:${checkoutResponse.numeroOrden}`,
             JSON.stringify({
                numeroOrden: checkoutResponse.numeroOrden,
                pedidoId: checkoutResponse.pedidoId,
                montoTotal: checkoutResponse.montoTotal,
-               shippingData: data,
-               pointsEarned: Math.floor(totals.subtotal / 1000),
+               shippingData: data, // Full shipping form data
+               pricing: {
+                  subtotal: totals.subtotal,
+                  discount: totals.discount,
+                  duocDiscount: duocDiscount,
+                  total: finalTotal,
+                  appliedCoupon: totals.appliedCoupon,
+               },
+               pointsEarned: Math.floor(totals.subtotal / 100), // Fixed divisor
             })
          );
 
@@ -178,12 +194,12 @@ export default function Cart() {
          // Create a form and submit it to Transbank
          const form = document.createElement("form");
          form.method = "POST";
-         form.action = checkoutResponse.transbankUrl;
+         form.action = tbUrl;
 
          const tokenInput = document.createElement("input");
          tokenInput.type = "hidden";
          tokenInput.name = "token_ws";
-         tokenInput.value = checkoutResponse.transbankToken;
+         tokenInput.value = tbToken;
          form.appendChild(tokenInput);
 
          document.body.appendChild(form);
@@ -279,8 +295,8 @@ export default function Cart() {
       setCouponError("");
    };
 
-   // Calculate points (1 point per $1000 CLP spent)
-   const pointsEarned = Math.floor(totals.subtotal / 1000);
+   // Calculate points (1 point per $100 CLP spent)
+   const pointsEarned = Math.floor(totals.subtotal / 100);
 
    return (
       <div>

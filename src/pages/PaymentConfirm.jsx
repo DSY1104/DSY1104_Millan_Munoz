@@ -7,7 +7,7 @@ import "/src/styles/pages/purchase-success.css";
 export default function PaymentConfirm() {
    const navigate = useNavigate();
    const [searchParams] = useSearchParams();
-   const { clearCart } = useCart();
+   const { resetCart } = useCart();
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState(null);
 
@@ -27,13 +27,21 @@ export default function PaymentConfirm() {
             const confirmResponse = await confirmCheckout(token);
             console.log("Payment confirmed:", confirmResponse);
 
-            // Get stored checkout data
-            const storedData = sessionStorage.getItem("pendingCheckout");
+            // Get stored checkout data using order number from response
+            const storedData = sessionStorage.getItem(`checkout:${confirmResponse.numeroPedido}`);
             let checkoutData = {};
 
             if (storedData) {
                checkoutData = JSON.parse(storedData);
-               sessionStorage.removeItem("pendingCheckout");
+               // Clean up after retrieval
+               sessionStorage.removeItem(`checkout:${confirmResponse.numeroPedido}`);
+            } else {
+               // Fallback: try old key for backward compatibility
+               const legacyData = sessionStorage.getItem("pendingCheckout");
+               if (legacyData) {
+                  checkoutData = JSON.parse(legacyData);
+                  sessionStorage.removeItem("pendingCheckout");
+               }
             }
 
             // Get full order details
@@ -56,7 +64,8 @@ export default function PaymentConfirm() {
                authorizationCode: confirmResponse.pago?.authorizationCode,
                shipping: checkoutData.shippingData || {},
                items: orderDetails.items || [],
-               pricing: {
+               pricing: checkoutData.pricing || {
+                  // Fallback to order total if no pricing data
                   subtotal: orderDetails.totalProductos || 0,
                   discount: 0,
                   duocDiscount: 0,
@@ -66,8 +75,8 @@ export default function PaymentConfirm() {
                deliveryDate: calculateDeliveryDate(),
             };
 
-            // Clear cart after successful payment
-            await clearCart();
+            // Reset cart after successful payment (clears items AND cart ID)
+            await resetCart();
 
             // Navigate to success page
             navigate("/purchase-success", {
