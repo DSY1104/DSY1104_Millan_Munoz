@@ -179,7 +179,8 @@ export function CartProvider({ children }) {
          console.log("[CartContext] User.id value:", user?.id);
 
          if (user?.id) {
-            console.warn("[CartContext] ✅ Calling initializeCart from login event with userId:", user.id);
+            console.log("[CartContext] ✅ Initializing cart for user:", user.id);
+            // Initialize cart immediately on login
             initializeCart(user.id);
          } else {
             console.warn("[CartContext] ❌ Login event received but user has no id field!");
@@ -195,12 +196,13 @@ export function CartProvider({ children }) {
          localStorage.removeItem(CART_ID_KEY);
       };
 
-      document.addEventListener("userLoggedIn", handleUserLogin);
-      document.addEventListener("userLoggedOut", handleUserLogout);
+      // Listen on window to match AuthContext dispatch
+      window.addEventListener("userLoggedIn", handleUserLogin);
+      window.addEventListener("userLoggedOut", handleUserLogout);
 
       return () => {
-         document.removeEventListener("userLoggedIn", handleUserLogin);
-         document.removeEventListener("userLoggedOut", handleUserLogout);
+         window.removeEventListener("userLoggedIn", handleUserLogin);
+         window.removeEventListener("userLoggedOut", handleUserLogout);
       };
    }, []);
 
