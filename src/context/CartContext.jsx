@@ -254,18 +254,14 @@ export function CartProvider({ children }) {
             // The API expects a string like "Color: Rojo, Talla: M"
             // IMPORTANT: Exclude internal metadata fields (marca, categoriaId)
             let personalizacionesStr = "";
-            if (item.metadata && typeof item.metadata === 'object') {
-               const excludedFields = ['marca', 'categoriaId', 'personalizaciones'];
+            if (item.metadata && typeof item.metadata === "object") {
+               const excludedFields = ["marca", "categoriaId", "personalizaciones"];
 
                personalizacionesStr = Object.entries(item.metadata)
-                  .filter(([key, value]) =>
-                     !excludedFields.includes(key) &&
-                     value != null &&
-                     value !== ""
-                  )
+                  .filter(([key, value]) => !excludedFields.includes(key) && value != null && value !== "")
                   .map(([key, value]) => `${key}: ${value}`)
                   .join(", ");
-            } else if (typeof item.metadata === 'string') {
+            } else if (typeof item.metadata === "string") {
                personalizacionesStr = item.metadata;
             }
 
